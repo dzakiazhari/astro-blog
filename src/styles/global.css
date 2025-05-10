@@ -5,20 +5,23 @@
 
 :root,
 html[data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
-  --accent: #006cac;
-  --muted: #e6e6e6;
-  --border: #ece9e9;
+  /* Light mode uses iOS‐style whites and grays */
+  --background: #F5F5F7;    /* system background */
+  --foreground: #1C1C1E;    /* primary label */
+  --accent:     #1E80FF;    /* personal twist on Apple’s system blue */
+  --muted:      #E5E5EA;    /* secondary background */
+  --border:     #CBCBD0;    /* separator color */
 }
 
 html[data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
-  --muted: #343f60bf;
-  --border: #ab4b08;
+  /* Dark mode uses iOS‐style dark grays */
+  --background: #1C1C1F;    /* system background */
+  --foreground: #EBEBF5;    /* primary label */
+  --accent:     #1E80FF;    /* same accent for brand consistency */
+  --muted:      #2C2C2E;    /* secondary background */
+  --border:     #444446;    /* separator color */
 }
+
 
 @theme inline {
   --color-background: var(--background);

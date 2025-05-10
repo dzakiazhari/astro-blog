@@ -1,6 +1,6 @@
 export const SITE = {
   website: "https://dzakiazhari.com/", // replace this with your deployed domain
-  author: "Dzaki Azhar",
+  author: "Dzaki Azhari",
   profile: "https://dzakiazhari.com/",
   desc: "Thoughts, stories and ideas. A blog by Dzaki Azhari. Unfold a world of insights and growth on the blog.",
   title: "Unfold",
