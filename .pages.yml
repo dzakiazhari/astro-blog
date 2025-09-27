@@ -19,23 +19,26 @@ content:
         order: desc
 
     fields:
+      # --- path controls ---
       - name: year
         label: Year folder
         type: select
         options:
-          - { label: "2023", value: "2023" }
-          - { label: "2024", value: "2024" }
-          - { label: "2025", value: "2025" }
-          - { label: "2026", value: "2026" }
+          values:
+            - { label: "2023", value: "2023" }
+            - { label: "2024", value: "2024" }
+            - { label: "2025", value: "2025" }
+            - { label: "2026", value: "2026" }
 
       - name: slug
         label: Slug (filename)
         type: string
         hint: "Lowercase with hyphens, no extension."
 
-      - { name: title, label: Title, type: string }
-      - { name: description, label: Description, type: text }
-      - { name: author, label: Author, type: string, default: "Dzaki Azhari" }
+      # --- frontmatter (matches Astro schema) ---
+      - { name: title,       label: Title,         type: string }
+      - { name: description, label: Description,   type: text }
+      - { name: author,      label: Author,        type: string, default: "Dzaki Azhari" }
 
       - name: pubDatetime
         label: Publish Date/Time
@@ -48,13 +51,17 @@ content:
         options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }
         required: false
 
-      - { name: featured, label: Featured, type: boolean, default: false }
-      - { name: draft, label: Draft, type: boolean, default: false }
-      - { name: tags, label: Tags, type: text, list: true, default: [ "blog" ] }
+      - { name: featured,    label: Featured,      type: boolean, default: false }
+      - { name: draft,       label: Draft,         type: boolean, default: false }
 
-      - { name: ogImage, label: OG Image, type: image, required: false }
-      - { name: canonicalURL, label: Canonical URL, type: string, required: false }
-      - { name: hideEditPost, label: Hide "Suggest Changes", type: boolean, default: false }
-      - { name: timezone, label: Timezone, type: string, default: "Asia/Tokyo" }
+      # list of strings
+      - { name: tags,        label: Tags,          type: text, list: true, default: [ "blog" ] }
 
-      - { name: body, label: Body, type: rich-text }
+      # optionals
+      - { name: ogImage,     label: OG Image,      type: image,  required: false }
+      - { name: canonicalURL,label: Canonical URL, type: string, required: false }
+      - { name: hideEditPost,label: Hide "Suggest Changes", type: boolean, default: false }
+      - { name: timezone,    label: Timezone,      type: string, default: "Asia/Tokyo" }
+
+      # body
+      - { name: body,        label: Body,          type: rich-text }
