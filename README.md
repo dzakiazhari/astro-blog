@@ -1,45 +1,59 @@
-# Unfold - Your Personal Astro Blog
+# AstroPaper 📄
 
-Welcome to "Unfold," a personal blog built with [Astro](https://astro.build/), designed for sharing thoughts, stories, and ideas. This project is tailored for a clean, content-focused experience with modern web features and easy customization.
+![AstroPaper](public/astropaper-og.jpg)
+[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/community/file/1356898632249991861)
+![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![GitHub](https://img.shields.io/github/license/satnaing/astro-paper?color=%232F3741&style=for-the-badge)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=for-the-badge)](https://conventionalcommits.org)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 
-## Features
+AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro blog theme. This theme is designed and crafted based on [my personal blog](https://satnaing.dev/blog).
 
-* **Astro-Powered:** Fast static site generation for optimal performance.
-* **Markdown Content:** Write blog posts in familiar Markdown with powerful frontmatter support.
-* **Tailwind CSS:** Utility-first CSS framework for flexible and rapid styling.
-* **TypeScript:** Enhanced code quality and developer experience with static typing.
-* **Light & Dark Mode:** User-selectable themes for comfortable reading.
-* **Dynamic Open Graph (OG) Images:** Automatically generated OG images for posts and the main site, enhancing social sharing.
-* **SEO Friendly:**
-    * Sitemap generation (`sitemap-index.xml`).
-    * `robots.txt` generation.
-    * Canonical URL support.
-* **RSS Feed:** `rss.xml` feed for content syndication.
-* **Content Collections:** Type-safe content management for blog posts.
-* **Organized Structure:** Clear separation of content, configuration, styles, and utilities.
-* **Customizable Configuration:** Easily tweak site settings, navigation, and appearance.
-* **Utility Functions:** Helpers for common tasks like slugification, post sorting, path generation, etc.
-* **Code Syntax Highlighting:** Uses Shiki with configurable themes for light and dark modes via Astro's Markdown configuration. (Note: An older blog post mentions Expressive Code, but current `astro.config.ts` uses Shiki.)
-* **Table of Contents Support:** `remark-toc` and `remark-collapse` for auto-generated and collapsible ToCs in Markdown.
-* **Docker Support:** Includes a `docker-compose.yml` for containerized development.
-* **Linting & Formatting:** Prettier and ESLint configured for code consistency.
-* **Commitizen Friendly:** `cz.yaml` suggests conventional commits are encouraged.
+Read [the blog posts](https://astro-paper.pages.dev/posts/) or check [the README Documentation Section](#-documentation) for more info.
 
-## Project Structure
+## 🔥 Features
 
-Here's a brief overview of the key directories and files:
+- [x] type-safe markdown
+- [x] super fast performance
+- [x] accessible (Keyboard/VoiceOver)
+- [x] responsive (mobile ~ desktops)
+- [x] SEO-friendly
+- [x] light & dark mode
+- [x] fuzzy search
+- [x] draft posts & pagination
+- [x] sitemap & rss feed
+- [x] followed best practices
+- [x] highly customizable
+- [x] dynamic OG image generation for blog posts [#15](https://github.com/satnaing/astro-paper/pull/15) ([Blog Post](https://astro-paper.pages.dev/posts/dynamic-og-image-generation-in-astropaper-blog-posts/))
 
-```
-astro-blog/
-├── public/                     # Static assets (images, fonts, toggle-theme.js)
-│   └── toggle-theme.js         # Handles light/dark mode switching
+_Note: I've tested screen-reader accessibility of AstroPaper using **VoiceOver** on Mac and **TalkBack** on Android. I couldn't test all other screen-readers out there. However, accessibility enhancements in AstroPaper should be working fine on others as well._
+
+## ✅ Lighthouse Score
+
+<p align="center">
+  <a href="https://pagespeed.web.dev/report?url=https%3A%2F%2Fastro-paper.pages.dev%2F&form_factor=desktop">
+    <img width="710" alt="AstroPaper Lighthouse Score" src="AstroPaper-lighthouse-score.svg">
+  <a>
+</p>
+
+## 🚀 Project Structure
+
+Inside of AstroPaper, you'll see the following folders and files:
+
+```bash
+/
+├── public/
+│   ├── assets/
+|   ├── pagefind/ # auto-generated when build
+│   └── favicon.svg
+│   └── astropaper-og.jpg
+│   └── favicon.svg
+│   └── toggle-theme.js
 ├── src/
-│   ├── assets/                 # Icons and other static assets used in components
+│   ├── assets/
 │   │   └── icons/
-│   ├── components/             # Astro/UI components (if any, not explicitly detailed in provided files beyond icons)
-│   ├── config.ts               # Main site configuration (title, author, URLs, etc.)
-│   ├── constants.ts            # Site-wide constants like social media links
-│   ├── content.config.ts       # Defines content collections (e.g., blog posts)
+│   │   └── images/
+│   ├── components/
 │   ├── data/
 │   │   └── blog/
 │   │       └── some-blog-posts.md
@@ -109,170 +123,58 @@ pnpm install
 pnpm run dev
 ```
 
-### Running Locally
-
-To start the development server:
+As an alternative approach, if you have Docker installed, you can use Docker to run this project locally. Here's how:
 
 ```bash
-pnpm dev
+# Build the Docker image
+docker build -t astropaper .
+
+# Run the Docker container
+docker run -p 4321:80 astropaper
 ```
 
-This will usually start the server on `http://localhost:4321`. Astro will watch for file changes and update automatically.
+## Google Site Verification (optional)
 
-### Building for Production
-
-To build your blog for deployment:
+You can easily add your [Google Site Verification HTML tag](https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag) in AstroPaper using an environment variable. This step is optional. If you don't add the following environment variable, the google-site-verification tag won't appear in the HTML `<head>` section.
 
 ```bash
-pnpm build
+# in your environment variable file (.env)
+PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-site-verification-value
 ```
 
-The output will be in the `dist/` directory. The build script also includes a step for `pagefind --site dist` which suggests a client-side search functionality is being prepared.
+> See [this discussion](https://github.com/satnaing/astro-paper/discussions/334#discussioncomment-10139247) for adding AstroPaper to the Google Search Console.
 
-## Content Management
+## 🧞 Commands
 
-### Adding New Blog Posts
+All commands are run from the root of the project, from a terminal:
 
-1.  Create a new Markdown file (`.md`) inside the `src/data/blog/` directory. You can organize posts in subdirectories (e.g., by year or category).
-2.  Add frontmatter to the top of your Markdown file. Key fields are defined in `src/content.config.ts` and include:
-    * `title` (string, required): The title of your post.
-    * `author` (string, defaults to `SITE.author` from `src/config.ts`): The author of the post.
-    * `pubDatetime` (Date, required): The publication date and time.
-    * `modDatetime` (Date, optional): The modification date and time.
-    * `featured` (boolean, optional): Whether the post should be featured.
-    * `draft` (boolean, optional): Set to `true` to keep the post from being published.
-    * `tags` (array of strings, defaults to `["others"]`): Tags for categorizing your post.
-    * `ogImage` (string or Astro Image function, optional): Path to a custom OG image or let one be dynamically generated.
-    * `description` (string, required): A brief description of the post for SEO and previews.
-    * `canonicalURL` (string, optional): If the post is a canonical version of content elsewhere.
-    * `hideEditPost` (boolean, optional): Hide the "Suggest Changes" link.
-    * `timezone` (string, optional): Override the global timezone for this specific post.
+> **_Note!_** For `Docker` commands we must have it [installed](https://docs.docker.com/engine/install/) in your machine.
 
-    **Example Frontmatter (from `src/data/blog/2025/New Year 2025 A Look Back.md`):**
-    ```yaml
-    ---
-    title: New Year 2025  A Look Back
-    author: Dzaki Azhari
-    description: New Year 2025  A Look Back.
-    pubDatetime: 2025-01-01T20:53:09Z
-    modDatetime: 2025-01-01T22:00:21Z
-    slug: new-year-2025-a-look-back # Note: The slug is part of the frontmatter in examples, ensure this aligns with your `content.config.ts` (schema doesn't explicitly list slug, Astro typically derives from filename)
-    featured: false
-    draft: false
-    tags:
-      - blog
-    ---
+| Command                              | Action                                                                                                                           |
+| :----------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install`                       | Installs dependencies                                                                                                            |
+| `pnpm run dev`                       | Starts local dev server at `localhost:4321`                                                                                      |
+| `pnpm run build`                     | Build your production site to `./dist/`                                                                                          |
+| `pnpm run preview`                   | Preview your build locally, before deploying                                                                                     |
+| `pnpm run format:check`              | Check code format with Prettier                                                                                                  |
+| `pnpm run format`                    | Format codes with Prettier                                                                                                       |
+| `pnpm run sync`                      | Generates TypeScript types for all Astro modules. [Learn more](https://docs.astro.build/en/reference/cli-reference/#astro-sync). |
+| `pnpm run lint`                      | Lint with ESLint                                                                                                                 |
+| `docker compose up -d`               | Run AstroPaper on docker, You can access with the same hostname and port informed on `dev` command.                              |
+| `docker compose run app npm install` | You can run any command above into the docker container.                                                                         |
+| `docker build -t astropaper .`       | Build Docker image for AstroPaper.                                                                                               |
+| `docker run -p 4321:80 astropaper`   | Run AstroPaper on Docker. The website will be accessible at `http://localhost:4321`.                                             |
 
-    ## Table of Contents
-    ```
-3.  Write your blog content in Markdown below the frontmatter.
+> **_Warning!_** Windows PowerShell users may need to install the [concurrently package](https://www.npmjs.com/package/concurrently) if they want to [run diagnostics](https://docs.astro.build/en/reference/cli-reference/#astro-check) during development (`astro check --watch & astro dev`). For more info, see [this issue](https://github.com/satnaing/astro-paper/issues/113).
 
-### Managing Content Structure
+## ✨ Feedback & Suggestions
 
-* Blog posts are located in `src/data/blog/`.
-* The `getPath.ts` utility helps in resolving the correct URL paths for posts, including those in subdirectories.
+If you have any suggestions/feedback, you can contact me via [my email](mailto:contact@satnaing.dev). Alternatively, feel free to open an issue if you find bugs or want to request new features.
 
-## Configuration
+## 📜 License
 
-Most of the blog's behavior and appearance can be configured through the following files:
-
-* **`astro.config.ts`:**
-    * Astro integrations (sitemap, Tailwind CSS).
-    * Markdown processing (remark plugins for Table of Contents, collapsing sections, Shiki syntax highlighting themes).
-    * Vite-specific configurations.
-    * Experimental Astro features.
-* **`src/config.ts`:**
-    * `SITE.website`: Your deployed domain.
-    * `SITE.author`: Default author name.
-    * `SITE.profile`: Link to author's profile.
-    * `SITE.desc`: Site description.
-    * `SITE.title`: Site title.
-    * `SITE.ogImage`: Default OG image for the site.
-    * `SITE.lightAndDarkMode`: Enable/disable theme toggling.
-    * `SITE.postPerIndex`: Number of posts on the main blog index.
-    * `SITE.postPerPage`: Number of posts per paginated page.
-    * `SITE.scheduledPostMargin`: Margin for scheduled posts.
-    * `SITE.showArchives`: Whether to show the archives page.
-    * `SITE.showBackButton`: Show back button in post details.
-    * `SITE.editPost`: Configuration for the "Suggest Changes" link (GitHub edit URL).
-    * `SITE.dynamicOgImage`: Enable/disable dynamic OG image generation.
-    * `SITE.lang`: HTML language code.
-    * `SITE.timezone`: Default global timezone.
-* **`src/constants.ts`:**
-    * `SOCIALS`: Array of social media links with names, URLs, titles, and icons.
-    * `SHARE_LINKS`: Array of social sharing links for posts.
-* **`src/content.config.ts`:**
-    * Defines the schema for blog post frontmatter using Zod for validation and type safety.
-    * Specifies `BLOG_PATH` where Markdown content is located.
-* **`tsconfig.json`:**
-    * TypeScript compiler options, path aliases (`@/*` pointing to `./src/*`).
-* **`tailwind.config.cjs` (Inferred, not explicitly provided but typical for Tailwind):**
-    * Tailwind CSS theme customizations, plugins (like typography). (Note: `astro.config.ts` imports `@tailwindcss/vite`, implying Tailwind is used).
-
-## Styling and Customization
-
-* **Global Styles:** `src/styles/global.css` defines root CSS variables for theming (light/dark modes), base element styles, and utility classes.
-* **Typography:** `src/styles/typography.css` configures the `@tailwindcss/typography` plugin for styling Markdown-generated HTML.
-* **Theme Toggling:** `public/toggle-theme.js` handles the logic for switching between light and dark themes and persisting the user's preference in local storage.
-* **Tailwind CSS:** Customize styling by modifying Tailwind classes in your Astro components and layouts, or by extending the Tailwind configuration.
-
-## Utilities Overview
-
-The `src/utils/` directory contains several helpful TypeScript modules:
-
-* **`generateOgImages.ts`:** Uses `Resvg` and `satori` to convert SVG templates into PNG buffer for OG images.
-    * `postOgImage.js` & `siteOgImage.js`: These are the actual Satori templates defining the look of the OG images.
-* **`getPath.ts`:** Constructs the correct URL path for a blog post based on its ID and file path, handling subdirectories.
-* **`getPostsByGroupCondition.ts`:** A generic function to group posts based on a provided condition/function.
-* **`getPostsByTag.ts`:** Filters and sorts posts that include a specific tag.
-* **`getSortedPosts.ts`:** Sorts posts, typically by modification or publication date, after applying filters.
-* **`getUniqueTags.ts`:** Extracts a sorted list of unique tags (and their slugified versions) from all posts.
-* **`loadGoogleFont.ts`:** Fetches Google Font files as ArrayBuffer, used for embedding fonts in dynamically generated OG images.
-* **`postFilter.ts`:** Filters posts based on criteria like `draft` status and `pubDatetime` (for scheduled posts).
-* **`slugify.ts`:** Uses `lodash.kebabcase` to convert strings into URL-friendly slugs.
-
-## Deployment
-
-While not explicitly detailed in a deployment-specific file, the setup is typical for Astro sites and can be easily deployed to platforms like:
-
-* Cloudflare Pages (as suggested by the `Update.md` guide which details updating from an `astro-paper` template, often deployed this way)
-* Vercel
-* Netlify
-* GitHub Pages
-
-The build command is `pnpm build`, and the output directory is `dist/`.
-
-## Updating the Blog (from AstroPaper Template)
-
-The `Update.md` file provides a comprehensive guide for merging upstream changes from the `satnaing/astro-paper` template into your project. This involves:
-
-1.  Fetching upstream changes.
-2.  Creating/checking out an update branch.
-3.  Ensuring a clean working directory (committing or stashing changes).
-4.  Merging the template's main branch.
-5.  Resolving conflicts.
-6.  Re-applying stashed changes (if any).
-7.  Installing dependencies and testing.
-8.  Merging the update branch into your main branch.
-9.  Pushing changes.
-
-It also includes tips for conflict resolution and rolling back changes.
-
-## Linting and Formatting
-
-* **ESLint:** Configured in `eslint.config.js` for JavaScript/TypeScript linting, including Astro-specific rules.
-* **Prettier:** Used for code formatting (inferred from `package.json` devDependencies like `prettier-plugin-astro` and `prettier-plugin-tailwindcss`).
-* **Scripts:**
-    * `pnpm lint`: Runs ESLint.
-    * `pnpm format`: Formats code with Prettier.
-    * `pnpm format:check`: Checks formatting with Prettier.
-
-## Changelog
-
-All notable changes to this project are documented in `CHANGELOG.md`. This project appears to follow [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
-
-## Contributing
-
-While this is a personal blog, if you intend to open it up for contributions, consider adding a `CONTRIBUTING.md` file outlining how others can contribute. For now, follow conventional commit messages as suggested by `cz.yaml`.
+Licensed under the MIT License, Copyright © 2025
 
 ---
+
+Made with 🤍 by [Sat Naing](https://satnaing.dev) 👨🏻‍💻 and [contributors](https://github.com/satnaing/astro-paper/graphs/contributors).

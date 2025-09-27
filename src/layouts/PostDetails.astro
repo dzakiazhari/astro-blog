@@ -69,6 +69,7 @@ const layoutProps = {
 };
 
 /* ========== Prev/Next Posts ========== */
+
 const allPosts = posts.map(({ data: { title }, id, filePath }) => ({
   id,
   title,
@@ -77,11 +78,9 @@ const allPosts = posts.map(({ data: { title }, id, filePath }) => ({
 
 const currentPostIndex = allPosts.findIndex(a => a.id === post.id);
 
-const prevPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
+const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
-  currentPostIndex >= 0 && currentPostIndex < allPosts.length - 1
-    ? allPosts[currentPostIndex + 1]
-    : null;
+  currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
 ---
 
 <Layout {...layoutProps}>
@@ -126,20 +125,20 @@ const nextPost =
     <ul class="mt-4 mb-8 sm:my-8">
       {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
     </ul>
-
-    <!-- Giscus comments (React, theme-aware) -->
+  
+      <!-- Giscus comments (React, theme-aware) -->
     <section id="comments" data-pagefind-ignore class="mt-6">
       <h2 class="sr-only">Comments</h2>
       <Comments client:only="react" />
     </section>
-
+    
     <BackToTopButton />
 
     <ShareLinks />
 
     <hr class="my-6 border-dashed" />
 
-    <!-- Previous/Next Post Buttons (icons & layout same as main) -->
+    <!-- Previous/Next Post Buttons -->
     <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2">
       {
         prevPost && (

@@ -35,7 +35,7 @@ export default function Comments({
   useEffect(() => {
     const themeButton = document.querySelector("#theme-btn");
     const handleClick = () => {
-      setTheme(prevTheme => (prevTheme === "dark" ? "light" : "dark"));
+      setTheme((prevTheme: string) => (prevTheme === "dark" ? "light" : "dark"));
     };
 
     themeButton?.addEventListener("click", handleClick);

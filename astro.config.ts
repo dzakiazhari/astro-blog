@@ -2,8 +2,8 @@ import { defineConfig, envField } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
-import react from "@astrojs/react";
 import remarkCollapse from "remark-collapse";
+import react from "@astrojs/react";
 import {
   transformerNotationDiff,
   transformerNotationHighlight,
@@ -16,7 +16,7 @@ import { SITE } from "./src/config";
 export default defineConfig({
   site: SITE.website,
   integrations: [
-    react(), // enable React renderer for .tsx components (e.g., Comments.tsx)
+    react(),
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
     }),
@@ -24,6 +24,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
     shikiConfig: {
+      // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },
       defaultColor: false,
       wrap: false,
@@ -46,9 +47,17 @@ export default defineConfig({
     },
   },
   image: {
-    // Used for all Markdown images; not configurable per-image
-    // Used for all `<Image />` and `<Picture />` components unless overridden with a prop
-    experimentalLayout: "responsive",
+    responsiveStyles: true,
+    layout: "constrained",
+  },
+  env: {
+    schema: {
+      PUBLIC_GOOGLE_SITE_VERIFICATION: envField.string({
+        access: "public",
+        context: "client",
+        optional: true,
+      }),
+    },
   },
   experimental: {
     preserveScriptOrder: true,

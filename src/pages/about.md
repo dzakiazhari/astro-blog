@@ -8,4 +8,4 @@ You'll have complete access to both past and future publications from here.
 
 ## Contact
 
-For any inquiries, please feel free to reach out to me via [email](mailto:enterprisepost@proton.me).
+For any inquiries, please feel free to reach out to me via [email](mailto:mail@dzakiazhari.com).

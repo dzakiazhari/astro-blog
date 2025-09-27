@@ -92,8 +92,8 @@ export const GISCUS: GiscusProps = {
   repoId: "R_kgDOOkpQZg",
   category: "Announcements",
   categoryId: "DIC_kwDOOkpQZs4Cv-VO",
-  mapping: "pathname", // Map comments to each post path
-  reactionsEnabled: "1", // Enable reactions (👍 etc.)
+  mapping: "pathname",
+  reactionsEnabled: "1",
   emitMetadata: "0",
   inputPosition: "bottom",
   lang: "en",
