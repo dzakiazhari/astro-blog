@@ -29,7 +29,7 @@ export const SOCIALS = [
   },
   {
     name: "Mail",
-    href: "mailto:enterprisepost@proton.me",
+    href: "mailto:mail@dzakiazhari.com",
     linkTitle: `Send an email to ${SITE.title}`,
     icon: IconMail,
   },
