@@ -1,3 +1,4 @@
+import type { Props } from "astro";
 import IconMail from "@/assets/icons/IconMail.svg";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconBrandX from "@/assets/icons/IconBrandX.svg";
@@ -9,7 +10,14 @@ import IconPinterest from "@/assets/icons/IconPinterest.svg";
 import type { GiscusProps } from "@giscus/react";
 import { SITE } from "@/config";
 
-export const SOCIALS = [
+interface Social {
+  name: string;
+  href: string;
+  linkTitle: string;
+  icon: (_props: Props) => Element;
+}
+
+export const SOCIALS: Social[] = [
   {
     name: "Github",
     href: "https://github.com/dzakiazhari",
@@ -36,7 +44,7 @@ export const SOCIALS = [
   },
 ] as const;
 
-export const SHARE_LINKS = [
+export const SHARE_LINKS: Social[] = [
   {
     name: "WhatsApp",
     href: "https://wa.me/?text=",
@@ -84,8 +92,8 @@ export const GISCUS: GiscusProps = {
   repoId: "R_kgDOOkpQZg",
   category: "Announcements",
   categoryId: "DIC_kwDOOkpQZs4Cv-VO",
-  mapping: "pathname",        // Map comments to each post path
-  reactionsEnabled: "1",      // Enable reactions (👍 etc.)
+  mapping: "pathname", // Map comments to each post path
+  reactionsEnabled: "1", // Enable reactions (👍 etc.)
   emitMetadata: "0",
   inputPosition: "bottom",
   lang: "en",

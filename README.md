@@ -41,66 +41,73 @@ astro-blog/
 │   ├── constants.ts            # Site-wide constants like social media links
 │   ├── content.config.ts       # Defines content collections (e.g., blog posts)
 │   ├── data/
-│   │   └── blog/               # Markdown files for blog posts
-│   ├── layouts/                # Astro layout components (e.g., for posts, pages)
-│   ├── pages/                  # Astro pages (e.g., about.md, rss.xml.ts, API routes)
-│   │   ├── posts/
-│   │   │   └── [...slug]/
-│   │   │       └── index.png.ts # Dynamic OG image generator for posts
-│   │   ├── about.md            # About page content
-│   │   ├── og.png.ts           # Dynamic OG image generator for the site
-│   │   ├── robots.txt.ts       # Generates robots.txt
-│   │   └── rss.xml.ts          # Generates RSS feed
-│   ├── styles/                 # Global CSS and typography styles
-│   │   ├── global.css          # Global styles, theme variables
-│   │   └── typography.css      # Tailwind Typography plugin styles
-│   └── utils/                  # Utility functions
-│       ├── generateOgImages.ts # Core logic for OG image generation
-│       ├── getPath.ts          # Generates paths for blog posts
-│       ├── getPostsByGroupCondition.ts # Groups posts based on a condition
-│       ├── getPostsByTag.ts    # Filters posts by tag
-│       ├── getSortedPosts.ts   # Sorts posts, typically by date
-│       ├── getUniqueTags.ts    # Extracts unique tags from posts
-│       ├── loadGoogleFont.ts   # Utility for loading Google Fonts for OG images
-│       ├── postFilter.ts       # Filters posts (e.g., removes drafts, scheduled)
-│       ├── slugify.ts          # Converts strings to URL-friendly slugs
-│       └── og-templates/       # HTML/JSX-like templates for OG images
-│           ├── post.js         # Template for individual post OG images
-│           └── site.js         # Template for the main site OG image
-├── astro.config.ts             # Astro configuration file (integrations, markdown settings)
-├── CHANGELOG.md                # Tracks changes across versions
-├── cz.yaml                     # Commitizen configuration for conventional commits
-├── docker-compose.yml          # Docker configuration for development
-├── eslint.config.js            # ESLint (linter) configuration
-├── package.json                # Project metadata, dependencies, and scripts
-├── pnpm-lock.yaml              # PNPM lockfile for reproducible installs
-├── README.md                   # This file! (initially minimal)
-├── remark-collapse.d.ts        # TypeScript declaration for remark-collapse
-├── tsconfig.json               # TypeScript configuration
-└── Update.md                   # Guide for keeping the blog up-to-date with the AstroPaper template
+│   │   └── blog/
+│   │       └── some-blog-posts.md
+│   ├── layouts/
+│   └── pages/
+│   └── styles/
+│   └── utils/
+│   └── config.ts
+│   └── constants.ts
+│   └── content.config.ts
+└── astro.config.ts
 ```
 
-## Getting Started
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-Follow these steps to get your blog running locally.
+Any static assets, like images, can be placed in the `public/` directory.
 
-### Prerequisites
+All blog posts are stored in `src/data/blog` directory.
 
-* Node.js (refer to `package.json` for engine specifics, generally LTS versions are recommended)
-* pnpm (as indicated by `pnpm-lock.yaml` and `packageManager` field in `package.json`)
+## 📖 Documentation
 
-### Installation
+Documentation can be read in two formats\_ _markdown_ & _blog post_.
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <your-repository-url>
-    cd astro-blog
-    ```
+- Configuration - [markdown](src/data/blog/how-to-configure-astropaper-theme.md) | [blog post](https://astro-paper.pages.dev/posts/how-to-configure-astropaper-theme/)
+- Add Posts - [markdown](src/data/blog/adding-new-post.md) | [blog post](https://astro-paper.pages.dev/posts/adding-new-posts-in-astropaper-theme/)
+- Customize Color Schemes - [markdown](src/data/blog/customizing-astropaper-theme-color-schemes.md) | [blog post](https://astro-paper.pages.dev/posts/customizing-astropaper-theme-color-schemes/)
+- Predefined Color Schemes - [markdown](src/data/blog/predefined-color-schemes.md) | [blog post](https://astro-paper.pages.dev/posts/predefined-color-schemes/)
 
-2.  **Install dependencies:**
-    ```bash
-    pnpm install
-    ```
+## 💻 Tech Stack
+
+**Main Framework** - [Astro](https://astro.build/)  
+**Type Checking** - [TypeScript](https://www.typescriptlang.org/)  
+**Styling** - [TailwindCSS](https://tailwindcss.com/)  
+**UI/UX** - [Figma Design File](https://www.figma.com/community/file/1356898632249991861)  
+**Static Search** - [FuseJS](https://pagefind.app/)  
+**Icons** - [Tablers](https://tabler-icons.io/)  
+**Code Formatting** - [Prettier](https://prettier.io/)  
+**Deployment** - [Cloudflare Pages](https://pages.cloudflare.com/)  
+**Illustration in About Page** - [https://freesvgillustration.com](https://freesvgillustration.com/)  
+**Linting** - [ESLint](https://eslint.org)
+
+## 👨🏻‍💻 Running Locally
+
+You can start using this project locally by running the following command in your desired directory:
+
+```bash
+# pnpm
+pnpm create astro@latest --template satnaing/astro-paper
+
+# npm
+npm create astro@latest -- --template satnaing/astro-paper
+
+# yarn
+yarn create astro --template satnaing/astro-paper
+
+# bun
+bun create astro@latest -- --template satnaing/astro-paper
+```
+
+Then start the project by running the following commands:
+
+```bash
+# install dependencies if you haven't done so in the previous step.
+pnpm install
+
+# start running the project
+pnpm run dev
+```
 
 ### Running Locally
 

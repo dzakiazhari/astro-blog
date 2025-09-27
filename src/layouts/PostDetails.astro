@@ -72,6 +72,7 @@ const allPosts = posts.map(({ data: { title }, id, filePath }) => ({
   id,
   title,
   filePath,
+  filePath,
 }));
 
 const currentPostIndex = allPosts.findIndex((a) => a.id === post.id);
@@ -87,6 +88,7 @@ const nextPost =
   <main
     id="main-content"
     class:list={[
+      "mx-auto w-full max-w-app px-4 pb-12",
       "mx-auto w-full max-w-app px-4 pb-12",
       { "mt-8": !SITE.showBackButton },
     ]}
@@ -144,8 +146,10 @@ const nextPost =
         prevPost && (
           <a
             href={getPath(prevPost.id, prevPost.filePath)}
+            href={getPath(prevPost.id, prevPost.filePath)}
             class="flex w-full gap-1 hover:opacity-75"
           >
+            <IconChevronLeft class="inline-block flex-none rtl:rotate-180" />
             <IconChevronLeft class="inline-block flex-none rtl:rotate-180" />
             <div>
               <span>Previous Post</span>
@@ -159,11 +163,14 @@ const nextPost =
           <a
             href={getPath(nextPost.id, nextPost.filePath)}
             class="flex w-full justify-end gap-1 text-end hover:opacity-75 sm:col-start-2"
+            href={getPath(nextPost.id, nextPost.filePath)}
+            class="flex w-full justify-end gap-1 text-end hover:opacity-75 sm:col-start-2"
           >
             <div>
               <span>Next Post</span>
               <div class="text-sm text-accent/85">{nextPost.title}</div>
             </div>
+            <IconChevronRight class="inline-block flex-none rtl:rotate-180" />
             <IconChevronRight class="inline-block flex-none rtl:rotate-180" />
           </a>
         )
@@ -214,6 +221,7 @@ const nextPost =
       const link = document.createElement("a");
       link.className =
         "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
+        "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
       link.href = "#" + heading.id;
 
       const span = document.createElement("span");
@@ -241,6 +249,7 @@ const nextPost =
       const topClass = hasFileNameOffset ? "top-(--file-name-offset)" : "-top-3";
 
       const copyButton = document.createElement("button");
+      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
       copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
       copyButton.innerHTML = copyButtonLabel;
       codeBlock.setAttribute("tabindex", "0");
