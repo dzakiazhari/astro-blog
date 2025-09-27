@@ -1,4 +1,3 @@
-# .pages/config.yml
 site_label: "Unfold (Astro)"
 branch: "main"
 
@@ -7,8 +6,6 @@ collections:
     label: "Blog Posts"
     folder: "src/data/blog"
     create: true
-
-    # Path ensures files go into year subfolders
     path: "{{year}}/{{slug}}.md"
     extension: "md"
     format: "frontmatter"
@@ -22,66 +19,36 @@ collections:
       public_path: "/images/uploads"
 
     fields:
-      - name: "year"
-        label: "Year folder"
-        widget: "select"
-        options: ["2023", "2024", "2025", "2026"]
-        default: "2025"
-      - name: "slug"
-        label: "Slug"
-        widget: "string"
-        hint: "Filename slug, lowercase with hyphens."
+      - { name: "year", label: "Year folder", widget: "select", options: ["2023", "2024", "2025", "2026"], default: "2025" }
+      - { name: "slug", label: "Slug", widget: "string", hint: "Filename slug, lowercase with hyphens." }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "author", label: "Author", widget: "string", default: "Dzaki Azhari" }
+      - { name: "pubDatetime", label: "Publish Date/Time", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss[Z]" }
+      - { name: "modDatetime", label: "Last Modified", widget: "datetime", required: false, format: "YYYY-MM-DDTHH:mm:ss[Z]" }
+      - { name: "featured", label: "Featured", widget: "boolean", default: false }
+      - { name: "draft", label: "Draft", widget: "boolean", default: false }
+      - { name: "tags", label: "Tags", widget: "list", default: ["others"] }
+      - { name: "ogImage", label: "OG Image", widget: "image", required: false }
+      - { name: "canonicalURL", label: "Canonical URL", widget: "string", required: false }
+      - { name: "hideEditPost", label: "Hide Edit Button", widget: "boolean", default: false }
+      - { name: "timezone", label: "Timezone", widget: "string", default: "Asia/Tokyo" }
+      - { name: "body", label: "Body", widget: "markdown" }
 
-      - name: "title"
-        label: "Title"
-        widget: "string"
-      - name: "description"
-        label: "Description"
-        widget: "text"
-      - name: "author"
-        label: "Author"
-        widget: "string"
-        default: "Dzaki Azhari"
-      - name: "pubDatetime"
-        label: "Publish Date/Time"
-        widget: "datetime"
-        format: "YYYY-MM-DDTHH:mm:ss[Z]"
-      - name: "modDatetime"
-        label: "Last Modified"
-        widget: "datetime"
-        required: false
-        format: "YYYY-MM-DDTHH:mm:ss[Z]"
+  - name: "pages"
+    label: "Site Pages"
+    folder: "src/pages"
+    create: true
+    path: "{{slug}}.mdx"
+    extension: "mdx"
+    format: "frontmatter"
 
-      - name: "featured"
-        label: "Featured"
-        widget: "boolean"
-        default: false
-      - name: "draft"
-        label: "Draft"
-        widget: "boolean"
-        default: false
-      - name: "tags"
-        label: "Tags"
-        widget: "list"
-        default: ["others"]
+    media:
+      assets: "public/images/uploads"
+      public_path: "/images/uploads"
 
-      - name: "ogImage"
-        label: "OG Image"
-        widget: "image"
-        required: false
-      - name: "canonicalURL"
-        label: "Canonical URL"
-        widget: "string"
-        required: false
-      - name: "hideEditPost"
-        label: "Hide Edit Button"
-        widget: "boolean"
-        default: false
-      - name: "timezone"
-        label: "Timezone"
-        widget: "string"
-        default: "Asia/Tokyo"
-
-      - name: "body"
-        label: "Body"
-        widget: "markdown"
+    fields:
+      - { name: "slug", label: "Slug", widget: "string", hint: "Filename without extension (e.g. 'about')" }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "text", required: false }
+      - { name: "body", label: "Body", widget: "markdown" }
