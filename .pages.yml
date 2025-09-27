@@ -1,54 +1,66 @@
-site_label: "Unfold (Astro)"
-branch: "main"
+# .pages.yml  (put this at the repo root)
 
-collections:
-  - name: "blog"
-    label: "Blog Posts"
-    folder: "src/data/blog"
-    create: true
-    path: "{{year}}/{{slug}}.md"
-    extension: "md"
-    format: "frontmatter"
+# Where uploads live (repo) and how they are referenced (site URL path)
+media:
+  input: public/images/uploads
+  output: /images/uploads   # served by Astro from /public
 
-    sort:
-      field: "pubDatetime"
-      order: "desc"
-
-    media:
-      assets: "public/images/uploads"
-      public_path: "/images/uploads"
-
+# Content types (collections & files)
+content:
+  # === BLOG POSTS ===
+  - name: blog
+    label: Blog Posts
+    type: collection
+    path: src/data/blog            # your posts root
+    filename: "{year}/{slug}.md"   # subfolder by year
+    view:
+      primary: title
+      sort: [ pubDatetime, title ]
+      default:
+        sort: pubDatetime
+        order: desc
     fields:
-      - { name: "year", label: "Year folder", widget: "select", options: ["2023", "2024", "2025", "2026"], default: "2025" }
-      - { name: "slug", label: "Slug", widget: "string", hint: "Filename slug, lowercase with hyphens." }
-      - { name: "title", label: "Title", widget: "string" }
-      - { name: "description", label: "Description", widget: "text" }
-      - { name: "author", label: "Author", widget: "string", default: "Dzaki Azhari" }
-      - { name: "pubDatetime", label: "Publish Date/Time", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss[Z]" }
-      - { name: "modDatetime", label: "Last Modified", widget: "datetime", required: false, format: "YYYY-MM-DDTHH:mm:ss[Z]" }
-      - { name: "featured", label: "Featured", widget: "boolean", default: false }
-      - { name: "draft", label: "Draft", widget: "boolean", default: false }
-      - { name: "tags", label: "Tags", widget: "list", default: ["others"] }
-      - { name: "ogImage", label: "OG Image", widget: "image", required: false }
-      - { name: "canonicalURL", label: "Canonical URL", widget: "string", required: false }
-      - { name: "hideEditPost", label: "Hide Edit Button", widget: "boolean", default: false }
-      - { name: "timezone", label: "Timezone", widget: "string", default: "Asia/Tokyo" }
-      - { name: "body", label: "Body", widget: "markdown" }
+      - { name: year, label: Year folder, type: select, options: [ "2023","2024","2025","2026" ], default: "2025" }
+      - { name: slug, label: Slug (filename), type: string }
+      - { name: title, label: Title, type: string }
+      - { name: description, label: Description, type: text }
+      - { name: author, label: Author, type: string, default: "Dzaki Azhari" }
 
-  - name: "pages"
-    label: "Site Pages"
-    folder: "src/pages"
-    create: true
-    path: "{{slug}}.mdx"
-    extension: "mdx"
-    format: "frontmatter"
+      # Dates in your frontmatter (ISO-like with time)
+      - name: pubDatetime
+        label: Publish Date/Time
+        type: date
+        options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }  # date field options per docs
+      - name: modDatetime
+        label: Last Modified
+        type: date
+        options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }
+        required: false
 
-    media:
-      assets: "public/images/uploads"
-      public_path: "/images/uploads"
+      - { name: featured, label: Featured, type: boolean, default: false }
+      - { name: draft, label: Draft, type: boolean, default: false }
+      - { name: tags, label: Tags, type: text, list: true, default: [ "others" ] }
 
+      # Images & optional strings
+      - { name: ogImage, label: OG Image, type: image, required: false }
+      - { name: canonicalURL, label: Canonical URL, type: string, required: false }
+      - { name: hideEditPost, label: Hide "Suggest Changes" Button, type: boolean, default: false }
+      - { name: timezone, label: Timezone, type: string, default: "Asia/Tokyo" }
+
+      # Body content editor
+      - { name: body, label: Body, type: rich-text }  # WYSIWYG; supports images
+
+  # === STATIC PAGES (MDX) ===
+  - name: pages
+    label: Site Pages
+    type: collection
+    path: src/pages
+    filename: "{slug}.mdx"
+    view:
+      primary: title
+      sort: [ title ]
     fields:
-      - { name: "slug", label: "Slug", widget: "string", hint: "Filename without extension (e.g. 'about')" }
-      - { name: "title", label: "Title", widget: "string" }
-      - { name: "description", label: "Description", widget: "text", required: false }
-      - { name: "body", label: "Body", widget: "markdown" }
+      - { name: slug, label: Slug (filename without extension), type: string }
+      - { name: title, label: Title, type: string }
+      - { name: description, label: Description, type: text, required: false }
+      - { name: body, label: Body, type: rich-text }
