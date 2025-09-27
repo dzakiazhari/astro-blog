@@ -6,13 +6,14 @@ import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import IconFacebook from "@/assets/icons/IconFacebook.svg";
 import IconTelegram from "@/assets/icons/IconTelegram.svg";
 import IconPinterest from "@/assets/icons/IconPinterest.svg";
+import type { GiscusProps } from "@giscus/react";
 import { SITE } from "@/config";
 
 export const SOCIALS = [
   {
     name: "Github",
     href: "https://github.com/dzakiazhari",
-    linkTitle: ` ${SITE.title} on Github`,
+    linkTitle: `${SITE.title} on Github`,
     icon: IconGitHub,
   },
   // {
@@ -73,3 +74,20 @@ export const SHARE_LINKS = [
     icon: IconMail,
   },
 ] as const;
+
+/**
+ * Giscus config for comments
+ * Used in src/components/Comments.tsx
+ */
+export const GISCUS: GiscusProps = {
+  repo: "dzakiazhari/astro-blog",
+  repoId: "R_kgDOOkpQZg",
+  category: "Announcements",
+  categoryId: "DIC_kwDOOkpQZs4Cv-VO",
+  mapping: "pathname",        // Map comments to each post path
+  reactionsEnabled: "1",      // Enable reactions (👍 etc.)
+  emitMetadata: "0",
+  inputPosition: "bottom",
+  lang: "en",
+  loading: "lazy",
+};
