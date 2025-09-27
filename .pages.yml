@@ -1,54 +1,37 @@
 # .pages/config.yml
-# Git-based config for Pages CMS
-
-# Optional UI labels
 site_label: "Unfold (Astro)"
-branch: "main"   # your default branch for commits
-
-# Where uploaded media goes (Astro can serve from /public)
-media:
-  # files saved here in the repo:
-  assets: "public/images/uploads"
-  # how they are referenced in Markdown/frontmatter:
-  public_path: "/images/uploads"
+branch: "main"
 
 collections:
   - name: "blog"
     label: "Blog Posts"
-    # Root content directory
     folder: "src/data/blog"
-    # Allow creating new files from the CMS
     create: true
 
-    # File path pattern inside src/data/blog
-    # Users pick the year; CMS writes to: src/data/blog/<year>/<slug>.md
+    # Path ensures files go into year subfolders
     path: "{{year}}/{{slug}}.md"
-
-    # File extension & frontmatter handling
     extension: "md"
     format: "frontmatter"
 
-    # Optional sorting in the UI
     sort:
       field: "pubDatetime"
       order: "desc"
 
-    # Fields correspond to your Astro collection schema
+    media:
+      assets: "public/images/uploads"
+      public_path: "/images/uploads"
+
     fields:
-      # --- ROUTING / PATH ---
       - name: "year"
         label: "Year folder"
         widget: "select"
-        # keep recent years handy; you can add more
         options: ["2023", "2024", "2025", "2026"]
         default: "2025"
-        hint: "Determines the year subfolder (src/data/blog/<year>/)."
       - name: "slug"
         label: "Slug"
         widget: "string"
-        hint: "Used in the filename; lowercase with hyphens."
+        hint: "Filename slug, lowercase with hyphens."
 
-      # --- REQUIRED BY YOUR SCHEMA ---
       - name: "title"
         label: "Title"
         widget: "string"
@@ -62,53 +45,43 @@ collections:
       - name: "pubDatetime"
         label: "Publish Date/Time"
         widget: "datetime"
-        # ISO 8601 with Z to match your current files
         format: "YYYY-MM-DDTHH:mm:ss[Z]"
       - name: "modDatetime"
-        label: "Last Modified (optional)"
+        label: "Last Modified"
         widget: "datetime"
         required: false
         format: "YYYY-MM-DDTHH:mm:ss[Z]"
 
-      # --- OPTIONAL FLAGS / LISTS ---
       - name: "featured"
         label: "Featured"
         widget: "boolean"
         default: false
-        required: false
       - name: "draft"
         label: "Draft"
         widget: "boolean"
         default: false
-        required: false
       - name: "tags"
         label: "Tags"
         widget: "list"
         default: ["others"]
-        summary: "{{fields.item}}"
-        hint: "Press Enter to add multiple tags."
 
-      # --- OPTIONAL STRINGS ---
       - name: "ogImage"
         label: "OG Image"
-        widget: "image"     # will store a path string; your schema accepts string or image
+        widget: "image"
         required: false
       - name: "canonicalURL"
         label: "Canonical URL"
         widget: "string"
         required: false
       - name: "hideEditPost"
-        label: "Hide 'Suggest Changes' Button"
+        label: "Hide Edit Button"
         widget: "boolean"
         default: false
-        required: false
       - name: "timezone"
         label: "Timezone"
         widget: "string"
         default: "Asia/Tokyo"
-        required: false
 
-      # --- BODY CONTENT ---
       - name: "body"
         label: "Body"
         widget: "markdown"
