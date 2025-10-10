@@ -6,11 +6,9 @@ import Footer from "@/components/Footer.astro";
 import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
-import Hr from "@/components/Hr.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { SITE } from "@/config";
 import { SOCIALS } from "@/constants";
 
 const posts = await getCollection("blog");
@@ -22,9 +20,15 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 <Layout>
   <Header />
-  <main id="main-content" data-layout="index">
-    <section id="hero" class="pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold text-accent sm:my-8 sm:text-5xl">
+  <main
+    id="main-content"
+    data-layout="index"
+    class="mx-auto w-full max-w-app px-4 pt-10 pb-16 sm:pt-14"
+  >
+    <section id="hero" class="pb-10">
+      <h1
+        class="my-4 inline-block text-4xl font-bold text-accent sm:my-8 sm:text-5xl"
+      >
         Hello.
       </h1>
       <a
@@ -41,7 +45,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         />
         <span class="sr-only">RSS Feed</span>
       </a>
-      <p>
+      <p class="max-w-2xl text-lg leading-relaxed">
         Explore insights and growth on this <strong>blog</strong> or dive into my
         <LinkButton
           class="hover:text-skin-accent underline decoration-dashed underline-offset-4"
@@ -61,33 +65,37 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       }
     </section>
 
-    <section id="lists" class="pt-10 pb-10">
-      <div class="grid grid-cols-1 gap-10 md:grid-cols-2">
-        {featuredPosts.length > 0 && (
-          <div>
-            <h2 class="mb-4 text-2xl font-semibold tracking-wide text-accent border-s-4 border-accent ps-3">
-              Featured
-            </h2>
-            <ul class="flex flex-col gap-4">
-              {featuredPosts.slice(0, 3).map(data => (
-                <Card variant="h3" showDescription={false} {...data} />
-              ))}
-            </ul>
-          </div>
-        )}
+    <section id="lists" class="pt-6">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-2">
+        {
+          featuredPosts.length > 0 && (
+            <div>
+              <h2 class="mb-5 border-s-4 border-accent ps-3 text-2xl font-semibold tracking-wide text-accent">
+                Featured
+              </h2>
+              <ul class="flex flex-col gap-4">
+                {featuredPosts.slice(0, 3).map(data => (
+                  <Card variant="h3" showDescription={false} {...data} />
+                ))}
+              </ul>
+            </div>
+          )
+        }
 
-        {recentPosts.length > 0 && (
-          <div>
-            <h2 class="mb-4 text-2xl font-semibold tracking-wide text-accent border-s-4 border-accent ps-3">
-              Recent Posts
-            </h2>
-            <ul class="flex flex-col gap-4">
-              {recentPosts.slice(0, 3).map(data => (
-                <Card variant="h3" showDescription={false} {...data} />
-              ))}
-            </ul>
-          </div>
-        )}
+        {
+          recentPosts.length > 0 && (
+            <div>
+              <h2 class="mb-5 border-s-4 border-accent ps-3 text-2xl font-semibold tracking-wide text-accent">
+                Recent Posts
+              </h2>
+              <ul class="flex flex-col gap-4">
+                {recentPosts.slice(0, 3).map(data => (
+                  <Card variant="h3" showDescription={false} {...data} />
+                ))}
+              </ul>
+            </div>
+          )
+        }
       </div>
     </section>
 

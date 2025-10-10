@@ -202,10 +202,22 @@ const nextPost =
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
-      if (codeBlock.querySelector(".copy-code")) continue;
+      const parent = codeBlock.parentElement;
+      const existingButton = parent?.classList.contains("code-block")
+        ? parent.querySelector(".copy-code")
+        : codeBlock.querySelector(".copy-code");
 
-      const wrapper = document.createElement("div");
-      wrapper.className = "code-block group relative";
+      if (existingButton) continue;
+
+      let wrapper = parent;
+      if (!wrapper || !wrapper.classList.contains("code-block")) {
+        wrapper = document.createElement("div");
+        wrapper.className = "code-block group relative";
+        codeBlock.parentNode?.insertBefore(wrapper, codeBlock);
+        wrapper.appendChild(codeBlock);
+      } else {
+        wrapper.classList.add("group", "relative");
+      }
 
       const computedStyle = getComputedStyle(codeBlock);
       const fileNameOffset = computedStyle
@@ -214,20 +226,16 @@ const nextPost =
 
       const copyButton = document.createElement("button");
       copyButton.type = "button";
-      copyButton.className =
-        "copy-code absolute end-3 top-3 inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[11px] font-medium uppercase tracking-[0.08em]";
+      copyButton.className = "copy-code";
       copyButton.textContent = copyButtonLabel;
       copyButton.setAttribute("aria-label", "Copy code to clipboard");
       copyButton.setAttribute("data-state", "idle");
       copyButton.style.top = fileNameOffset
         ? `calc(${fileNameOffset} + 0.75rem)`
-        : "0.75rem";
+        : "1rem";
 
+      wrapper.appendChild(copyButton);
       codeBlock.setAttribute("tabindex", "0");
-      codeBlock.appendChild(copyButton);
-
-      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
-      wrapper.appendChild(codeBlock);
 
       copyButton.addEventListener("click", async () => {
         await copyCode(codeBlock, copyButton);

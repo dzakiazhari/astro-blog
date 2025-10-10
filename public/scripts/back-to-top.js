@@ -45,7 +45,7 @@
         btnContainer.classList.toggle("opacity-100", isVisible);
         btnContainer.classList.toggle("translate-y-0", isVisible);
         btnContainer.classList.toggle("opacity-0", !isVisible);
-        btnContainer.classList.toggle("translate-y-14", !isVisible);
+        btnContainer.classList.toggle("translate-y-16", !isVisible);
         lastVisible = isVisible;
       }
     };

@@ -6,20 +6,20 @@
 :root,
 html[data-theme="light"] {
   /* Light theme — minimal, original accent */
-  --background: #f5f5f7; /* system background */
-  --foreground: #1c1c1e; /* primary label */
-  --accent: #1e80ff; /* original accent */
-  --muted: #e5e5ea; /* secondary background */
-  --border: #cbcbd0; /* separator color */
+  --background: #f7f7fa; /* clean shell */
+  --foreground: #161921; /* soft ink */
+  --accent: #3f7df6; /* cobalt accent */
+  --muted: #e4e7f1; /* subtle surface */
+  --border: #cfd4e2; /* separators */
 }
 
 html[data-theme="dark"] {
-  /* Dark theme — neutral twilight palette */
-  --background: #23262f; /* muted charcoal */
-  --foreground: #f4f6fb; /* softened white */
-  --accent: #ffd166; /* warm highlight */
-  --muted: #2f3540; /* panels */
-  --border: #434a57; /* separators */
+  /* Dark theme — calm dusk palette */
+  --background: #1b1f28; /* velvet night */
+  --foreground: #f1f4ff; /* moonlight */
+  --accent: #7aa2ff; /* cool glow */
+  --muted: #242a35; /* panels */
+  --border: #333a47; /* separators */
 }
 
 @theme inline {
