@@ -15,6 +15,7 @@ relevant source files for quick follow-up.
 | Test | `postFilter` lacked coverage for draft, scheduled, and dev-mode cases. | Node test runner validates draft, schedule margin, and dev overrides. | `src/utils/postFilter.ts`, `src/utils/postFilter.test.ts` |
 | UI Polish | Shiki code blocks still carried theme-supplied panel colors and per-token backdrops, producing a noisy glow. | Syntax tokens inherit neutral surfaces defined in `typography.css`, keeping diff markers while rendering on the custom card background. | `src/styles/typography.css` |
 | UI Polish | Copy affordance sometimes failed to render after lazy loads, appeared as plain text, and sat outside the curved card edge. | Copy control is a styled `<button>` reattached after Astro navigations, with the pill anchored inside the rounded margin via logical offsets. | `src/layouts/PostDetails.astro`, `src/styles/typography.css` |
+| DX | Dev server defaulted to localhost, so remote preview tools could not connect. | The dev script now binds to `0.0.0.0:4321` and documentation/agent notes highlight the accessible host. | `package.json`, `AGENTS.md`, `README.md` |
 
 ## Backlog
 

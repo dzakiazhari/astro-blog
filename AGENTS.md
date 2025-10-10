@@ -30,7 +30,7 @@ Generated/ignored outputs (do not edit):
 ## Run & Build
 
 - Install: `pnpm install`
-- Dev: `pnpm run dev` (serves on `http://localhost:4321`)
+- Dev: `pnpm run dev` (binds to `0.0.0.0:4321` so preview tools can connect)
 - Build: `pnpm run build` (runs `astro check`, `astro build`, then `pagefind` and copies UI into `public/pagefind/`)
 - Preview: `pnpm run preview`
 - Lint: `pnpm run lint`
