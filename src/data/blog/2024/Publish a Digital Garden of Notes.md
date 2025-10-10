@@ -243,7 +243,6 @@ https://notes.dzakiazhari.com/*
 ```
 
 3. **Modify `userSetup.js` for Header Passthrough:**
-
    - Navigate to the `/src/helpers` folder and click on `userSetup.js`.
    - In the top-right corner, click the dropdown menu next to the pen icon and select "Edit in place."
    - Within the config brackets, add the following line:
@@ -255,7 +254,6 @@ eleventyConfig.addPassthroughCopy("src/site/_headers");
 4. **Verify Header Addition:** In your Cloudflare dashboard, navigate to "Deployment Details" and click on the "Headers" tab. This should display the newly added headers. Additionally check the grade of your site's security headers' grade with the site explained above.
 
    **Note:**
-
    - You could utilize the `userSetup.js` to pass through a custom 404 page.
    - Create a custom 404.html page, copy it to folder `site` and add the following line:
 

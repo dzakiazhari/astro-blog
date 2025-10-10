@@ -6,22 +6,21 @@
 :root,
 html[data-theme="light"] {
   /* Light mode uses iOS‐style whites and grays */
-  --background: #F5F5F7;    /* system background */
-  --foreground: #1C1C1E;    /* primary label */
-  --accent:     #1E80FF;    /* personal twist on Apple’s system blue */
-  --muted:      #E5E5EA;    /* secondary background */
-  --border:     #CBCBD0;    /* separator color */
+  --background: #f5f5f7; /* system background */
+  --foreground: #1c1c1e; /* primary label */
+  --accent: #1e80ff; /* personal twist on Apple’s system blue */
+  --muted: #e5e5ea; /* secondary background */
+  --border: #cbcbd0; /* separator color */
 }
 
 html[data-theme="dark"] {
   /* Dark mode uses iOS‐style dark grays */
-  --background: #1C1C1F;    /* system background */
-  --foreground: #EBEBF5;    /* primary label */
-  --accent:     #1E80FF;    /* same accent for brand consistency */
-  --muted:      #2C2C2E;    /* secondary background */
-  --border:     #444446;    /* separator color */
+  --background: #1c1c1f; /* system background */
+  --foreground: #ebebf5; /* primary label */
+  --accent: #1e80ff; /* same accent for brand consistency */
+  --muted: #2c2c2e; /* secondary background */
+  --border: #444446; /* separator color */
 }
-
 
 @theme inline {
   --color-background: var(--background);
