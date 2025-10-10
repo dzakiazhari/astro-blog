@@ -198,7 +198,9 @@ const nextPost =
 
   function attachCopyButtons() {
     const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+    const codeBlocks = Array.from(document.querySelectorAll("pre")).filter(
+      code => !code.closest(".expressive-code")
+    );
 
     for (const codeBlock of codeBlocks) {
       const parent = codeBlock.parentElement;
