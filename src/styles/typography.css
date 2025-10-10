@@ -122,29 +122,29 @@
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .expressive-code {
     @apply my-6;
+    scroll-margin-top: 6.5rem;
   }
 
   .expressive-code .frame {
     border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));
-    box-shadow: none;
+    overflow: clip;
+    transition:
+      box-shadow 180ms ease,
+      transform 180ms ease;
   }
 
-  .expressive-code .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.6rem;
-    padding-inline: clamp(1rem, 0.8rem + 1vw, 1.6rem);
-    padding-block: clamp(0.65rem, 0.5rem + 0.4vw, 0.85rem);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: color-mix(in oklab, var(--foreground) 82%, transparent 18%);
+  @media (prefers-reduced-motion: reduce) {
+    .expressive-code .frame {
+      transition-duration: 1ms;
+      transition-property: box-shadow;
+      transform: none !important;
+    }
   }
 
-  .expressive-code .header .title {
-    color: inherit;
+  .expressive-code:where(:hover, :focus-within) .frame {
+    box-shadow: 0 26px 56px
+      color-mix(in oklab, var(--foreground) 10%, transparent 90%);
+    transform: translate3d(0, -2px, 0);
   }
 
   .expressive-code pre {
@@ -168,6 +168,29 @@
 
   .expressive-code pre::-webkit-scrollbar-track {
     background: transparent;
+  }
+
+  .expressive-code .copy button {
+    border-radius: 9999px;
+    box-shadow: none;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .expressive-code .copy button div {
+    border-radius: inherit;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .expressive-code .copy button::after {
+    margin: 0.42rem;
+  }
+
+  .expressive-code .copy .feedback {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   /* Text highlight via <mark> — warm accent boxes */
@@ -195,94 +218,15 @@
   }
 }
 
-:root,
-:root:not([data-theme="dark"]) .expressive-code[data-theme="dark"] {
-  --ec-brdRad: 1.05rem;
-  --ec-brdWd: 1px;
-  --ec-codePadBlk: clamp(1.35rem, 1.1rem + 0.8vw, 1.95rem);
-  --ec-codePadInl: clamp(1.1rem, 0.9rem + 1vw, 1.7rem);
-  --ec-codeFontSize: 0.96rem;
-  --ec-codeLineHt: 1.68;
-  --ec-uiPadBlk: clamp(0.45rem, 0.35rem + 0.35vw, 0.7rem);
-  --ec-uiPadInl: clamp(0.85rem, 0.7rem + 0.8vw, 1.3rem);
-  --ec-frm-edTabsMargInlStart: 0.6rem;
-  --ec-frm-edTabsMargBlkStart: 0.45rem;
-  --ec-frm-edTabBrdRad: 0.9rem;
-  --ec-frm-frameBoxShdCssVal: none;
-  --ec-frm-inlBtnBg: color-mix(
-    in oklab,
-    var(--background) 88%,
-    var(--foreground) 12%
-  );
-  --ec-frm-inlBtnBgIdleOpa: 1;
-  --ec-frm-inlBtnBgHoverOrFocusOpa: 1;
-  --ec-frm-inlBtnBgActOpa: 1;
-  --ec-frm-inlBtnBrd: color-mix(in oklab, var(--border) 60%, transparent 40%);
-  --ec-frm-inlBtnBrdOpa: 1;
-  --ec-frm-inlBtnFg: color-mix(
-    in oklab,
-    var(--foreground) 84%,
-    var(--background) 16%
-  );
-  --ec-frm-tooltipSuccessBg: color-mix(
-    in oklab,
-    var(--accent) 16%,
-    transparent 84%
-  );
-  --ec-frm-tooltipSuccessFg: var(--foreground);
-  --ec-sbThumbCol: color-mix(in oklab, var(--foreground) 18%, transparent 82%);
-  --ec-sbThumbHoverCol: color-mix(
-    in oklab,
-    var(--foreground) 26%,
-    transparent 74%
-  );
-  --ec-frm-shdCol: color-mix(in oklab, var(--foreground) 6%, transparent 94%);
-}
-
-:root[data-theme="light"] .expressive-code:not([data-theme="dark"]),
-.expressive-code[data-theme="light"] {
-  --ec-brdCol: color-mix(in oklab, var(--border) 58%, transparent 42%);
-  --ec-codeBg: color-mix(in oklab, var(--background) 95%, var(--foreground) 5%);
-  --ec-codeFg: var(--foreground);
-  --ec-codeSelBg: color-mix(in oklab, var(--accent) 16%, transparent 84%);
-  --ec-gtrFg: color-mix(in oklab, var(--foreground) 60%, transparent 40%);
-  --ec-gtrHlFg: var(--foreground);
-  --ec-gtrBrdCol: color-mix(in oklab, var(--border) 45%, transparent 55%);
-  --ec-uiSelBg: color-mix(in oklab, var(--accent) 12%, transparent 88%);
-  --ec-uiSelFg: var(--foreground);
-  --ec-focusBrd: color-mix(in oklab, var(--accent) 20%, transparent 80%);
-}
-
-:root[data-theme="dark"] .expressive-code:not([data-theme="light"]),
-.expressive-code[data-theme="dark"] {
-  --ec-brdCol: color-mix(in oklab, var(--border) 48%, transparent 52%);
-  --ec-codeBg: color-mix(
-    in oklab,
-    var(--background) 86%,
-    var(--foreground) 14%
-  );
-  --ec-codeFg: color-mix(in oklab, var(--foreground) 94%, var(--background) 6%);
-  --ec-codeSelBg: color-mix(in oklab, var(--accent) 24%, transparent 76%);
-  --ec-gtrFg: color-mix(in oklab, var(--foreground) 72%, transparent 28%);
-  --ec-gtrHlFg: color-mix(in oklab, var(--foreground) 92%, transparent 8%);
-  --ec-gtrBrdCol: color-mix(in oklab, var(--border) 44%, transparent 56%);
-  --ec-uiSelBg: color-mix(in oklab, var(--accent) 26%, transparent 74%);
-  --ec-uiSelFg: var(--foreground);
-  --ec-focusBrd: color-mix(in oklab, var(--accent) 28%, transparent 72%);
-  --ec-sbThumbCol: color-mix(in oklab, var(--foreground) 24%, transparent 76%);
-  --ec-sbThumbHoverCol: color-mix(
-    in oklab,
-    var(--foreground) 32%,
-    transparent 68%
-  );
-}
-
 .code-block {
   position: relative;
 }
 
 .code-block pre {
-  @apply rounded-xl border border-border/60 bg-muted/70 px-5 py-4 text-sm leading-7 text-foreground shadow-sm;
+  --code-copy-offset: 1.35rem;
+  @apply rounded-3xl border border-border/60 bg-muted/70 px-5 py-4 text-sm leading-7 text-foreground shadow-lg;
+  box-shadow: 0 22px 48px
+    color-mix(in oklab, var(--foreground) 7%, transparent 93%);
 }
 
 .code-block .copy-code {
@@ -297,6 +241,7 @@
   background: color-mix(in oklab, var(--background) 88%, var(--foreground) 12%);
   touch-action: manipulation;
   z-index: 2;
+  opacity: 0.75;
 }
 
 .code-block .copy-code::before {
@@ -311,17 +256,31 @@
   @apply text-foreground;
   background: color-mix(in oklab, var(--background) 84%, var(--foreground) 16%);
   border-color: color-mix(in oklab, var(--border) 70%, transparent 30%);
+  opacity: 1;
 }
 
 .code-block .copy-code[data-state="copied"] {
   @apply text-accent;
   background: color-mix(in oklab, var(--accent) 18%, transparent 82%);
   border-color: color-mix(in oklab, var(--accent) 36%, transparent 64%);
+  opacity: 1;
 }
 
 .code-block .copy-code[data-state="copied"]::before {
   content: "✔";
   opacity: 1;
+}
+
+@media (hover: hover) {
+  .code-block .copy-code {
+    opacity: 0;
+  }
+
+  .code-block:hover .copy-code,
+  .code-block:focus-within .copy-code,
+  .code-block .copy-code[data-state="copied"] {
+    opacity: 0.85;
+  }
 }
 
 html[data-theme="dark"] .code-block pre {

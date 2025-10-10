@@ -22,6 +22,53 @@ const expressiveCodeOptions: AstroExpressiveCodeOptions = {
       "bash,ps,sh": { preserveIndent: false },
     },
   },
+  styleOverrides: {
+    borderRadius: "1.05rem",
+    borderWidth: "1px",
+    borderColor: "color-mix(in oklab, var(--border) 64%, transparent 36%)",
+    codeFontSize: "0.96rem",
+    codeLineHeight: "1.68",
+    codePaddingBlock: "clamp(1.3rem, 1.08rem + 0.8vw, 1.95rem)",
+    codePaddingInline: "clamp(1.1rem, 0.92rem + 1.05vw, 1.72rem)",
+    uiFontSize: "0.78rem",
+    uiLineHeight: "1.45",
+    uiPaddingBlock: "clamp(0.42rem, 0.34rem + 0.32vw, 0.7rem)",
+    uiPaddingInline: "clamp(0.88rem, 0.7rem + 0.88vw, 1.32rem)",
+    gutterBorderColor:
+      "color-mix(in oklab, var(--border) 62%, transparent 38%)",
+    frames: {
+      frameBoxShadowCssValue:
+        "0 22px 48px color-mix(in oklab, var(--foreground) 7%, transparent 93%)",
+      editorTabBarBackground:
+        "color-mix(in oklab, var(--background) 94%, var(--foreground) 6%)",
+      editorActiveTabBackground:
+        "color-mix(in oklab, var(--background) 88%, var(--accent) 12%)",
+      editorActiveTabForeground:
+        "color-mix(in oklab, var(--foreground) 94%, var(--background) 6%)",
+      editorTabBarBorderBottomColor:
+        "color-mix(in oklab, var(--border) 58%, transparent 42%)",
+      terminalTitlebarBackground:
+        "color-mix(in oklab, var(--background) 90%, var(--foreground) 10%)",
+      terminalTitlebarForeground:
+        "color-mix(in oklab, var(--foreground) 88%, var(--background) 12%)",
+      terminalTitlebarDotsForeground:
+        "color-mix(in oklab, var(--accent) 84%, transparent 16%)",
+      inlineButtonBackground:
+        "color-mix(in oklab, var(--background) 86%, var(--foreground) 14%)",
+      inlineButtonBackgroundIdleOpacity: "1",
+      inlineButtonBackgroundHoverOrFocusOpacity: "1",
+      inlineButtonBackgroundActiveOpacity: "1",
+      inlineButtonBorder:
+        "color-mix(in oklab, var(--border) 70%, transparent 30%)",
+      inlineButtonBorderOpacity: "1",
+      inlineButtonForeground:
+        "color-mix(in oklab, var(--foreground) 90%, var(--background) 10%)",
+      tooltipSuccessBackground:
+        "color-mix(in oklab, var(--accent) 30%, transparent 70%)",
+      tooltipSuccessForeground:
+        "color-mix(in oklab, var(--foreground) 96%, var(--background) 4%)",
+    },
+  },
 };
 
 // https://astro.build/config
