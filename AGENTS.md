@@ -34,7 +34,7 @@ Generated/ignored outputs (do not edit):
 - Build: `pnpm run build` (runs `astro check`, `astro build`, then `pagefind` and copies UI into `public/pagefind/`)
 - Preview: `pnpm run preview`
 - Lint: `pnpm run lint`
-- Tests: `pnpm run test` (compiles targeted fixtures with `tsc` and runs Node's `--test` runner via a custom alias loader)
+- Tests: `pnpm run test` (runs `astro sync`, compiles targeted fixtures with `tsc`, then runs Node's test runner with the alias loader registered via `tools/register-test-alias.mjs`)
 - Format: `pnpm run format` / `pnpm run format:check`
 - Type sync: `pnpm run sync` (after changing content collections)
 
@@ -156,9 +156,7 @@ Commit style:
 
 ## Known Issues / Follow-ups
 
-Recent maintenance history lives in:
-- `docs/review/proposed-maintenance-tasks.md` — catalog of typo, share-link encoding, README search-provider, post-filter tests, code-highlight, and copy-button UI work (now resolved).
-- `docs/follow-up-tasks.md` — historical backlog entries marked as completed after the October 2025 polish pass.
+Recent maintenance history lives in `docs/tasks.md`, which consolidates resolved review items (typos, share-link encoding, README search-provider updates, post-filter tests, highlight tweaks, copy-button fixes). The backlog is empty right now, so add new work there as it arises.
 
 ---
 

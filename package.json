@@ -9,7 +9,7 @@
     "sync": "astro sync",
     "astro": "astro",
     "test": "pnpm run test:unit",
-    "test:unit": "pnpm exec tsc --project tsconfig.test.json && node --test --loader ./tools/test-alias-loader.mjs .tmp/test-build/utils/postFilter.test.js && rm -rf .tmp/test-build",
+    "test:unit": "pnpm astro sync && pnpm exec tsc --project tsconfig.test.json && node --test --import ./tools/register-test-alias.mjs .tmp/test-build/utils/postFilter.test.js && rm -rf .tmp/test-build",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "lint": "eslint ."

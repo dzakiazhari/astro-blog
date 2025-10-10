@@ -8,11 +8,9 @@ type PostFilterOptions = {
 
 const postFilter = (
   { data }: CollectionEntry<"blog">,
-  {
-    now = Date.now(),
-    isDev = import.meta.env?.DEV ?? false,
-  }: PostFilterOptions = {},
+  options: PostFilterOptions = {}
 ) => {
+  const { now = Date.now(), isDev = import.meta.env?.DEV ?? false } = options;
   const isPublishTimePassed =
     now > new Date(data.pubDatetime).getTime() - SITE.scheduledPostMargin;
 

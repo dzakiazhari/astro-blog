@@ -17,7 +17,7 @@ const createEntry = (data: Partial<PostEntry["data"]> = {}): PostEntry =>
       draft: false,
       ...data,
     },
-  } as unknown as PostEntry);
+  }) as unknown as PostEntry;
 
 const now = Date.UTC(2024, 0, 1, 12, 0, 0);
 

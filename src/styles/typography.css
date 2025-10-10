@@ -125,6 +125,13 @@
     padding: 1.4rem 1.65rem;
     font-size: 0.94rem;
     line-height: 1.65;
+    --shiki-token-background: transparent;
+    --shiki-token-shadow: none;
+
+    & span {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
 
     /* Styles for Shiki transformers */
     .line.diff.add {
@@ -153,6 +160,13 @@
   html[data-theme="dark"] .astro-code {
     @apply border border-border bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
     box-shadow: 0 16px 50px -28px rgba(3, 7, 18, 0.85);
+    --shiki-token-background: transparent;
+    --shiki-token-shadow: none;
+
+    & span {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
     .line.highlighted {
       background: transparent;
     }
@@ -206,6 +220,7 @@
   );
   border-color: color-mix(in oklab, transparent 55%, var(--foreground) 45%);
   box-shadow: 0 12px 35px -24px rgba(15, 23, 42, 0.55);
+  z-index: 1;
 }
 
 .code-block .copy-code::before {
