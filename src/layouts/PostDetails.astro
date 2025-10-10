@@ -197,6 +197,8 @@ const nextPost =
 
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
+  const NAV_HANDLER_KEY = "__astroCopyButtonHandler";
+
   function attachCopyButtons() {
     const copyButtonLabel = "Copy";
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
@@ -259,7 +261,17 @@ const nextPost =
       }, 1200);
     }
   }
-  attachCopyButtons();
+
+  const navigationHandler =
+    window[NAV_HANDLER_KEY] ||
+    (window[NAV_HANDLER_KEY] = () => queueMicrotask(attachCopyButtons));
+
+  for (const eventName of ["astro:page-load", "astro:after-swap"]) {
+    document.removeEventListener(eventName, navigationHandler);
+    document.addEventListener(eventName, navigationHandler);
+  }
+
+  queueMicrotask(attachCopyButtons);
 
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>

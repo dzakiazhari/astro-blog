@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": ".tmp/test-build",
+    "module": "ES2020",
+    "moduleResolution": "Bundler",
+    "target": "ES2020",
+    "noEmit": false,
+    "emitDeclarationOnly": false,
+    "sourceMap": false,
+    "allowImportingTsExtensions": false
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "types/node-shim.d.ts",
+    "src/config.ts",
+    "src/utils/postFilter.ts",
+    "src/utils/postFilter.test.ts"
+  ],
+  "exclude": []
+}

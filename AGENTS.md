@@ -34,6 +34,7 @@ Generated/ignored outputs (do not edit):
 - Build: `pnpm run build` (runs `astro check`, `astro build`, then `pagefind` and copies UI into `public/pagefind/`)
 - Preview: `pnpm run preview`
 - Lint: `pnpm run lint`
+- Tests: `pnpm run test` (compiles targeted fixtures with `tsc` and runs Node's `--test` runner via a custom alias loader)
 - Format: `pnpm run format` / `pnpm run format:check`
 - Type sync: `pnpm run sync` (after changing content collections)
 
@@ -103,6 +104,7 @@ Search:
 
 - Global shell & SEO: `src/layouts/Layout.astro` (head/meta/LD+JSON, `ClientRouter`, theme handling, RSS link)
 - Post page: `src/layouts/PostDetails.astro` (Giscus comments, tags, prev/next links, dynamic OG resolution)
+- Code block UX: Copy buttons are attached by the inline script in `PostDetails.astro`. Buttons are wrapped in `.code-block` containers, re-run after `astro:page-load`/`astro:after-swap`, and styled via `.code-block .copy-code` in `src/styles/typography.css`.
 - Page shell: `src/layouts/Main.astro` (title/desc, breadcrumb, back-link persistence)
 - Theme: `public/toggle-theme.js` writes `data-theme` and meta `theme-color`, synced with prefers-color-scheme
 - UX helpers: `public/scripts/reading-progress.js`, `public/scripts/back-to-top.js`
@@ -154,11 +156,9 @@ Commit style:
 
 ## Known Issues / Follow-ups
 
-See `docs/follow-up-tasks.md` for small fixes to consider:
-- `src/components/BackButton.astro`: clarify the inline script comment spelling/intent.
-- `src/layouts/Main.astro`: read `dataset.backUrl` (camelCase) instead of `backurl` when persisting the back-link.
-- `README.md`: update Tech Stack to reference Pagefind instead of FuseJS.
-- Add unit tests for `src/utils/postFilter.ts` (optional; test infra not present by default).
+Recent maintenance history lives in:
+- `docs/review/proposed-maintenance-tasks.md` — catalog of typo, share-link encoding, README search-provider, post-filter tests, code-highlight, and copy-button UI work (now resolved).
+- `docs/follow-up-tasks.md` — historical backlog entries marked as completed after the October 2025 polish pass.
 
 ---
 

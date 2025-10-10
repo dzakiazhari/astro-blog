@@ -126,39 +126,6 @@
     font-size: 0.94rem;
     line-height: 1.65;
 
-    .copy-code {
-      @apply absolute end-4 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.65rem] font-semibold tracking-[0.22em] text-foreground/70 uppercase opacity-95 shadow-md backdrop-blur transition duration-200 ease-out focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none;
-      top: 1rem;
-      background-color: color-mix(
-        in oklab,
-        var(--background) 88%,
-        var(--foreground) 12%
-      );
-      border-color: color-mix(in oklab, transparent 55%, var(--foreground) 45%);
-      box-shadow: 0 12px 35px -24px rgba(15, 23, 42, 0.55);
-    }
-
-    .copy-code::before {
-      content: "⧉";
-      font-size: 0.7rem;
-      opacity: 0.75;
-    }
-
-    .copy-code[data-state="copied"] {
-      @apply border-accent/60 bg-accent/15 text-accent;
-    }
-
-    .copy-code[data-state="copied"]::before {
-      content: "✔";
-      opacity: 1;
-    }
-
-    &:hover .copy-code,
-    &:focus-within .copy-code,
-    .copy-code:focus-visible {
-      @apply text-foreground opacity-100;
-    }
-
     /* Styles for Shiki transformers */
     .line.diff.add {
       @apply relative inline-block w-full bg-green-500/15 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
@@ -167,53 +134,32 @@
       @apply relative inline-block w-full bg-red-500/15 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
     }
     .line.highlighted {
-      @apply relative my-1 inline-block w-full rounded-md border border-accent/40 bg-accent/12 px-2 py-1;
-      box-shadow: inset 0 0 0 1px
-        color-mix(in oklab, var(--accent) 20%, transparent 80%);
+      @apply inline-block w-full;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
     }
     .highlighted-word {
-      @apply rounded-sm border border-accent/40 bg-accent/20 px-1 py-0.5;
+      @apply rounded-sm;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
     }
   }
 
   html[data-theme="dark"] .astro-code {
     @apply border border-border bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
     box-shadow: 0 16px 50px -28px rgba(3, 7, 18, 0.85);
-
-    .copy-code {
-      background-color: color-mix(
-        in oklab,
-        var(--background) 65%,
-        var(--foreground) 35%
-      );
-      border-color: color-mix(in oklab, transparent 35%, var(--foreground) 65%);
-      color: color-mix(in oklab, var(--foreground) 80%, var(--background) 20%);
-      box-shadow: 0 24px 60px -28px rgba(2, 6, 23, 0.75);
-    }
-
-    .copy-code[data-state="copied"] {
-      color: var(--foreground);
-    }
-
     .line.highlighted {
-      background-color: color-mix(
-        in oklab,
-        var(--accent) 24%,
-        var(--background) 76%
-      );
-      border-color: color-mix(in oklab, transparent 40%, var(--accent) 60%);
-      box-shadow: inset 0 0 0 1px
-        color-mix(in oklab, var(--accent) 35%, transparent 65%);
+      background: transparent;
     }
 
     .highlighted-word {
-      background-color: color-mix(
-        in oklab,
-        var(--accent) 40%,
-        var(--background) 60%
-      );
-      border-color: color-mix(in oklab, transparent 35%, var(--accent) 65%);
-      color: var(--foreground);
+      background: transparent;
+      color: inherit;
     }
   }
 
@@ -248,4 +194,52 @@
 
 .code-block .astro-code {
   margin: 0;
+}
+
+.code-block .copy-code {
+  @apply absolute end-4 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.65rem] font-semibold tracking-[0.22em] text-foreground/75 uppercase opacity-95 shadow-md backdrop-blur transition duration-200 ease-out focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none;
+  top: 1rem;
+  background-color: color-mix(
+    in oklab,
+    var(--background) 88%,
+    var(--foreground) 12%
+  );
+  border-color: color-mix(in oklab, transparent 55%, var(--foreground) 45%);
+  box-shadow: 0 12px 35px -24px rgba(15, 23, 42, 0.55);
+}
+
+.code-block .copy-code::before {
+  content: "⧉";
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+
+.code-block .copy-code[data-state="copied"] {
+  @apply border-accent/60 bg-accent/15 text-accent;
+}
+
+.code-block .copy-code[data-state="copied"]::before {
+  content: "✔";
+  opacity: 1;
+}
+
+.code-block:hover .copy-code,
+.code-block:focus-within .copy-code,
+.code-block .copy-code:focus-visible {
+  @apply text-foreground opacity-100;
+}
+
+html[data-theme="dark"] .code-block .copy-code {
+  background-color: color-mix(
+    in oklab,
+    var(--background) 65%,
+    var(--foreground) 35%
+  );
+  border-color: color-mix(in oklab, transparent 35%, var(--foreground) 65%);
+  color: color-mix(in oklab, var(--foreground) 80%, var(--background) 20%);
+  box-shadow: 0 24px 60px -28px rgba(2, 6, 23, 0.75);
+}
+
+html[data-theme="dark"] .code-block .copy-code[data-state="copied"] {
+  color: var(--foreground);
 }
