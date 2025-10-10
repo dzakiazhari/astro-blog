@@ -17,6 +17,7 @@ relevant source files for quick follow-up.
 | UI Polish | Copy affordance sometimes failed to render after lazy loads, appeared as plain text, and sat outside the curved card edge. | Copy control is a styled `<button>` reattached after Astro navigations, with the pill anchored inside the rounded margin via logical offsets. | `src/layouts/PostDetails.astro`, `src/styles/typography.css` |
 | UI Polish | Deployed fences still felt ad-hoc: copy pill overlapped long lines and the neutral surface read as flat highlighter residue. | Shared spacing variables add breathing room on the inline end, lighten diff/line emphasis, and align the pill with the first code line while keeping tokens vivid. | `src/styles/typography.css` |
 | DX | Dev server defaulted to localhost, so remote preview tools could not connect. | The dev script now binds to `0.0.0.0:4321` and documentation/agent notes highlight the accessible host. | `package.json`, `AGENTS.md`, `README.md` |
+| Build Fix | OG image build failed without network access because Satori pulled Google Fonts at build time. | Local IBM Plex Mono fonts ship in the repo (stored as base64 blobs) and the loader falls back to Google Fonts only when the embedded data is missing, keeping `pnpm run build` offline-safe. | `src/utils/loadGoogleFont.ts`, `src/assets/fonts/ibmPlexMonoBase64.ts` |
 
 ## Backlog
 
