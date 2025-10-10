@@ -121,14 +121,25 @@
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
-    @apply relative overflow-x-auto rounded-2xl border border-border bg-(--shiki-light-bg) text-(--shiki-light) shadow-sm outline-border [&_span]:text-(--shiki-light);
-    padding: 1.4rem 1.65rem;
+    @apply relative overflow-x-auto border text-foreground shadow-sm outline-border;
+    border-radius: 1.4rem;
+    padding: clamp(1.45rem, 1.2rem + 1vw, 1.75rem)
+      clamp(1.55rem, 1.25rem + 1vw, 1.85rem);
+    padding-block-start: clamp(2.1rem, 1.8rem + 1vw, 2.45rem);
     font-size: 0.94rem;
-    line-height: 1.65;
+    line-height: 1.68;
+    background: color-mix(
+      in oklab,
+      var(--background) 92%,
+      var(--foreground) 8%
+    );
+    border-color: color-mix(in oklab, var(--border) 75%, transparent 25%);
+    box-shadow: 0 26px 72px -44px rgba(15, 23, 42, 0.55);
     --shiki-token-background: transparent;
     --shiki-token-shadow: none;
 
     & span {
+      color: inherit;
       background: transparent !important;
       box-shadow: none !important;
     }
@@ -158,12 +169,19 @@
   }
 
   html[data-theme="dark"] .astro-code {
-    @apply border border-border bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
-    box-shadow: 0 16px 50px -28px rgba(3, 7, 18, 0.85);
+    @apply border text-foreground;
+    background: color-mix(
+      in oklab,
+      var(--background) 82%,
+      var(--foreground) 18%
+    );
+    border-color: color-mix(in oklab, var(--border) 55%, transparent 45%);
+    box-shadow: 0 42px 90px -48px rgba(2, 6, 23, 0.85);
     --shiki-token-background: transparent;
     --shiki-token-shadow: none;
 
     & span {
+      color: inherit;
       background: transparent !important;
       box-shadow: none !important;
     }
@@ -211,16 +229,15 @@
 }
 
 .code-block .copy-code {
-  @apply absolute end-4 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.65rem] font-semibold tracking-[0.22em] text-foreground/75 uppercase opacity-95 shadow-md backdrop-blur transition duration-200 ease-out focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none;
-  top: 1rem;
-  background-color: color-mix(
-    in oklab,
-    var(--background) 88%,
-    var(--foreground) 12%
-  );
-  border-color: color-mix(in oklab, transparent 55%, var(--foreground) 45%);
-  box-shadow: 0 12px 35px -24px rgba(15, 23, 42, 0.55);
-  z-index: 1;
+  @apply absolute inline-flex items-center gap-1.5 border text-[0.64rem] font-semibold tracking-[0.22em] text-foreground/70 uppercase opacity-95 shadow-lg backdrop-blur-sm transition duration-200 ease-out focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none;
+  border-radius: 9999px;
+  inset-block-start: 1.05rem;
+  inset-inline-end: clamp(1rem, 0.75rem + 0.5vw, 1.35rem);
+  padding: 0.5rem 0.95rem;
+  background: color-mix(in oklab, var(--background) 90%, var(--foreground) 10%);
+  border-color: color-mix(in oklab, transparent 45%, var(--foreground) 55%);
+  box-shadow: 0 24px 68px -44px rgba(15, 23, 42, 0.55);
+  z-index: 2;
 }
 
 .code-block .copy-code::before {
@@ -245,14 +262,10 @@
 }
 
 html[data-theme="dark"] .code-block .copy-code {
-  background-color: color-mix(
-    in oklab,
-    var(--background) 65%,
-    var(--foreground) 35%
-  );
-  border-color: color-mix(in oklab, transparent 35%, var(--foreground) 65%);
-  color: color-mix(in oklab, var(--foreground) 80%, var(--background) 20%);
-  box-shadow: 0 24px 60px -28px rgba(2, 6, 23, 0.75);
+  background: color-mix(in oklab, var(--background) 72%, var(--foreground) 28%);
+  border-color: color-mix(in oklab, transparent 25%, var(--foreground) 75%);
+  color: color-mix(in oklab, var(--foreground) 78%, var(--background) 22%);
+  box-shadow: 0 36px 84px -48px rgba(2, 6, 23, 0.85);
 }
 
 html[data-theme="dark"] .code-block .copy-code[data-state="copied"] {

@@ -104,7 +104,7 @@ Search:
 
 - Global shell & SEO: `src/layouts/Layout.astro` (head/meta/LD+JSON, `ClientRouter`, theme handling, RSS link)
 - Post page: `src/layouts/PostDetails.astro` (Giscus comments, tags, prev/next links, dynamic OG resolution)
-- Code block UX: Copy buttons are attached by the inline script in `PostDetails.astro`. Buttons are wrapped in `.code-block` containers, re-run after `astro:page-load`/`astro:after-swap`, and styled via `.code-block .copy-code` in `src/styles/typography.css`.
+- Code block UX: Copy buttons are attached by the inline script in `PostDetails.astro`. Buttons are wrapped in `.code-block` containers, re-run after `astro:page-load`/`astro:after-swap`, and styled via `.code-block .copy-code` in `src/styles/typography.css`. Keep the surfaces neutral—syntax fences intentionally ignore Shiki's background tokens in favor of the soft card treatment defined in that stylesheet, and the pill-shaped copy control is positioned with logical properties (`inset-*`).
 - Page shell: `src/layouts/Main.astro` (title/desc, breadcrumb, back-link persistence)
 - Theme: `public/toggle-theme.js` writes `data-theme` and meta `theme-color`, synced with prefers-color-scheme
 - UX helpers: `public/scripts/reading-progress.js`, `public/scripts/back-to-top.js`
