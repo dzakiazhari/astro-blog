@@ -18,14 +18,28 @@
     }
 
     /* Brutalist-minimal subheader accents */
-    h2 { @apply border-s-4 border-accent ps-3; }
-    h3 { @apply border-s-2 border-accent ps-2; }
-    h4 { @apply border-s-2 border-accent/70 ps-2; }
+    h2 {
+      @apply border-s-4 border-accent ps-3;
+    }
+    h3 {
+      @apply border-s-2 border-accent ps-2;
+    }
+    h4 {
+      @apply border-s-2 border-accent/70 ps-2;
+    }
 
     /* Friendly, readable heading sizes */
-    h1 { @apply text-3xl sm:text-4xl md:text-5xl; text-wrap: balance; }
-    h2 { @apply text-2xl sm:text-3xl; text-wrap: balance; }
-    h3 { @apply text-xl sm:text-2xl; }
+    h1 {
+      @apply text-3xl sm:text-4xl md:text-5xl;
+      text-wrap: balance;
+    }
+    h2 {
+      @apply text-2xl sm:text-3xl;
+      text-wrap: balance;
+    }
+    h3 {
+      @apply text-xl sm:text-2xl;
+    }
 
     p,
     strong,
@@ -62,7 +76,7 @@
     }
 
     img {
-      @apply mx-auto border border-border rounded-md;
+      @apply mx-auto rounded-md border border-border;
     }
 
     figcaption {
@@ -111,20 +125,40 @@
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
-    @apply flex border bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
-    @apply rounded-lg overflow-x-auto shadow-sm;
-    /* Subtle header space for filename labels from transformer */
+    @apply relative flex overflow-x-auto rounded-lg border border-border bg-(--shiki-light-bg) text-(--shiki-light) shadow-sm outline-border [&_span]:text-(--shiki-light);
     margin-top: 0.75rem;
-  }
 
-  html[data-theme="dark"] .astro-code {
-    @apply bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
-    @apply rounded-lg overflow-x-auto shadow-sm;
-  }
+    .copy-code {
+      @apply invisible absolute end-3 inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-[11px] font-medium tracking-[0.08em] text-foreground uppercase opacity-80 shadow-sm backdrop-blur transition duration-200 ease-out;
+      background-color: color-mix(
+        in oklab,
+        var(--background) 85%,
+        var(--foreground) 15%
+      );
+      border-color: color-mix(in oklab, transparent 60%, var(--foreground) 40%);
+    }
+
+    .copy-code::before {
+      content: "⧉";
+      font-size: 0.75rem;
+    }
+
+    .copy-code[data-state="copied"] {
+      @apply text-foreground;
+    }
+
+    .copy-code[data-state="copied"]::before {
+      content: "✔";
+      font-size: 0.75rem;
+    }
+
+    &:hover .copy-code,
+    &:focus-within .copy-code,
+    .copy-code:focus-visible {
+      @apply visible opacity-100;
+    }
 
     /* Styles for Shiki transformers */
-  /* https://shiki.style/packages/transformers */
-  .astro-code {
     .line.diff.add {
       @apply relative inline-block w-full bg-green-500/15 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
     }
@@ -132,17 +166,66 @@
       @apply relative inline-block w-full bg-red-500/15 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
     }
     .line.highlighted {
-      @apply inline-block w-full bg-accent/10 border-s-2 border-accent;
+      @apply relative my-1 inline-block w-full rounded-md border border-accent/40 bg-accent/15 px-2 py-1;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
     }
     .highlighted-word {
-      @apply rounded-sm border border-accent/40 bg-accent/15 px-0.5 py-px;
+      @apply rounded-sm border border-accent/50 bg-accent/20 px-1 py-0.5;
     }
   }
-}
-    /* Text highlight via <mark> — yellow boxed */
-    mark {
-      @apply rounded-[3px] border px-1 py-0.5;
-      background-color: #fde047; /* yellow-300 */
-      border-color: #facc15;     /* yellow-400 */
-      color: #111;
+
+  html[data-theme="dark"] .astro-code {
+    @apply border border-border bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
+    box-shadow: 0 16px 40px -24px rgba(0, 0, 0, 0.6);
+
+    .copy-code {
+      background-color: color-mix(
+        in oklab,
+        var(--background) 60%,
+        var(--foreground) 40%
+      );
+      border-color: color-mix(in oklab, transparent 45%, var(--foreground) 55%);
+      color: color-mix(in oklab, var(--foreground) 80%, var(--background) 20%);
     }
+
+    .copy-code[data-state="copied"] {
+      color: var(--foreground);
+    }
+
+    .line.highlighted {
+      background-color: color-mix(
+        in oklab,
+        var(--accent) 35%,
+        var(--background) 65%
+      );
+      border-color: color-mix(in oklab, transparent 40%, var(--accent) 60%);
+      box-shadow: inset 0 0 0 1px
+        color-mix(in oklab, var(--accent) 45%, transparent 55%);
+    }
+
+    .highlighted-word {
+      background-color: color-mix(
+        in oklab,
+        var(--accent) 45%,
+        var(--background) 55%
+      );
+      border-color: color-mix(in oklab, transparent 35%, var(--accent) 65%);
+      color: var(--foreground);
+    }
+  }
+
+  /* Text highlight via <mark> — warm accent boxes */
+  mark {
+    @apply rounded-md border px-1.5 py-0.5 font-medium;
+    background-color: color-mix(in oklab, #fef08a 85%, var(--background) 15%);
+    border-color: color-mix(in oklab, #facc15 70%, transparent 30%);
+    color: #3f3f15;
+  }
+
+  html[data-theme="dark"] mark {
+    background-color: color-mix(in oklab, #facc15 75%, var(--background) 25%);
+    border-color: color-mix(in oklab, #facc15 65%, transparent 35%);
+    box-shadow: 0 0 0 1px color-mix(in oklab, #facc15 45%, transparent 55%);
+    color: color-mix(in oklab, var(--foreground) 85%, #4b3600 15%);
+  }
+}

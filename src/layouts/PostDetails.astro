@@ -202,26 +202,30 @@ const nextPost =
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
+      if (codeBlock.querySelector(".copy-code")) continue;
+
       const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
+      wrapper.className = "code-block group relative";
 
-      // Check if --file-name-offset custom property exists
       const computedStyle = getComputedStyle(codeBlock);
-      const hasFileNameOffset =
-        computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
-
-      // Determine the top positioning class
-      const topClass = hasFileNameOffset
-        ? "top-(--file-name-offset)"
-        : "-top-3";
+      const fileNameOffset = computedStyle
+        .getPropertyValue("--file-name-offset")
+        .trim();
 
       const copyButton = document.createElement("button");
-      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
-      copyButton.innerHTML = copyButtonLabel;
+      copyButton.type = "button";
+      copyButton.className =
+        "copy-code absolute end-3 top-3 inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[11px] font-medium uppercase tracking-[0.08em]";
+      copyButton.textContent = copyButtonLabel;
+      copyButton.setAttribute("aria-label", "Copy code to clipboard");
+      copyButton.setAttribute("data-state", "idle");
+      copyButton.style.top = fileNameOffset
+        ? `calc(${fileNameOffset} + 0.75rem)`
+        : "0.75rem";
+
       codeBlock.setAttribute("tabindex", "0");
       codeBlock.appendChild(copyButton);
 
-      // wrap codebock with relative parent element
       codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
       wrapper.appendChild(codeBlock);
 
@@ -236,12 +240,15 @@ const nextPost =
 
       await navigator.clipboard.writeText(text ?? "");
 
-      // visual feedback that task is completed
-      button.innerText = "Copied";
+      button.dataset.state = "copied";
+      button.textContent = "Copied";
+      button.setAttribute("aria-label", "Code copied to clipboard");
 
       setTimeout(() => {
-        button.innerText = copyButtonLabel;
-      }, 700);
+        button.dataset.state = "idle";
+        button.textContent = copyButtonLabel;
+        button.setAttribute("aria-label", "Copy code to clipboard");
+      }, 1200);
     }
   }
   attachCopyButtons();
