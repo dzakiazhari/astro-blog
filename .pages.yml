@@ -29,6 +29,10 @@ content:
             - { label: "2024", value: "2024" }
             - { label: "2025", value: "2025" }
             - { label: "2026", value: "2026" }
+            - { label: "2027", value: "2027" }
+            - { label: "2028", value: "2028" }
+            - { label: "2029", value: "2029" }
+            - { label: "2030", value: "2030" }
 
       - name: slug
         label: Slug (filename)
@@ -55,7 +59,7 @@ content:
       - { name: draft,       label: Draft,         type: boolean, default: false }
 
       # list of strings
-      - { name: tags,        label: Tags,          type: text, list: true, default: [ "blog" ] }
+      - { name: tags,        label: Tags,          type: text, list: true, default: [ "others" ] }
 
       # optionals
       - { name: ogImage,     label: OG Image,      type: image,  required: false }
@@ -64,4 +68,4 @@ content:
       - { name: timezone,    label: Timezone,      type: string, default: "Asia/Tokyo" }
 
       # body
-      - { name: body,        label: Body,          type: rich-text }
+      - { name: body,        label: Body,          type: markdown }
