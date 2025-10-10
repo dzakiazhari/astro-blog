@@ -5,21 +5,21 @@
 
 :root,
 html[data-theme="light"] {
-  /* Light theme — minimal, original accent */
-  --background: #f5f5f7; /* system background */
-  --foreground: #1c1c1e; /* primary label */
-  --accent: #1e80ff;     /* original accent */
-  --muted: #e5e5ea;      /* secondary background */
-  --border: #cbcbd0;     /* separator color */
+  /* Light theme — breezy slate & lavender */
+  --background: #f6f7fc; /* clean shell */
+  --foreground: #151924; /* inky text */
+  --accent: #5d7cff; /* periwinkle accent */
+  --muted: #e4e7f6; /* subtle surface */
+  --border: #cdd2e6; /* separators */
 }
 
 html[data-theme="dark"] {
-  /* Dark theme — Starlight-inspired, legible */
-  --background: #1b2230; /* deep slate-blue */
-  --foreground: #e7ecf7; /* near-white with blue tint */
-  --accent: #5aa2ff;     /* azure accent */
-  --muted: #242c3d;      /* panels */
-  --border: #3a465e;     /* separators */
+  /* Dark theme — twilight indigo */
+  --background: #161a24; /* charcoal base */
+  --foreground: #eef1ff; /* lunar text */
+  --accent: #8ba4ff; /* cool glow */
+  --muted: #1f2533; /* panels */
+  --border: #2d3445; /* separators */
 }
 
 @theme inline {
@@ -56,7 +56,11 @@ html[data-theme="dark"] {
   }
   /* Card surface utility */
   .surface {
-    background: color-mix(in oklab, var(--color-background) 90%, var(--color-foreground) 10%);
+    background: color-mix(
+      in oklab,
+      var(--color-background) 90%,
+      var(--color-foreground) 10%
+    );
   }
 
   /* Equal-height grid rows helper */
