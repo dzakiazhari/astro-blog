@@ -1,5 +1,10 @@
 (function () {
-  const initializeBackToTop = () => {
+  const state = (window.__backToTopState = window.__backToTopState || {
+    scrollHandler: null,
+    pageLoadListenerAttached: false,
+  });
+
+  const attachListeners = () => {
     const rootElement = document.documentElement;
     const btnContainer = document.querySelector("#btt-btn-container");
     const backToTopBtn = document.querySelector("[data-button='back-to-top']");
@@ -9,15 +14,18 @@
       return;
     }
 
-    if (btnContainer.dataset.initialized === "true") {
-      return;
+    if (state.scrollHandler) {
+      document.removeEventListener("scroll", state.scrollHandler);
+      state.scrollHandler = null;
     }
-    btnContainer.dataset.initialized = "true";
 
-    backToTopBtn.addEventListener("click", () => {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    });
+    if (backToTopBtn.dataset.clickBound !== "true") {
+      backToTopBtn.addEventListener("click", () => {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      });
+      backToTopBtn.dataset.clickBound = "true";
+    }
 
     let lastVisible = null;
     const handleScroll = () => {
@@ -43,28 +51,39 @@
     };
 
     let ticking = false;
-    document.addEventListener(
-      "scroll",
-      () => {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            handleScroll();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      },
-      { passive: true }
-    );
+    const scrollHandler = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    document.addEventListener("scroll", scrollHandler, { passive: true });
+    state.scrollHandler = scrollHandler;
 
     handleScroll();
   };
 
+  const initialize = () => {
+    window.requestAnimationFrame(attachListeners);
+  };
+
+  const registerPageEvents = () => {
+    initialize();
+    if (!state.pageLoadListenerAttached) {
+      document.addEventListener("astro:page-load", initialize);
+      state.pageLoadListenerAttached = true;
+    }
+  };
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeBackToTop, {
+    document.addEventListener("DOMContentLoaded", registerPageEvents, {
       once: true,
     });
   } else {
-    initializeBackToTop();
+    registerPageEvents();
   }
 })();
