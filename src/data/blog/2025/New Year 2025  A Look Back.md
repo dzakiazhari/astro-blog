@@ -10,11 +10,12 @@ draft: false
 tags:
   - blog
 ---
+
 ## Table of Contents
 
 ## Starting a New
 
-Happy New Year! Wishing you all a wonderful and fulfilling year ahead. 
+Happy New Year! Wishing you all a wonderful and fulfilling year ahead.
 
 ## A Review of 2024
 
