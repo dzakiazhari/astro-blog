@@ -121,32 +121,36 @@
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .code-block {
-    --code-card-radius: 1.1rem;
-    --code-card-padding-inline: clamp(1.25rem, 1rem + 1vw, 1.85rem);
-    --code-card-padding-block-start: clamp(1.45rem, 1.15rem + 0.8vw, 2.05rem);
-    --code-card-padding-block-end: clamp(1.2rem, 0.95rem + 0.7vw, 1.7rem);
-    --code-copy-offset: calc(var(--code-card-padding-block-start) - 0.15rem);
+    --code-card-radius: 1.05rem;
+    --code-card-padding-inline: clamp(1.1rem, 0.9rem + 1vw, 1.7rem);
+    --code-card-padding-block-start: clamp(1.35rem, 1.1rem + 0.8vw, 1.95rem);
+    --code-card-padding-block-end: clamp(1.1rem, 0.9rem + 0.7vw, 1.65rem);
+    --code-card-inline-end-gap: clamp(2.9rem, 2.4rem + 1vw, 3.7rem);
+    --code-copy-offset: calc(var(--code-card-padding-block-start) - 0.25rem);
     @apply relative my-6;
   }
 
   .code-block .astro-code {
     @apply relative overflow-x-auto border text-foreground outline-border;
     border-radius: var(--code-card-radius);
-    padding-inline: var(--code-card-padding-inline);
-    padding-block: var(--code-card-padding-block-end);
+    padding-inline-start: var(--code-card-padding-inline);
+    padding-inline-end: calc(
+      var(--code-card-padding-inline) + var(--code-card-inline-end-gap)
+    );
+    padding-block-end: var(--code-card-padding-block-end);
     padding-block-start: var(--code-card-padding-block-start);
-    font-size: 0.95rem;
-    line-height: 1.7;
+    font-size: 0.96rem;
+    line-height: 1.68;
+    font-variant-ligatures: contextual;
     background: color-mix(
       in oklab,
-      var(--background) 94%,
-      var(--foreground) 6%
+      var(--background) 95%,
+      var(--foreground) 5%
     );
-    border-color: color-mix(in oklab, var(--border) 60%, transparent 40%);
-    box-shadow: 0 1px 0
-      color-mix(in oklab, var(--foreground) 8%, transparent 92%);
+    border-color: color-mix(in oklab, var(--border) 58%, transparent 42%);
+    box-shadow: none;
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in oklab, var(--foreground) 18%, transparent 82%)
+    scrollbar-color: color-mix(in oklab, var(--foreground) 16%, transparent 84%)
       transparent;
     overscroll-behavior: contain;
     --shiki-token-background: transparent;
@@ -159,8 +163,8 @@
     &::-webkit-scrollbar-thumb {
       background-color: color-mix(
         in oklab,
-        var(--foreground) 18%,
-        transparent 82%
+        var(--foreground) 16%,
+        transparent 84%
       );
       border-radius: 9999px;
     }
@@ -177,15 +181,15 @@
     /* Styles for Shiki transformers */
     .line.diff.add {
       @apply relative inline-block w-full before:absolute before:-left-3 before:text-green-500 before:content-['+'];
-      background: color-mix(in oklab, rgb(34 197 94) 18%, transparent 82%);
+      background: color-mix(in oklab, rgb(34 197 94) 14%, transparent 86%);
     }
     .line.diff.remove {
       @apply relative inline-block w-full before:absolute before:-left-3 before:text-red-500 before:content-['-'];
-      background: color-mix(in oklab, rgb(248 113 113) 16%, transparent 84%);
+      background: color-mix(in oklab, rgb(248 113 113) 13%, transparent 87%);
     }
     .line.highlighted {
       @apply inline-block w-full;
-      background: color-mix(in oklab, var(--foreground) 9%, transparent 91%);
+      background: color-mix(in oklab, var(--foreground) 7%, transparent 93%);
       border: none;
       box-shadow: none;
       padding: 0;
@@ -193,7 +197,7 @@
     }
     .highlighted-word {
       @apply rounded-sm;
-      background: color-mix(in oklab, var(--accent) 20%, transparent 80%);
+      background: color-mix(in oklab, var(--accent) 18%, transparent 82%);
       border: none;
       box-shadow: none;
       padding: 0 0.15em;
@@ -204,13 +208,12 @@
     @apply border text-foreground;
     background: color-mix(
       in oklab,
-      var(--background) 88%,
-      var(--foreground) 12%
+      var(--background) 86%,
+      var(--foreground) 14%
     );
-    border-color: color-mix(in oklab, var(--border) 50%, transparent 50%);
-    box-shadow: 0 1px 0
-      color-mix(in oklab, var(--foreground) 12%, transparent 88%);
-    scrollbar-color: color-mix(in oklab, var(--foreground) 25%, transparent 75%)
+    border-color: color-mix(in oklab, var(--border) 48%, transparent 52%);
+    box-shadow: none;
+    scrollbar-color: color-mix(in oklab, var(--foreground) 23%, transparent 77%)
       transparent;
     --shiki-token-background: transparent;
     --shiki-token-shadow: none;
@@ -221,11 +224,11 @@
     }
 
     .line.highlighted {
-      background: color-mix(in oklab, var(--foreground) 14%, transparent 86%);
+      background: color-mix(in oklab, var(--foreground) 12%, transparent 88%);
     }
 
     .highlighted-word {
-      background: color-mix(in oklab, var(--accent) 28%, transparent 72%);
+      background: color-mix(in oklab, var(--accent) 24%, transparent 76%);
       color: inherit;
     }
   }
@@ -260,18 +263,20 @@
 }
 
 .code-block .copy-code {
-  @apply absolute inline-flex items-center gap-1 text-[0.7rem] font-medium text-foreground/70 transition duration-150 ease-out focus-visible:ring-2 focus-visible:ring-accent/35 focus-visible:outline-none;
-  border-radius: calc(var(--code-card-radius) * 0.55);
-  inset-inline-end: var(--code-card-padding-inline);
+  @apply absolute inline-flex items-center gap-1 text-[0.68rem] font-medium text-foreground/75 transition duration-150 ease-out focus-visible:ring-2 focus-visible:ring-accent/35 focus-visible:outline-none;
+  border-radius: calc(var(--code-card-radius) * 0.6);
+  inset-inline-end: calc(var(--code-card-padding-inline) - 0.25rem);
   inset-block-start: var(--copy-button-top, var(--code-copy-offset));
-  top: var(--copy-button-top, var(--code-copy-offset));
-  transform: translateY(-50%);
-  padding: 0.4rem 0.85rem;
-  min-height: 2.1rem;
-  background: color-mix(in oklab, var(--background) 90%, var(--foreground) 10%);
-  border: 1px solid color-mix(in oklab, var(--border) 65%, transparent 35%);
-  box-shadow: 0 1px 0 color-mix(in oklab, var(--foreground) 9%, transparent 91%);
-  letter-spacing: 0.08em;
+  transform: translateY(calc(-50% + 0.05rem));
+  padding: 0.38rem 0.9rem;
+  min-height: 2.05rem;
+  min-width: 3.2rem;
+  justify-content: center;
+  background: color-mix(in oklab, var(--background) 88%, var(--foreground) 12%);
+  border: 1px solid color-mix(in oklab, var(--border) 60%, transparent 40%);
+  box-shadow: none;
+  letter-spacing: 0.07em;
+  touch-action: manipulation;
   z-index: 2;
 }
 
@@ -285,13 +290,13 @@
 .code-block .copy-code:focus-visible,
 .code-block:focus-within .copy-code {
   @apply text-foreground;
-  background: color-mix(in oklab, var(--background) 85%, var(--foreground) 15%);
+  background: color-mix(in oklab, var(--background) 84%, var(--foreground) 16%);
 }
 
 .code-block .copy-code[data-state="copied"] {
   @apply text-accent;
-  background: color-mix(in oklab, var(--accent) 18%, transparent 82%);
-  border-color: color-mix(in oklab, var(--accent) 38%, transparent 62%);
+  background: color-mix(in oklab, var(--accent) 16%, transparent 84%);
+  border-color: color-mix(in oklab, var(--accent) 34%, transparent 66%);
 }
 
 .code-block .copy-code[data-state="copied"]::before {
@@ -300,11 +305,10 @@
 }
 
 html[data-theme="dark"] .code-block .copy-code {
-  background: color-mix(in oklab, var(--background) 78%, var(--foreground) 22%);
-  border-color: color-mix(in oklab, var(--border) 55%, transparent 45%);
-  color: color-mix(in oklab, var(--foreground) 82%, var(--background) 18%);
-  box-shadow: 0 1px 0
-    color-mix(in oklab, var(--foreground) 14%, transparent 86%);
+  background: color-mix(in oklab, var(--background) 74%, var(--foreground) 26%);
+  border-color: color-mix(in oklab, var(--border) 52%, transparent 48%);
+  color: color-mix(in oklab, var(--foreground) 86%, var(--background) 14%);
+  box-shadow: none;
 }
 
 html[data-theme="dark"] .code-block .copy-code[data-state="copied"] {
