@@ -4,37 +4,38 @@ import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import react from "@astrojs/react";
-import {
-  transformerNotationDiff,
-  transformerNotationHighlight,
-  transformerNotationWordHighlight,
-} from "@shikijs/transformers";
-import { transformerFileName } from "./src/utils/transformers/fileName";
+import expressiveCode, {
+  type AstroExpressiveCodeOptions,
+  type ExpressiveCodeTheme,
+} from "astro-expressive-code";
 import { SITE } from "./src/config";
+
+const expressiveCodeOptions: AstroExpressiveCodeOptions = {
+  themes: ["rose-pine", "rose-pine-dawn"],
+  useDarkModeMediaQuery: false,
+  themeCssRoot: ":root",
+  themeCssSelector: (theme: ExpressiveCodeTheme) =>
+    `[data-theme='${theme.type === "dark" ? "dark" : "light"}']`,
+  defaultProps: {
+    wrap: true,
+    overridesByLang: {
+      "bash,ps,sh": { preserveIndent: false },
+    },
+  },
+};
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
   integrations: [
     react(),
+    expressiveCode(expressiveCodeOptions),
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
     }),
   ],
   markdown: {
     remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
-    shikiConfig: {
-      // For more themes, visit https://shiki.style/themes
-      themes: { light: "github-light", dark: "github-dark-dimmed" },
-      defaultColor: false,
-      wrap: true,
-      transformers: [
-        transformerFileName({ style: "v2", hideDot: false }),
-        transformerNotationHighlight(),
-        transformerNotationWordHighlight(),
-        transformerNotationDiff({ matchAlgorithm: "v3" }),
-      ],
-    },
   },
   vite: {
     // eslint-disable-next-line
