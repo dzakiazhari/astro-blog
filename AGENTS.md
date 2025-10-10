@@ -122,6 +122,23 @@ OG image generation:
 
 ---
 
+## Workflow for Agents
+
+1. **Plan**
+   - Re-read this guide and skim `docs/tasks.md` to understand past work or active concerns.
+   - Outline the intended changes (files to touch, validations to run) before editing anything.
+2. **Implement**
+   - Run `pnpm install` if dependencies were updated since your last session (e.g., to ensure local OG fonts are linked).
+   - Keep diffs scoped: prefer small, reviewable commits following Conventional Commit conventions.
+3. **Validate**
+   - Execute `pnpm run lint`, `pnpm run test`, and, when changes touch build/runtime behaviour, `pnpm run build`.
+   - Capture command output for reporting (see Final Answer guidelines).
+4. **Document & Retrospect**
+   - Summarise noteworthy fixes, regressions avoided, or insights in `docs/tasks.md` under **Completed** with links to touched files.
+   - Note any follow-up work in the **Backlog** table.
+
+---
+
 ## Conventions & Guardrails
 
 Imports & paths:
@@ -169,6 +186,7 @@ Recent maintenance history lives in `docs/tasks.md`, which consolidates resolved
 - If you add or modify blog frontmatter, ensure it passes `src/content.config.ts` validation.
 - For search-related changes, perform a full `pnpm run build` to regenerate Pagefind index.
 - Before shipping visual tweaks, load the component in a browser (desktop + ≤640px) and double-check behaviour in both themes so earlier regressions—like misplaced copy buttons or returning Shiki backdrops—are not reintroduced.
+- Add meaningful discoveries or fixes to `docs/tasks.md` so future agents inherit the context.
 
 ---
 
