@@ -8,7 +8,9 @@ content:
   - name: blog
     label: Blog Posts
     type: collection
+    # Keep this path aligned with BLOG_PATH in src/utils/blogPath.ts and getPath() expectations
     path: src/data/blog
+    # Nested directories are slugified by src/utils/getPath.ts, so the CMS only needs the final segment here
     filename: "{year}/{slug}.md"
 
     view:
