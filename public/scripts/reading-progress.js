@@ -38,7 +38,11 @@
     const scrollHeight = rootElement.scrollHeight - rootElement.clientHeight;
     const scrollTop = rootElement.scrollTop;
 
-    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    let progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    // Round and clamp so the bar reaches a crisp 100%
+    progress = Math.round(progress);
+    if (progress > 100) progress = 100;
+    if (progress < 0) progress = 0;
     progressBar.style.width = `${progress}%`;
   };
 

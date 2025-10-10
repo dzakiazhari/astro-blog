@@ -31,13 +31,13 @@
     const handleScroll = () => {
       const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
       const scrollTop = rootElement.scrollTop;
-      const scrollPercent =
-        scrollTotal > 0 ? Math.floor((scrollTop / scrollTotal) * 100) : 0;
+      let percent = scrollTotal > 0 ? (scrollTop / scrollTotal) * 100 : 0;
+      percent = Math.round(percent);
+      if (percent > 100) percent = 100;
+      if (percent < 0) percent = 0;
 
-      progressIndicator.style.setProperty(
-        "background-image",
-        `conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`
-      );
+      // Use CSS variable for ring fill to allow layered backgrounds (as %)
+      progressIndicator.style.setProperty("--progress", `${percent}%`);
 
       const isVisible = scrollTotal > 0 && scrollTop / scrollTotal > 0.3;
 

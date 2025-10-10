@@ -5,21 +5,21 @@
 
 :root,
 html[data-theme="light"] {
-  /* Light mode uses iOS‐style whites and grays */
+  /* Light theme — minimal, original accent */
   --background: #f5f5f7; /* system background */
   --foreground: #1c1c1e; /* primary label */
-  --accent: #1e80ff; /* personal twist on Apple’s system blue */
-  --muted: #e5e5ea; /* secondary background */
-  --border: #cbcbd0; /* separator color */
+  --accent: #1e80ff;     /* original accent */
+  --muted: #e5e5ea;      /* secondary background */
+  --border: #cbcbd0;     /* separator color */
 }
 
 html[data-theme="dark"] {
-  /* Dark mode uses iOS‐style dark grays */
-  --background: #1c1c1f; /* system background */
-  --foreground: #ebebf5; /* primary label */
-  --accent: #1e80ff; /* same accent for brand consistency */
-  --muted: #2c2c2e; /* secondary background */
-  --border: #444446; /* separator color */
+  /* Dark theme — Starlight-inspired, legible */
+  --background: #1b2230; /* deep slate-blue */
+  --foreground: #e7ecf7; /* near-white with blue tint */
+  --accent: #5aa2ff;     /* azure accent */
+  --muted: #242c3d;      /* panels */
+  --border: #3a465e;     /* separators */
 }
 
 @theme inline {
@@ -53,6 +53,15 @@ html[data-theme="dark"] {
   section,
   footer {
     @apply mx-auto max-w-app px-4;
+  }
+  /* Card surface utility */
+  .surface {
+    background: color-mix(in oklab, var(--color-background) 90%, var(--color-foreground) 10%);
+  }
+
+  /* Equal-height grid rows helper */
+  .grid-equal {
+    grid-auto-rows: 1fr;
   }
 }
 

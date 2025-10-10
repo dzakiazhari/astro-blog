@@ -17,6 +17,16 @@
       @apply italic;
     }
 
+    /* Brutalist-minimal subheader accents */
+    h2 { @apply border-s-4 border-accent ps-3; }
+    h3 { @apply border-s-2 border-accent ps-2; }
+    h4 { @apply border-s-2 border-accent/70 ps-2; }
+
+    /* Friendly, readable heading sizes */
+    h1 { @apply text-3xl sm:text-4xl md:text-5xl; text-wrap: balance; }
+    h2 { @apply text-2xl sm:text-3xl; text-wrap: balance; }
+    h3 { @apply text-xl sm:text-2xl; }
+
     p,
     strong,
     ol,
@@ -25,6 +35,14 @@
     table,
     code {
       @apply text-foreground;
+    }
+
+    /* More readable paragraphs */
+    p {
+      text-align: justify;
+      text-wrap: pretty;
+      hyphens: auto;
+      @apply leading-relaxed;
     }
 
     a {
@@ -44,7 +62,7 @@
     }
 
     img {
-      @apply mx-auto border border-border;
+      @apply mx-auto border border-border rounded-md;
     }
 
     figcaption {
@@ -94,26 +112,37 @@
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
     @apply flex border bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
+    @apply rounded-lg overflow-x-auto shadow-sm;
+    /* Subtle header space for filename labels from transformer */
+    margin-top: 0.75rem;
   }
 
   html[data-theme="dark"] .astro-code {
     @apply bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
+    @apply rounded-lg overflow-x-auto shadow-sm;
   }
 
-  /* Styles for Shiki transformers */
+    /* Styles for Shiki transformers */
   /* https://shiki.style/packages/transformers */
   .astro-code {
     .line.diff.add {
-      @apply relative inline-block w-full bg-green-400/20 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
+      @apply relative inline-block w-full bg-green-500/15 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
     }
     .line.diff.remove {
-      @apply relative inline-block w-full bg-red-500/20 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
+      @apply relative inline-block w-full bg-red-500/15 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
     }
     .line.highlighted {
-      @apply inline-block w-full bg-slate-400/20;
+      @apply inline-block w-full bg-accent/10 border-s-2 border-accent;
     }
     .highlighted-word {
-      @apply rounded-sm border border-border px-0.5 py-px;
+      @apply rounded-sm border border-accent/40 bg-accent/15 px-0.5 py-px;
     }
   }
 }
+    /* Text highlight via <mark> — yellow boxed */
+    mark {
+      @apply rounded-[3px] border px-1 py-0.5;
+      background-color: #fde047; /* yellow-300 */
+      border-color: #facc15;     /* yellow-400 */
+      color: #111;
+    }

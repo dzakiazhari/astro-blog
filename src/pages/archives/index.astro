@@ -4,7 +4,8 @@ import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Card from "@/components/Card.astro";
+import { getPath } from "@/utils/getPath";
+import Datetime from "@/components/Datetime.astro";
 import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
 import { SITE } from "@/config";
 
@@ -15,20 +16,6 @@ if (!SITE.showArchives) {
 
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 ---
 
 <Layout title={`Archives | ${SITE.title}`}>
@@ -41,42 +28,42 @@ const months = [
         )
       )
         .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
-        .map(([year, yearGroup]) => (
-          <div>
-            <span class="text-2xl font-bold">{year}</span>
-            <sup class="text-sm">{yearGroup.length}</sup>
-            {Object.entries(
-              getPostsByGroupCondition(
-                yearGroup,
-                post => post.data.pubDatetime.getMonth() + 1
-              )
-            )
-              .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
-              .map(([month, monthGroup]) => (
-                <div class="flex flex-col sm:flex-row">
-                  <div class="mt-6 min-w-36 text-lg sm:my-6">
-                    <span class="font-bold">{months[Number(month) - 1]}</span>
-                    <sup class="text-xs">{monthGroup.length}</sup>
-                  </div>
-                  <ul>
-                    {monthGroup
-                      .sort(
-                        (a, b) =>
-                          Math.floor(
-                            new Date(b.data.pubDatetime).getTime() / 1000
-                          ) -
-                          Math.floor(
-                            new Date(a.data.pubDatetime).getTime() / 1000
-                          )
-                      )
-                      .map(data => (
-                        <Card {...data} />
-                      ))}
-                  </ul>
-                </div>
-              ))}
-          </div>
-        ))
+        .map(([year, yearGroup]) => {
+          const sortedYear = yearGroup.sort(
+            (a, b) =>
+              new Date(b.data.pubDatetime).getTime() -
+              new Date(a.data.pubDatetime).getTime()
+          );
+          const topFive = sortedYear.slice(0, 5);
+          const hasMore = sortedYear.length > 5;
+
+          return (
+            <div class="mt-8">
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold text-accent">{year}</span>
+                <sup class="text-sm opacity-75">{sortedYear.length}</sup>
+              </div>
+              <ol class="relative my-4 ms-4 border-s-2 border-accent/60">
+                {topFive.map(({ data, id, filePath }) => (
+                  <li class="relative ps-4 py-3">
+                    <a
+                      href={getPath(id, filePath)}
+                      class="block text-base font-medium text-foreground hover:text-accent focus-visible:outline-2 focus-visible:outline-dashed focus-visible:outline-accent"
+                    >
+                      {data.title}
+                    </a>
+                    <Datetime
+                      pubDatetime={data.pubDatetime}
+                      modDatetime={data.modDatetime}
+                      timezone={data.timezone}
+                    />
+                  </li>
+                ))}
+                {hasMore && <li class="relative ps-4 py-2 opacity-70">…</li>}
+              </ol>
+            </div>
+          );
+        })
     }
   </Main>
   <Footer />
