@@ -120,40 +120,72 @@
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
-  .astro-code {
-    @apply relative overflow-x-auto border text-foreground shadow-sm outline-border;
-    border-radius: 1.4rem;
-    padding: clamp(1.45rem, 1.2rem + 1vw, 1.75rem)
-      clamp(1.55rem, 1.25rem + 1vw, 1.85rem);
-    padding-block-start: clamp(2.1rem, 1.8rem + 1vw, 2.45rem);
-    font-size: 0.94rem;
-    line-height: 1.68;
+  .code-block {
+    --code-card-radius: 1.1rem;
+    --code-card-padding-inline: clamp(1.25rem, 1rem + 1vw, 1.85rem);
+    --code-card-padding-block-start: clamp(1.45rem, 1.15rem + 0.8vw, 2.05rem);
+    --code-card-padding-block-end: clamp(1.2rem, 0.95rem + 0.7vw, 1.7rem);
+    --code-copy-offset: calc(var(--code-card-padding-block-start) - 0.15rem);
+    @apply relative my-6;
+  }
+
+  .code-block .astro-code {
+    @apply relative overflow-x-auto border text-foreground outline-border;
+    border-radius: var(--code-card-radius);
+    padding-inline: var(--code-card-padding-inline);
+    padding-block: var(--code-card-padding-block-end);
+    padding-block-start: var(--code-card-padding-block-start);
+    font-size: 0.95rem;
+    line-height: 1.7;
     background: color-mix(
       in oklab,
-      var(--background) 92%,
-      var(--foreground) 8%
+      var(--background) 94%,
+      var(--foreground) 6%
     );
-    border-color: color-mix(in oklab, var(--border) 75%, transparent 25%);
-    box-shadow: 0 26px 72px -44px rgba(15, 23, 42, 0.55);
+    border-color: color-mix(in oklab, var(--border) 60%, transparent 40%);
+    box-shadow: 0 1px 0
+      color-mix(in oklab, var(--foreground) 8%, transparent 92%);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--foreground) 18%, transparent 82%)
+      transparent;
+    overscroll-behavior: contain;
     --shiki-token-background: transparent;
     --shiki-token-shadow: none;
 
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: color-mix(
+        in oklab,
+        var(--foreground) 18%,
+        transparent 82%
+      );
+      border-radius: 9999px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
     & span {
-      color: inherit;
       background: transparent !important;
       box-shadow: none !important;
     }
 
     /* Styles for Shiki transformers */
     .line.diff.add {
-      @apply relative inline-block w-full bg-green-500/15 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
+      @apply relative inline-block w-full before:absolute before:-left-3 before:text-green-500 before:content-['+'];
+      background: color-mix(in oklab, rgb(34 197 94) 18%, transparent 82%);
     }
     .line.diff.remove {
-      @apply relative inline-block w-full bg-red-500/15 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
+      @apply relative inline-block w-full before:absolute before:-left-3 before:text-red-500 before:content-['-'];
+      background: color-mix(in oklab, rgb(248 113 113) 16%, transparent 84%);
     }
     .line.highlighted {
       @apply inline-block w-full;
-      background: transparent;
+      background: color-mix(in oklab, var(--foreground) 9%, transparent 91%);
       border: none;
       box-shadow: none;
       padding: 0;
@@ -161,36 +193,39 @@
     }
     .highlighted-word {
       @apply rounded-sm;
-      background: transparent;
+      background: color-mix(in oklab, var(--accent) 20%, transparent 80%);
       border: none;
       box-shadow: none;
-      padding: 0;
+      padding: 0 0.15em;
     }
   }
 
-  html[data-theme="dark"] .astro-code {
+  html[data-theme="dark"] .code-block .astro-code {
     @apply border text-foreground;
     background: color-mix(
       in oklab,
-      var(--background) 82%,
-      var(--foreground) 18%
+      var(--background) 88%,
+      var(--foreground) 12%
     );
-    border-color: color-mix(in oklab, var(--border) 55%, transparent 45%);
-    box-shadow: 0 42px 90px -48px rgba(2, 6, 23, 0.85);
+    border-color: color-mix(in oklab, var(--border) 50%, transparent 50%);
+    box-shadow: 0 1px 0
+      color-mix(in oklab, var(--foreground) 12%, transparent 88%);
+    scrollbar-color: color-mix(in oklab, var(--foreground) 25%, transparent 75%)
+      transparent;
     --shiki-token-background: transparent;
     --shiki-token-shadow: none;
 
     & span {
-      color: inherit;
       background: transparent !important;
       box-shadow: none !important;
     }
+
     .line.highlighted {
-      background: transparent;
+      background: color-mix(in oklab, var(--foreground) 14%, transparent 86%);
     }
 
     .highlighted-word {
-      background: transparent;
+      background: color-mix(in oklab, var(--accent) 28%, transparent 72%);
       color: inherit;
     }
   }
@@ -220,34 +255,43 @@
   }
 }
 
-.code-block {
-  @apply relative my-6;
-}
-
 .code-block .astro-code {
   margin: 0;
 }
 
 .code-block .copy-code {
-  @apply absolute inline-flex items-center gap-1.5 border text-[0.64rem] font-semibold tracking-[0.22em] text-foreground/70 uppercase opacity-95 shadow-lg backdrop-blur-sm transition duration-200 ease-out focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none;
-  border-radius: 9999px;
-  inset-block-start: 1.05rem;
-  inset-inline-end: clamp(1rem, 0.75rem + 0.5vw, 1.35rem);
-  padding: 0.5rem 0.95rem;
+  @apply absolute inline-flex items-center gap-1 text-[0.7rem] font-medium text-foreground/70 transition duration-150 ease-out focus-visible:ring-2 focus-visible:ring-accent/35 focus-visible:outline-none;
+  border-radius: calc(var(--code-card-radius) * 0.55);
+  inset-inline-end: var(--code-card-padding-inline);
+  inset-block-start: var(--copy-button-top, var(--code-copy-offset));
+  top: var(--copy-button-top, var(--code-copy-offset));
+  transform: translateY(-50%);
+  padding: 0.4rem 0.85rem;
+  min-height: 2.1rem;
   background: color-mix(in oklab, var(--background) 90%, var(--foreground) 10%);
-  border-color: color-mix(in oklab, transparent 45%, var(--foreground) 55%);
-  box-shadow: 0 24px 68px -44px rgba(15, 23, 42, 0.55);
+  border: 1px solid color-mix(in oklab, var(--border) 65%, transparent 35%);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--foreground) 9%, transparent 91%);
+  letter-spacing: 0.08em;
   z-index: 2;
 }
 
 .code-block .copy-code::before {
   content: "⧉";
   font-size: 0.7rem;
-  opacity: 0.75;
+  opacity: 0.7;
+}
+
+.code-block .copy-code:hover,
+.code-block .copy-code:focus-visible,
+.code-block:focus-within .copy-code {
+  @apply text-foreground;
+  background: color-mix(in oklab, var(--background) 85%, var(--foreground) 15%);
 }
 
 .code-block .copy-code[data-state="copied"] {
-  @apply border-accent/60 bg-accent/15 text-accent;
+  @apply text-accent;
+  background: color-mix(in oklab, var(--accent) 18%, transparent 82%);
+  border-color: color-mix(in oklab, var(--accent) 38%, transparent 62%);
 }
 
 .code-block .copy-code[data-state="copied"]::before {
@@ -255,17 +299,12 @@
   opacity: 1;
 }
 
-.code-block:hover .copy-code,
-.code-block:focus-within .copy-code,
-.code-block .copy-code:focus-visible {
-  @apply text-foreground opacity-100;
-}
-
 html[data-theme="dark"] .code-block .copy-code {
-  background: color-mix(in oklab, var(--background) 72%, var(--foreground) 28%);
-  border-color: color-mix(in oklab, transparent 25%, var(--foreground) 75%);
-  color: color-mix(in oklab, var(--foreground) 78%, var(--background) 22%);
-  box-shadow: 0 36px 84px -48px rgba(2, 6, 23, 0.85);
+  background: color-mix(in oklab, var(--background) 78%, var(--foreground) 22%);
+  border-color: color-mix(in oklab, var(--border) 55%, transparent 45%);
+  color: color-mix(in oklab, var(--foreground) 82%, var(--background) 18%);
+  box-shadow: 0 1px 0
+    color-mix(in oklab, var(--foreground) 14%, transparent 86%);
 }
 
 html[data-theme="dark"] .code-block .copy-code[data-state="copied"] {

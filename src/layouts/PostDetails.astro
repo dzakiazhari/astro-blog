@@ -219,6 +219,10 @@ const nextPost =
       }
 
       const computedStyle = getComputedStyle(codeBlock);
+      const baseOffset =
+        computedStyle.getPropertyValue("--code-copy-offset").trim() ||
+        computedStyle.getPropertyValue("padding-top").trim() ||
+        "1.4rem";
       const fileNameOffset = computedStyle
         .getPropertyValue("--file-name-offset")
         .trim();
@@ -229,11 +233,11 @@ const nextPost =
       copyButton.textContent = copyButtonLabel;
       copyButton.setAttribute("aria-label", "Copy code to clipboard");
       copyButton.setAttribute("data-state", "idle");
-      const buttonOffset = fileNameOffset
-        ? `calc(${fileNameOffset} + 0.9rem)`
-        : "1.05rem";
-      copyButton.style.setProperty("inset-block-start", buttonOffset);
-      copyButton.style.top = buttonOffset;
+      const buttonOffset =
+        fileNameOffset && fileNameOffset !== "0"
+          ? `calc(${baseOffset} + ${fileNameOffset})`
+          : baseOffset;
+      copyButton.style.setProperty("--copy-button-top", buttonOffset);
 
       wrapper.appendChild(copyButton);
       codeBlock.setAttribute("tabindex", "0");
