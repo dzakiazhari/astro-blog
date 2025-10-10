@@ -187,6 +187,7 @@ Recent maintenance history lives in `docs/tasks.md`, which consolidates resolved
 - For search-related changes, perform a full `pnpm run build` to regenerate Pagefind index.
 - Before shipping visual tweaks, load the component in a browser (desktop + ≤640px) and double-check behaviour in both themes so earlier regressions—like misplaced copy buttons or returning Shiki backdrops—are not reintroduced.
 - Add meaningful discoveries or fixes to `docs/tasks.md` so future agents inherit the context.
+- When work affects blog structure (collection paths, media directories, slug behaviour), review `.pages.yml` to keep the Pages CMS configuration aligned.
 
 ---
 

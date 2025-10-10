@@ -18,6 +18,7 @@ relevant source files for quick follow-up.
 | UI Polish | Copy affordance sometimes failed to render after lazy loads, appeared as plain text, and sat outside the curved card edge. | Copy control is a styled `<button>` reattached after Astro navigations, with the pill anchored inside the rounded margin via logical offsets. | `src/layouts/PostDetails.astro`, `src/styles/typography.css` |
 | UI Polish | Deployed fences still felt ad-hoc: copy pill overlapped long lines and the neutral surface read as flat highlighter residue. | Shared spacing variables add breathing room on the inline end, lighten diff/line emphasis, and align the pill with the first code line while keeping tokens vivid. | `src/styles/typography.css` |
 | DX | Dev server defaulted to localhost, so remote preview tools could not connect. | The dev script now binds to `0.0.0.0:4321` and documentation/agent notes highlight the accessible host. | `package.json`, `AGENTS.md`, `README.md` |
+| Process | CMS configuration could drift from blog path helpers after routing changes. | Agent guide now flags `.pages.yml` for review when blog structure shifts, and the CMS config references `BLOG_PATH` usage. | `AGENTS.md`, `.pages.yml` |
 
 ## Backlog
 
