@@ -199,7 +199,7 @@ const nextPost =
   function attachCopyButtons() {
     const copyButtonLabel = "Copy";
     const codeBlocks = Array.from(document.querySelectorAll("pre")).filter(
-      code => !code.closest("figure.expressive-code")
+      code => !code.closest(".expressive-code")
     );
 
     for (const codeBlock of codeBlocks) {
