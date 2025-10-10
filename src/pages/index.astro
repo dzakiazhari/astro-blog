@@ -44,12 +44,12 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       <p>
         Explore insights and growth on this <strong>blog</strong> or dive into my
         <LinkButton
-          class="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+          class="hover:text-skin-accent underline decoration-dashed underline-offset-4"
           href="https://notes.dzakiazhari.com"
           ><strong>&lt;/notes&gt;</strong></LinkButton
         > archive.
       </p>
-    
+
       {
         // only display if at least one social link is enabled
         SOCIALS.length > 0 && (

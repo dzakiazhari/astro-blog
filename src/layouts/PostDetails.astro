@@ -125,13 +125,13 @@ const nextPost =
     <ul class="mt-4 mb-8 sm:my-8">
       {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
     </ul>
-  
-      <!-- Giscus comments (React, theme-aware) -->
+
+    <!-- Giscus comments (React, theme-aware) -->
     <section id="comments" data-pagefind-ignore class="mt-6">
       <h2 class="sr-only">Comments</h2>
       <Comments client:only="react" />
     </section>
-    
+
     <BackToTopButton />
 
     <ShareLinks />
