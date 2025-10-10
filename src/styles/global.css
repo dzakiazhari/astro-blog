@@ -5,21 +5,21 @@
 
 :root,
 html[data-theme="light"] {
-  /* Light theme — minimal, original accent */
-  --background: #f7f7fa; /* clean shell */
-  --foreground: #161921; /* soft ink */
-  --accent: #3f7df6; /* cobalt accent */
-  --muted: #e4e7f1; /* subtle surface */
-  --border: #cfd4e2; /* separators */
+  /* Light theme — breezy slate & lavender */
+  --background: #f6f7fc; /* clean shell */
+  --foreground: #151924; /* inky text */
+  --accent: #5d7cff; /* periwinkle accent */
+  --muted: #e4e7f6; /* subtle surface */
+  --border: #cdd2e6; /* separators */
 }
 
 html[data-theme="dark"] {
-  /* Dark theme — calm dusk palette */
-  --background: #1b1f28; /* velvet night */
-  --foreground: #f1f4ff; /* moonlight */
-  --accent: #7aa2ff; /* cool glow */
-  --muted: #242a35; /* panels */
-  --border: #333a47; /* separators */
+  /* Dark theme — twilight indigo */
+  --background: #161a24; /* charcoal base */
+  --foreground: #eef1ff; /* lunar text */
+  --accent: #8ba4ff; /* cool glow */
+  --muted: #1f2533; /* panels */
+  --border: #2d3445; /* separators */
 }
 
 @theme inline {

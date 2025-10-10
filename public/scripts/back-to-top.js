@@ -21,8 +21,7 @@
 
     if (backToTopBtn.dataset.clickBound !== "true") {
       backToTopBtn.addEventListener("click", () => {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
       backToTopBtn.dataset.clickBound = "true";
     }
