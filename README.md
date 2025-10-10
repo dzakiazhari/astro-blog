@@ -88,7 +88,7 @@ Documentation can be read in two formats\_ _markdown_ & _blog post_.
 **Type Checking** - [TypeScript](https://www.typescriptlang.org/)  
 **Styling** - [TailwindCSS](https://tailwindcss.com/)  
 **UI/UX** - [Figma Design File](https://www.figma.com/community/file/1356898632249991861)  
-**Static Search** - [FuseJS](https://pagefind.app/)  
+**Static Search** - [Pagefind](https://pagefind.app/)
 **Icons** - [Tablers](https://tabler-icons.io/)  
 **Code Formatting** - [Prettier](https://prettier.io/)  
 **Deployment** - [Cloudflare Pages](https://pages.cloudflare.com/)  
@@ -123,6 +123,8 @@ pnpm install
 pnpm run dev
 ```
 
+The dev script binds to `0.0.0.0:4321`, which keeps the site reachable from containerized tooling and remote previews. Forward that port (or use the Docker recipe below) to load the UI from another environment.
+
 As an alternative approach, if you have Docker installed, you can use Docker to run this project locally. Here's how:
 
 ```bash
@@ -153,7 +155,7 @@ All commands are run from the root of the project, from a terminal:
 | Command                              | Action                                                                                                                           |
 | :----------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
 | `pnpm install`                       | Installs dependencies                                                                                                            |
-| `pnpm run dev`                       | Starts local dev server at `localhost:4321`                                                                                      |
+| `pnpm run dev`                       | Starts local dev server at `0.0.0.0:4321`                                                                                        |
 | `pnpm run build`                     | Build your production site to `./dist/`                                                                                          |
 | `pnpm run preview`                   | Preview your build locally, before deploying                                                                                     |
 | `pnpm run format:check`              | Check code format with Prettier                                                                                                  |

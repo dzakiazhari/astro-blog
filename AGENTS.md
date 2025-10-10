@@ -30,10 +30,11 @@ Generated/ignored outputs (do not edit):
 ## Run & Build
 
 - Install: `pnpm install`
-- Dev: `pnpm run dev` (serves on `http://localhost:4321`)
+- Dev: `pnpm run dev` (binds to `0.0.0.0:4321` so preview tools can connect)
 - Build: `pnpm run build` (runs `astro check`, `astro build`, then `pagefind` and copies UI into `public/pagefind/`)
 - Preview: `pnpm run preview`
 - Lint: `pnpm run lint`
+- Tests: `pnpm run test` (runs `astro sync`, compiles targeted fixtures with `tsc`, then runs Node's test runner with the alias loader registered via `tools/register-test-alias.mjs`)
 - Format: `pnpm run format` / `pnpm run format:check`
 - Type sync: `pnpm run sync` (after changing content collections)
 
@@ -103,6 +104,7 @@ Search:
 
 - Global shell & SEO: `src/layouts/Layout.astro` (head/meta/LD+JSON, `ClientRouter`, theme handling, RSS link)
 - Post page: `src/layouts/PostDetails.astro` (Giscus comments, tags, prev/next links, dynamic OG resolution)
+- Code block UX: Copy buttons are attached by the inline script in `PostDetails.astro`. Buttons are wrapped in `.code-block` containers, re-run after `astro:page-load`/`astro:after-swap`, and styled via `.code-block .copy-code` in `src/styles/typography.css`. Maintain the shared CSS custom properties (`--code-card-*`) so padding, scroll affordances, and the copy pill stay aligned with the first code line. Tokens must retain Shiki-provided foreground colors while rendering on the neutral card surface (token backgrounds stay `transparent`). When iterating, preview both light/dark themes and narrow viewports via `pnpm run dev -- --host 0.0.0.0 --port 4321` to confirm the button remains clear of wrapped code.
 - Page shell: `src/layouts/Main.astro` (title/desc, breadcrumb, back-link persistence)
 - Theme: `public/toggle-theme.js` writes `data-theme` and meta `theme-color`, synced with prefers-color-scheme
 - UX helpers: `public/scripts/reading-progress.js`, `public/scripts/back-to-top.js`
@@ -154,11 +156,7 @@ Commit style:
 
 ## Known Issues / Follow-ups
 
-See `docs/follow-up-tasks.md` for small fixes to consider:
-- `src/components/BackButton.astro`: clarify the inline script comment spelling/intent.
-- `src/layouts/Main.astro`: read `dataset.backUrl` (camelCase) instead of `backurl` when persisting the back-link.
-- `README.md`: update Tech Stack to reference Pagefind instead of FuseJS.
-- Add unit tests for `src/utils/postFilter.ts` (optional; test infra not present by default).
+Recent maintenance history lives in `docs/tasks.md`, which consolidates resolved review items (typos, share-link encoding, README search-provider updates, post-filter tests, highlight tweaks, copy-button fixes). The backlog is empty right now, so add new work there as it arises.
 
 ---
 
@@ -170,6 +168,7 @@ See `docs/follow-up-tasks.md` for small fixes to consider:
 - Run: `pnpm run lint` and `pnpm run format:check` before finalizing.
 - If you add or modify blog frontmatter, ensure it passes `src/content.config.ts` validation.
 - For search-related changes, perform a full `pnpm run build` to regenerate Pagefind index.
+- Before shipping visual tweaks, load the component in a browser (desktop + ≤640px) and double-check behaviour in both themes so earlier regressions—like misplaced copy buttons or returning Shiki backdrops—are not reintroduced.
 
 ---
 
