@@ -41,6 +41,9 @@
     let lastVisible = null;
 
     const applyProgress = detail => {
+      if (!detail) {
+        return;
+      }
       const { progress, scrollHeight, scrollTop } = detail;
 
       if (state.lastProgress !== progress) {
