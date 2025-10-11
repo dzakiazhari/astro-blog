@@ -1,0 +1,84 @@
+---
+
+---
+
+<script type="module">
+  import { onCleanup, onPageLoad } from "astro/client";
+  import { ensureScrollManager } from "@/scripts/scroll-manager";
+  import { initBackToTop } from "@/scripts/back-to-top";
+  import { initReadingProgress } from "@/scripts/reading-progress";
+
+  /** @type {(() => void)[]} */
+  const cleanupFns = [];
+  /** @type {number | null} */
+  let pendingIdle = null;
+
+  const cancelIdle = () => {
+    if (pendingIdle === null) {
+      return;
+    }
+
+    const idleHandle = pendingIdle;
+    if ("cancelIdleCallback" in window) {
+      window.cancelIdleCallback(idleHandle);
+    } else {
+      window.clearTimeout(idleHandle);
+    }
+    pendingIdle = null;
+  };
+
+  const disposeAll = () => {
+    const pending = cleanupFns.splice(0);
+    for (const cleanup of pending) {
+      cleanup();
+    }
+  };
+
+  const queueIdle = () => {
+    cancelIdle();
+
+    if ("requestIdleCallback" in window) {
+      pendingIdle = window.requestIdleCallback(
+        () => {
+          pendingIdle = null;
+          runEnhancements();
+        },
+        { timeout: 300 }
+      );
+    } else {
+      pendingIdle = window.setTimeout(() => {
+        pendingIdle = null;
+        runEnhancements();
+      }, 120);
+    }
+  };
+
+  const runEnhancements = () => {
+    disposeAll();
+
+    const manager = ensureScrollManager();
+    if (!manager) {
+      return;
+    }
+
+    const cleanups = [
+      initReadingProgress(manager),
+      initBackToTop(manager),
+    ].filter(Boolean);
+
+    if (cleanups.length > 0) {
+      cleanupFns.push(...cleanups);
+      manager.refresh();
+    }
+  };
+
+  onPageLoad(() => {
+    queueIdle();
+  });
+
+  onCleanup(() => {
+    cancelIdle();
+
+    disposeAll();
+  });
+</script>

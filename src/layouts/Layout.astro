@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 import { SITE } from "@/config";
+import ScrollEnhancements from "@/components/ScrollEnhancements.astro";
 import "@/styles/global.css";
 
 export interface Props {
@@ -133,15 +134,7 @@ const structuredData = {
     <ClientRouter />
 
     <script is:inline src="/toggle-theme.js"></script>
-    {
-      enableScrollEnhancements && (
-        <>
-          <script src="/scripts/scroll-manager.js" defer is:inline />
-          <script src="/scripts/reading-progress.js" defer is:inline />
-          <script src="/scripts/back-to-top.js" defer is:inline />
-        </>
-      )
-    }
+    {enableScrollEnhancements && <ScrollEnhancements />}
   </head>
   <body>
     <slot />

@@ -101,6 +101,7 @@ Refer to the plugin's documentation for specific installation and configuration 
 
 An example of Templater plugin's YAML setup for Astro:
 
+<!-- prettier-ignore -->
 ```yaml title="Templater Frontmatter"
 ---
 author: Dzaki Azhari

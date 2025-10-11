@@ -107,6 +107,7 @@ Organize your published notes using specific properties.
 
 **Template of my current digital garden property:**
 
+<!-- prettier-ignore -->
 ```yaml title="Templater Frontmatter"
 ---
 tags:
@@ -212,7 +213,7 @@ While not strictly mandatory, Cloudflare's security features are a major advanta
 2. **Insert Security Header Code:**
    - Paste the desired setting into the `_headers`, example:
 
-```yaml title="_headers"
+```text title="_headers"
 /app/*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
@@ -463,7 +464,7 @@ table {
 - If you're new to CSS or SCSS, consider starting with online resources or tutorials to learn the fundamentals before diving into extensive code modifications.
 - A dumb way to load a remote google font is to edit `layouts/index.njk`, an example for adding the following font:
 
-```js title="index.njk"
+```html title="index.njk"
 <!-- This is a font. -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
