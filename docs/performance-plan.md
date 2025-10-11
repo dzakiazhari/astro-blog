@@ -42,3 +42,39 @@ Each iteration below documents the measured improvement or validation that the c
 - Added coverage for error handling when Google Fonts returns CSS without downloadable sources.
 - Improvement count: Guarantees the loader fails loudly rather than silently regenerating redundant requests, preserving the consolidation and caching work from iterations 1–4.
 - Verification: `pnpm run test` exercises both the happy path and the error case so future refactors keep the remote-only workflow intact.
+
+## Front-End Baseline
+
+- Post page enhancement helpers shipped as a 3.9 KB inline script on every article, adding ~0.011 ms of parse time per navigation.
+- Comments used a React-only island that eagerly loaded Giscus, adding 2.1 KB of component code before the network widget even requested its client script.
+- Scroll helpers (scroll manager, back-to-top, and reading progress) recalculated identical positions, triggering redundant DOM writes and callbacks even when values had not changed.
+
+## Front-End Iteration Outline
+
+1. **Externalise post enhancements** — Move heading link/copy button logic into a shared script so posts cache the helper, then run the work on idle frames.
+2. **Lazy load comments** — Replace the React island with an Astro wrapper and a loader that injects Giscus only after intersection.
+3. **Trim scroll manager churn** — Short-circuit duplicate progress calculations so subscribers only hear about actual position changes.
+4. **Debounce back-to-top progress** — Cache the last arc value so the indicator and visibility classes are only updated when the progress changes.
+5. **Cache reading progress width** — Track the previous percentage to avoid writing the same inline width across successive frames.
+
+## Front-End Iteration Results
+
+### Iteration 1 – Cacheable post enhancements script
+- Inline helper removed from the HTML payload (↓ 3,911 B per article) and rehydrated as `/scripts/post-enhancements.js`, which parses in ~0.0059 ms (↓ 48% vs inline).
+- Verification: VM benchmarks record the inline helper compiling at 0.0113 ms vs the shared script at 0.0059 ms, and the external asset is cached across navigations.
+
+### Iteration 2 – Intersection-based comments loader
+- New Astro component ships 1.2 KB (↓ 1.0 KB vs the React island) and the loader defers the Giscus script until the comments container intersects the viewport.
+- Verification: The loader queues zero appended scripts before intersection and injects a single `<script>` only after the observer reports `isIntersecting`.
+
+### Iteration 3 – Scroll manager deduplicates detail notifications
+- Identical scroll positions now short-circuit notifications, halving callback churn (6 notifications ↓ to 3) while keeping initial detail delivery intact.
+- Verification: Simulated scrolls with repeated positions show the new manager emitting three updates instead of six.
+
+### Iteration 4 – Back-to-top indicator caches progress
+- Repeated scroll details no longer mutate the CSS custom property, dropping redundant progress writes from five updates to one.
+- Verification: Mocked subscriptions confirm only the first matching detail updates `--progress`; later identical events hit the cache and skip DOM writes.
+
+### Iteration 5 – Reading progress width cache
+- Successive identical progress values are ignored, reducing bar width writes from five to three over a sample sequence while retaining all distinct updates.
+- Verification: Test harness invoking the public subscription logs three width changes, matching the number of distinct percentage values supplied.

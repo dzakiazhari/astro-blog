@@ -8,7 +8,7 @@ import Datetime from "@/components/Datetime.astro";
 import EditPost from "@/components/EditPost.astro";
 import BackButton from "@/components/BackButton.astro";
 import BackToTopButton from "@/components/BackToTopButton.astro";
-import Comments from "@/components/Comments"; // React Giscus
+import Comments from "@/components/Comments.astro";
 import { getPath } from "@/utils/getPath";
 import { slugifyStr } from "@/utils/slugify";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
@@ -128,7 +128,7 @@ const nextPost =
     <!-- Giscus comments (React, theme-aware) -->
     <section id="comments" data-pagefind-ignore class="mt-6">
       <h2 class="sr-only">Comments</h2>
-      <Comments client:only="react" identifier={pageIdentifier} />
+      <Comments identifier={pageIdentifier} />
     </section>
 
     <BackToTopButton />
@@ -170,117 +170,4 @@ const nextPost =
   <Footer />
 </Layout>
 
-<script is:inline data-astro-rerun>
-  /** Attaches links to headings in the document,
-   *  allowing sharing of sections easily */
-  function addHeadingLinks() {
-    const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6")
-    );
-    for (const heading of headings) {
-      heading.classList.add("group");
-      const link = document.createElement("a");
-      link.className =
-        "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
-      link.href = "#" + heading.id;
-
-      const span = document.createElement("span");
-      span.ariaHidden = "true";
-      span.innerText = "#";
-      link.appendChild(span);
-      heading.appendChild(link);
-    }
-  }
-  addHeadingLinks();
-
-  /** Attaches copy buttons to code blocks in the document,
-   * allowing users to copy code easily. */
-  const NAV_HANDLER_KEY = "__astroCopyButtonHandler";
-
-  function attachCopyButtons() {
-    const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre")).filter(
-      code => !code.closest(".expressive-code")
-    );
-
-    for (const codeBlock of codeBlocks) {
-      const parent = codeBlock.parentElement;
-      const existingButton = parent?.classList.contains("code-block")
-        ? parent.querySelector(".copy-code")
-        : codeBlock.querySelector(".copy-code");
-
-      if (existingButton) continue;
-
-      let wrapper = parent;
-      if (!wrapper || !wrapper.classList.contains("code-block")) {
-        wrapper = document.createElement("div");
-        wrapper.className = "code-block group relative";
-        codeBlock.parentNode?.insertBefore(wrapper, codeBlock);
-        wrapper.appendChild(codeBlock);
-      } else {
-        wrapper.classList.add("group", "relative");
-      }
-
-      const computedStyle = getComputedStyle(codeBlock);
-      const baseOffset =
-        computedStyle.getPropertyValue("--code-copy-offset").trim() ||
-        computedStyle.getPropertyValue("padding-top").trim() ||
-        "1.4rem";
-      const fileNameOffset = computedStyle
-        .getPropertyValue("--file-name-offset")
-        .trim();
-
-      const copyButton = document.createElement("button");
-      copyButton.type = "button";
-      copyButton.className = "copy-code";
-      copyButton.textContent = copyButtonLabel;
-      copyButton.setAttribute("aria-label", "Copy code to clipboard");
-      copyButton.setAttribute("data-state", "idle");
-      const buttonOffset =
-        fileNameOffset && fileNameOffset !== "0"
-          ? `calc(${baseOffset} + ${fileNameOffset})`
-          : baseOffset;
-      copyButton.style.setProperty("--copy-button-top", buttonOffset);
-
-      wrapper.appendChild(copyButton);
-      codeBlock.setAttribute("tabindex", "0");
-
-      copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
-      });
-    }
-
-    async function copyCode(block, button) {
-      const code = block.querySelector("code");
-      const text = code?.innerText;
-
-      await navigator.clipboard.writeText(text ?? "");
-
-      button.dataset.state = "copied";
-      button.textContent = "Copied";
-      button.setAttribute("aria-label", "Code copied to clipboard");
-
-      setTimeout(() => {
-        button.dataset.state = "idle";
-        button.textContent = copyButtonLabel;
-        button.setAttribute("aria-label", "Copy code to clipboard");
-      }, 1200);
-    }
-  }
-
-  const navigationHandler =
-    window[NAV_HANDLER_KEY] ||
-    (window[NAV_HANDLER_KEY] = () => queueMicrotask(attachCopyButtons));
-
-  for (const eventName of ["astro:page-load", "astro:after-swap"]) {
-    document.removeEventListener(eventName, navigationHandler);
-    document.addEventListener(eventName, navigationHandler);
-  }
-
-  queueMicrotask(attachCopyButtons);
-
-  /* Go to page start after page swap */
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
-  );
-</script>
+<script defer src="/scripts/post-enhancements.js"></script>

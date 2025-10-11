@@ -6,15 +6,18 @@
     window.__readingProgressState || {
       unsubscribe: null,
       pageLoadListenerAttached: false,
+      lastProgress: null,
     });
 
-  const scheduleIdle = callback => {
-    if ("requestIdleCallback" in window) {
-      window.requestIdleCallback(() => callback(), { timeout: 300 });
-    } else {
-      window.setTimeout(callback, 120);
-    }
-  };
+  const scheduleIdle =
+    window.__scheduleIdle ||
+    (callback => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(callback, { timeout: 300 });
+      } else {
+        window.setTimeout(callback, 120);
+      }
+    });
 
   const ensureProgressBarExists = () => {
     let progressContainer = document.getElementById(CONTAINER_ID);
@@ -38,7 +41,11 @@
   const updateBar = progress => {
     const progressBar = document.getElementById(BAR_ID);
     if (!progressBar) return;
+    if (state.lastProgress === progress) {
+      return;
+    }
     progressBar.style.width = `${progress}%`;
+    state.lastProgress = progress;
   };
 
   const initializeProgressIndicator = () => {
@@ -49,6 +56,7 @@
         state.unsubscribe();
         state.unsubscribe = null;
       }
+      state.lastProgress = null;
 
       const manager = window.__scrollManager;
       if (!manager) {

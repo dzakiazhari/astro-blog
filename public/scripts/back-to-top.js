@@ -2,15 +2,18 @@
   const state = (window.__backToTopState = window.__backToTopState || {
     unsubscribe: null,
     pageLoadListenerAttached: false,
+    lastProgress: null,
   });
 
-  const scheduleIdle = callback => {
-    if ("requestIdleCallback" in window) {
-      window.requestIdleCallback(() => callback(), { timeout: 300 });
-    } else {
-      window.setTimeout(callback, 120);
-    }
-  };
+  const scheduleIdle =
+    window.__scheduleIdle ||
+    (callback => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(callback, { timeout: 300 });
+      } else {
+        window.setTimeout(callback, 120);
+      }
+    });
 
   const attachListeners = () => {
     const rootElement = document.documentElement;
@@ -32,13 +35,18 @@
     if (state.unsubscribe) {
       state.unsubscribe();
       state.unsubscribe = null;
+      state.lastProgress = null;
     }
 
     let lastVisible = null;
 
     const applyProgress = detail => {
       const { progress, scrollHeight, scrollTop } = detail;
-      progressIndicator.style.setProperty("--progress", `${progress}%`);
+
+      if (state.lastProgress !== progress) {
+        progressIndicator.style.setProperty("--progress", `${progress}%`);
+        state.lastProgress = progress;
+      }
 
       const isVisible = scrollHeight > 0 && scrollTop / scrollHeight > 0.3;
 
@@ -56,6 +64,7 @@
       return;
     }
 
+    state.lastProgress = null;
     state.unsubscribe = manager.subscribe(applyProgress);
   };
 

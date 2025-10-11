@@ -3,6 +3,16 @@
     return;
   }
 
+  if (!window.__scheduleIdle) {
+    window.__scheduleIdle = callback => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(callback, { timeout: 200 });
+      } else {
+        window.setTimeout(callback, 120);
+      }
+    };
+  }
+
   const callbacks = new Set();
   const state = {
     attached: false,
@@ -15,20 +25,29 @@
   };
 
   const compute = () => {
-    const root = document.documentElement;
+    const root = document.scrollingElement || document.documentElement;
     if (!root) {
       return state.lastDetail;
     }
 
     const scrollHeight = Math.max(root.scrollHeight - root.clientHeight, 0);
-    const scrollTop = Math.max(root.scrollTop, 0);
+    const scrollTop = Math.max(root.scrollTop || window.scrollY || 0, 0);
     const progress =
       scrollHeight > 0
         ? Math.min(Math.round((scrollTop / scrollHeight) * 100), 100)
         : 0;
 
-    state.lastDetail = { progress, scrollTop, scrollHeight };
-    return state.lastDetail;
+    if (
+      progress === state.lastDetail.progress &&
+      scrollTop === state.lastDetail.scrollTop &&
+      scrollHeight === state.lastDetail.scrollHeight
+    ) {
+      return null;
+    }
+
+    const next = { progress, scrollTop, scrollHeight };
+    state.lastDetail = next;
+    return next;
   };
 
   const notify = detail => {
@@ -39,7 +58,11 @@
 
   const flush = () => {
     state.ticking = false;
-    notify(compute());
+    const detail = compute();
+    if (!detail) {
+      return;
+    }
+    notify(detail);
   };
 
   const onScroll = () => {
@@ -75,7 +98,8 @@
   };
 
   const refresh = () => {
-    notify(compute());
+    const detail = compute();
+    notify(detail ?? state.lastDetail);
   };
 
   document.addEventListener("astro:page-load", refresh);
