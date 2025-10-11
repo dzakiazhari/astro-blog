@@ -89,7 +89,10 @@
   const subscribe = callback => {
     callbacks.add(callback);
     attach();
-    window.requestAnimationFrame(() => callback(compute()));
+    window.requestAnimationFrame(() => {
+      const detail = compute();
+      callback(detail ?? state.lastDetail);
+    });
 
     return () => {
       callbacks.delete(callback);

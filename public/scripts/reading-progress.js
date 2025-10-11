@@ -64,6 +64,9 @@
       }
 
       state.unsubscribe = manager.subscribe(detail => {
+        if (!detail) {
+          return;
+        }
         updateBar(detail.progress);
       });
     });
