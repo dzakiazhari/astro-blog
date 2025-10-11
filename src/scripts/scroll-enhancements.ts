@@ -3,16 +3,14 @@ import { initBackToTop } from "@/scripts/back-to-top";
 import { initReadingProgress } from "@/scripts/reading-progress";
 
 type IdleHandle = number;
-type IdleCallback = () => void;
-type IdleOptions = { timeout: number };
 
-interface IdleWindow extends Window {
+type IdleWindow = Window & {
   requestIdleCallback?: (
-    callback: IdleCallback,
-    options?: IdleOptions
+    callback: IdleRequestCallback,
+    options?: IdleRequestOptions
   ) => IdleHandle;
   cancelIdleCallback?: (handle: IdleHandle) => void;
-}
+};
 
 let cleanupFns: Array<() => void> = [];
 let pendingIdle: IdleHandle | ReturnType<typeof setTimeout> | null = null;
