@@ -5,6 +5,11 @@ const BUTTON_SELECTOR = "[data-button='back-to-top']";
 const PROGRESS_SELECTOR = "#progress-indicator";
 const VISIBILITY_THRESHOLD = 0.3;
 
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 const toggleVisibility = (
   container: HTMLElement,
   isVisible: boolean,
@@ -63,7 +68,8 @@ export const initBackToTop = (manager: ScrollManager): (() => void) | null => {
   }
 
   const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const behavior = prefersReducedMotion() ? "auto" : "smooth";
+    window.scrollTo({ top: 0, behavior });
   };
 
   button.addEventListener("click", handleClick, { once: false });
