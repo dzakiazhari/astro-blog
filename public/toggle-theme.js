@@ -1,71 +1,134 @@
 const primaryColorScheme = ""; // "light" | "dark"
 
-// Get theme data from local storage
-const currentTheme = localStorage.getItem("theme");
+const scheduleIdle =
+  window.__scheduleIdle ||
+  (callback => {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(callback, { timeout: 200 });
+    } else {
+      window.setTimeout(callback, 120);
+    }
+  });
+
+const state = (window.__themeToggleState = window.__themeToggleState || {
+  buttonBound: false,
+  mediaListenerBound: false,
+});
+
+const getStoredTheme = () => localStorage.getItem("theme");
 
 function getPreferTheme() {
-  // return theme value in local storage if it is set
-  if (currentTheme) return currentTheme;
-
-  // return primary color scheme if it is set
+  const stored = getStoredTheme();
+  if (stored) return stored;
   if (primaryColorScheme) return primaryColorScheme;
-
-  // return user device's prefer color scheme
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
 }
 
 let themeValue = getPreferTheme();
+let themeColorScheduled = false;
+
+const updateMetaTheme = () => {
+  const root = document.documentElement;
+  const meta = document.querySelector("meta[name='theme-color']");
+  if (!root || !meta) {
+    return;
+  }
+
+  const computed = window.getComputedStyle(root);
+  const bgColor =
+    computed.getPropertyValue("--color-background") || computed.backgroundColor;
+
+  if (bgColor) {
+    meta.setAttribute("content", bgColor.trim());
+  }
+};
+
+const scheduleThemeColorUpdate = () => {
+  if (themeColorScheduled) return;
+  themeColorScheduled = true;
+
+  scheduleIdle(() => {
+    themeColorScheduled = false;
+    updateMetaTheme();
+  });
+};
+
+function reflectPreference() {
+  document.documentElement.setAttribute("data-theme", themeValue);
+  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
+  scheduleThemeColorUpdate();
+}
 
 function setPreference() {
   localStorage.setItem("theme", themeValue);
   reflectPreference();
 }
 
-function reflectPreference() {
-  document.firstElementChild.setAttribute("data-theme", themeValue);
+const bindToggle = () => {
+  if (state.buttonBound) return;
 
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
-
-  // Get a reference to the body element
-  const body = document.body;
-
-  // Check if the body element exists before using getComputedStyle
-  if (body) {
-    // Get the computed styles for the body element
-    const computedStyles = window.getComputedStyle(body);
-
-    // Get the background color property
-    const bgColor = computedStyles.backgroundColor;
-
-    // Set the background color in <meta theme-color ... />
-    document
-      .querySelector("meta[name='theme-color']")
-      ?.setAttribute("content", bgColor);
+  const toggleButton = document.querySelector("#theme-btn");
+  if (!toggleButton) {
+    return;
   }
-}
 
-// set early so no page flashes / CSS is made aware
-reflectPreference();
-
-window.onload = () => {
-  function setThemeFeature() {
-    // set on load so screen readers can get the latest value on the button
-    reflectPreference();
-
-    // now this script can find and listen for clicks on the control
-    document.querySelector("#theme-btn")?.addEventListener("click", () => {
+  if (toggleButton.dataset.bound !== "true") {
+    toggleButton.addEventListener("click", () => {
       themeValue = themeValue === "light" ? "dark" : "light";
       setPreference();
     });
+    toggleButton.dataset.bound = "true";
   }
 
-  setThemeFeature();
-
-  // Runs on view transitions navigation
-  document.addEventListener("astro:after-swap", setThemeFeature);
+  state.buttonBound = true;
 };
+
+const queueBootstrap = () => {
+  scheduleIdle(() => {
+    bindToggle();
+    scheduleThemeColorUpdate();
+  });
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+      queueBootstrap();
+    },
+    { once: true }
+  );
+} else {
+  queueBootstrap();
+}
+
+if (!state.mediaListenerBound) {
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  mediaQuery.addEventListener("change", ({ matches }) => {
+    themeValue = matches ? "dark" : "light";
+    setPreference();
+  });
+  state.mediaListenerBound = true;
+}
+
+// Set early so no page flashes / CSS is made aware
+reflectPreference();
+
+const rebind = () => {
+  themeValue = getPreferTheme();
+  state.buttonBound = false;
+  queueBootstrap();
+};
+
+document.addEventListener("astro:after-swap", rebind);
+document.addEventListener("astro:page-load", () => {
+  themeValue = getPreferTheme();
+  reflectPreference();
+  state.buttonBound = false;
+  queueBootstrap();
+});
 
 // Set theme-color value before page transition
 // to avoid navigation bar color flickering in Android dark mode
@@ -78,11 +141,3 @@ document.addEventListener("astro:before-swap", event => {
     .querySelector("meta[name='theme-color']")
     ?.setAttribute("content", bgColor);
 });
-
-// sync with system changes
-window
-  .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", ({ matches: isDark }) => {
-    themeValue = isDark ? "dark" : "light";
-    setPreference();
-  });

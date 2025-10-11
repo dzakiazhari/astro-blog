@@ -7,7 +7,6 @@ import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import IconFacebook from "@/assets/icons/IconFacebook.svg";
 import IconTelegram from "@/assets/icons/IconTelegram.svg";
 import IconPinterest from "@/assets/icons/IconPinterest.svg";
-import type { GiscusProps } from "@giscus/react";
 import { SITE } from "@/config";
 
 interface Social {
@@ -87,7 +86,7 @@ export const SHARE_LINKS: Social[] = [
  * Giscus config for comments
  * Used in src/components/Comments.tsx
  */
-export const GISCUS: GiscusProps = {
+export const GISCUS = {
   repo: "dzakiazhari/astro-blog",
   repoId: "R_kgDOOkpQZg",
   category: "Announcements",

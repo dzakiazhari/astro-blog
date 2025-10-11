@@ -1,8 +1,19 @@
 (function () {
   const state = (window.__backToTopState = window.__backToTopState || {
-    scrollHandler: null,
+    unsubscribe: null,
     pageLoadListenerAttached: false,
+    lastProgress: null,
   });
+
+  const scheduleIdle =
+    window.__scheduleIdle ||
+    (callback => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(callback, { timeout: 300 });
+      } else {
+        window.setTimeout(callback, 120);
+      }
+    });
 
   const attachListeners = () => {
     const rootElement = document.documentElement;
@@ -14,11 +25,6 @@
       return;
     }
 
-    if (state.scrollHandler) {
-      document.removeEventListener("scroll", state.scrollHandler);
-      state.scrollHandler = null;
-    }
-
     if (backToTopBtn.dataset.clickBound !== "true") {
       backToTopBtn.addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -26,19 +32,23 @@
       backToTopBtn.dataset.clickBound = "true";
     }
 
+    if (state.unsubscribe) {
+      state.unsubscribe();
+      state.unsubscribe = null;
+      state.lastProgress = null;
+    }
+
     let lastVisible = null;
-    const handleScroll = () => {
-      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
-      const scrollTop = rootElement.scrollTop;
-      let percent = scrollTotal > 0 ? (scrollTop / scrollTotal) * 100 : 0;
-      percent = Math.round(percent);
-      if (percent > 100) percent = 100;
-      if (percent < 0) percent = 0;
 
-      // Use CSS variable for ring fill to allow layered backgrounds (as %)
-      progressIndicator.style.setProperty("--progress", `${percent}%`);
+    const applyProgress = detail => {
+      const { progress, scrollHeight, scrollTop } = detail;
 
-      const isVisible = scrollTotal > 0 && scrollTop / scrollTotal > 0.3;
+      if (state.lastProgress !== progress) {
+        progressIndicator.style.setProperty("--progress", `${progress}%`);
+        state.lastProgress = progress;
+      }
+
+      const isVisible = scrollHeight > 0 && scrollTop / scrollHeight > 0.3;
 
       if (isVisible !== lastVisible) {
         btnContainer.classList.toggle("opacity-100", isVisible);
@@ -49,21 +59,13 @@
       }
     };
 
-    let ticking = false;
-    const scrollHandler = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
+    const manager = window.__scrollManager;
+    if (!manager) {
+      return;
+    }
 
-    document.addEventListener("scroll", scrollHandler, { passive: true });
-    state.scrollHandler = scrollHandler;
-
-    handleScroll();
+    state.lastProgress = null;
+    state.unsubscribe = manager.subscribe(applyProgress);
   };
 
   const initialize = () => {
@@ -71,9 +73,15 @@
   };
 
   const registerPageEvents = () => {
-    initialize();
+    scheduleIdle(() => {
+      initialize();
+    });
     if (!state.pageLoadListenerAttached) {
-      document.addEventListener("astro:page-load", initialize);
+      document.addEventListener("astro:page-load", () => {
+        scheduleIdle(() => {
+          initialize();
+        });
+      });
       state.pageLoadListenerAttached = true;
     }
   };

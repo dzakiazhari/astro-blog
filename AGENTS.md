@@ -137,6 +137,13 @@ OG image generation:
    - Summarise noteworthy fixes, regressions avoided, or insights in `docs/tasks.md` under **Completed** with links to touched files.
    - Note any follow-up work in the **Backlog** table.
 
+### Workflow Retrospective — Remote Font & Performance Pass (2024-03)
+
+- **Guard against remote regressions.** Any time Google Fonts integration or OG rendering changes, run `pnpm run build` so the real HTTP call path is exercised. If the build fails, prefer strengthening retry/fallback logic and extending unit coverage instead of committing font binaries.
+- **Automate fallback verification.** Add or update tests that simulate HTTP 4xx/5xx responses and network errors before relying on manual builds. This keeps the local `@fontsource` assets as the final safety net.
+- **Resolve formatting locally.** Run `pnpm exec prettier --write <globs>` (or `pnpm run format`) immediately after touching JS/TS/Astro files so `pnpm run format:check` stays green in CI.
+- **Log process learnings.** Capture workflow adjustments in `docs/workflow-retrospective.md` and mirror the highlights in `docs/tasks.md` so future agents inherit the caution points without rereading the entire history.
+
 ---
 
 ## Conventions & Guardrails
