@@ -98,7 +98,7 @@ docker run -p 4321:80 unfold-blog
 
 - Tweak site metadata, pagination, and feature toggles in `src/config.ts`.
 - Global colors, spacing, and typography live in `src/styles/global.css` and `src/styles/typography.css`.
-- Client-side enhancements—theme switching, reading progress, back-to-top button—reside in `public/scripts/` and are registered in the main layout.
+- Client-side enhancements—theme switching, reading progress, back-to-top button—reside in `public/toggle-theme.js` and `src/scripts/`, and are registered in the main layout.
 - Open Graph image templates are defined under `src/utils/og-templates/` and rendered through the `/og.png.ts` endpoints if you want to adjust typography or branding.
 - To enable Google Search Console verification, add a `.env` entry for `PUBLIC_GOOGLE_SITE_VERIFICATION`.
 
