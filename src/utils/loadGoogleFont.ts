@@ -1,6 +1,16 @@
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 
+class GoogleFontsResponseError extends Error {
+  status: number;
+
+  constructor(baseMessage: string, status: number) {
+    super(`${baseMessage}. Status: ${status}`);
+    this.name = "GoogleFontsResponseError";
+    this.status = status;
+  }
+}
+
 const require = createRequire(import.meta.url);
 
 async function loadGoogleFonts(
@@ -43,7 +53,7 @@ async function loadGoogleFonts(
 
     return results;
   } catch (error) {
-    if (isNetworkError(error)) {
+    if (isNetworkError(error) || error instanceof GoogleFontsResponseError) {
       return Promise.all(
         fontsConfig.map(async ({ name, weight, style }) => {
           const data = await loadLocalFont(weight);
@@ -154,8 +164,9 @@ async function getFontFaceMap(text: string, weights: number[]) {
     }
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to download font CSS. Status: ${response.status}`
+      throw new GoogleFontsResponseError(
+        "Failed to download font CSS",
+        response.status
       );
     }
 
@@ -193,7 +204,7 @@ async function getFontFaceMap(text: string, weights: number[]) {
         ([, , format]) => format === "opentype" || format === "truetype"
       );
       const woff2Match = srcMatches.find(([, , format]) => format === "woff2");
-      const chosen = woffMatch ?? opentypeMatch ?? woff2Match ?? srcMatches[0];
+      const chosen = woff2Match ?? woffMatch ?? opentypeMatch ?? srcMatches[0];
       const url = stripQuotes(chosen[1]);
 
       fontFaceMap.set(weight, { style: styleMatch[1], url });
@@ -226,8 +237,9 @@ async function fetchFontBuffer(url: string) {
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to download font binary. Status: ${response.status}`
+      throw new GoogleFontsResponseError(
+        "Failed to download font binary",
+        response.status
       );
     }
 

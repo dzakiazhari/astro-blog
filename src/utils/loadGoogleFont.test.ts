@@ -18,8 +18,8 @@ test("requests a single CSS payload for both weights and caches responses", asyn
   const cssCalls: string[] = [];
   const binaryCalls: string[] = [];
 
-  const woffRegular = Uint8Array.from([1, 2, 3, 4]);
-  const woffBold = Uint8Array.from([5, 6, 7, 8]);
+  const woff2Regular = Uint8Array.from([1, 2, 3, 4]);
+  const woff2Bold = Uint8Array.from([5, 6, 7, 8]);
 
   globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = getUrl(input);
@@ -49,17 +49,17 @@ test("requests a single CSS payload for both weights and caches responses", asyn
       );
     }
 
-    if (url === "https://example.test/ibm-regular.woff") {
+    if (url === "https://example.test/ibm-regular.woff2") {
       binaryCalls.push(url);
-      return new Response(woffRegular.slice(), {
-        headers: { "content-type": "font/woff" },
+      return new Response(woff2Regular.slice(), {
+        headers: { "content-type": "font/woff2" },
       });
     }
 
-    if (url === "https://example.test/ibm-bold.woff") {
+    if (url === "https://example.test/ibm-bold.woff2") {
       binaryCalls.push(url);
-      return new Response(woffBold.slice(), {
-        headers: { "content-type": "font/woff" },
+      return new Response(woff2Bold.slice(), {
+        headers: { "content-type": "font/woff2" },
       });
     }
 
@@ -86,8 +86,8 @@ test("requests a single CSS payload for both weights and caches responses", asyn
 
     assert.equal(regular?.style, "normal");
     assert.equal(bold?.style, "bold");
-    assert.equal(regular?.data.byteLength, woffRegular.byteLength);
-    assert.equal(bold?.data.byteLength, woffBold.byteLength);
+    assert.equal(regular?.data.byteLength, woff2Regular.byteLength);
+    assert.equal(bold?.data.byteLength, woff2Bold.byteLength);
   } finally {
     globalThis.fetch = originalFetch;
     __resetFontCaches();
@@ -148,17 +148,17 @@ test("retries without text when Google Fonts rejects the subset request", async 
       );
     }
 
-    if (url === "https://example.test/ibm-regular.woff") {
+    if (url === "https://example.test/ibm-regular.woff2") {
       binaryCalls.push(url);
       return new Response(regular.slice(), {
-        headers: { "content-type": "font/woff" },
+        headers: { "content-type": "font/woff2" },
       });
     }
 
-    if (url === "https://example.test/ibm-bold.woff") {
+    if (url === "https://example.test/ibm-bold.woff2") {
       binaryCalls.push(url);
       return new Response(bold.slice(), {
-        headers: { "content-type": "font/woff" },
+        headers: { "content-type": "font/woff2" },
       });
     }
 
@@ -201,6 +201,37 @@ test("loads local fallback fonts when the network is unreachable", async () => {
     assert.equal(fonts.length, 2);
     for (const font of fonts) {
       assert.ok(font.data.byteLength > 0, "local fallback should supply data");
+    }
+  } finally {
+    globalThis.fetch = originalFetch;
+    __resetFontCaches();
+  }
+});
+
+test("loads local fonts when Google Fonts keeps returning HTTP errors", async () => {
+  __resetFontCaches();
+
+  const originalFetch = globalThis.fetch;
+  const requests: string[] = [];
+
+  globalThis.fetch = (async (input: RequestInfo | URL) => {
+    const url = getUrl(input);
+
+    if (url.startsWith(FONT_API)) {
+      requests.push(url);
+      return new Response("", { status: 400 });
+    }
+
+    throw new Error(`Unexpected request for ${url}`);
+  }) as typeof globalThis.fetch;
+
+  try {
+    const fonts = await loadGoogleFonts("Astro Blog");
+
+    assert.equal(fonts.length, 2);
+    assert.equal(requests.length, 2, "should retry before falling back");
+    for (const font of fonts) {
+      assert.ok(font.data.byteLength > 0);
     }
   } finally {
     globalThis.fetch = originalFetch;
