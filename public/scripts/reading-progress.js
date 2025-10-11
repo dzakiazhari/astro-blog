@@ -4,9 +4,17 @@
 
   const state = (window.__readingProgressState =
     window.__readingProgressState || {
-      scrollHandler: null,
+      unsubscribe: null,
       pageLoadListenerAttached: false,
     });
+
+  const scheduleIdle = callback => {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(() => callback(), { timeout: 300 });
+    } else {
+      window.setTimeout(callback, 120);
+    }
+  };
 
   const ensureProgressBarExists = () => {
     let progressContainer = document.getElementById(CONTAINER_ID);
@@ -27,44 +35,42 @@
     }
   };
 
-  const updateProgress = () => {
+  const updateBar = progress => {
     const progressBar = document.getElementById(BAR_ID);
-    const rootElement = document.documentElement;
-
-    if (!progressBar || !rootElement) {
-      return;
-    }
-
-    const scrollHeight = rootElement.scrollHeight - rootElement.clientHeight;
-    const scrollTop = rootElement.scrollTop;
-
-    let progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    // Round and clamp so the bar reaches a crisp 100%
-    progress = Math.round(progress);
-    if (progress > 100) progress = 100;
-    if (progress < 0) progress = 0;
+    if (!progressBar) return;
     progressBar.style.width = `${progress}%`;
   };
 
   const initializeProgressIndicator = () => {
     window.requestAnimationFrame(() => {
       ensureProgressBarExists();
-      updateProgress();
 
-      if (state.scrollHandler) {
-        document.removeEventListener("scroll", state.scrollHandler);
+      if (state.unsubscribe) {
+        state.unsubscribe();
+        state.unsubscribe = null;
       }
 
-      const handler = () => updateProgress();
-      document.addEventListener("scroll", handler, { passive: true });
-      state.scrollHandler = handler;
+      const manager = window.__scrollManager;
+      if (!manager) {
+        return;
+      }
+
+      state.unsubscribe = manager.subscribe(detail => {
+        updateBar(detail.progress);
+      });
+    });
+  };
+
+  const queueInitialization = () => {
+    scheduleIdle(() => {
+      initializeProgressIndicator();
     });
   };
 
   const registerPageEvents = () => {
-    initializeProgressIndicator();
+    queueInitialization();
     if (!state.pageLoadListenerAttached) {
-      document.addEventListener("astro:page-load", initializeProgressIndicator);
+      document.addEventListener("astro:page-load", queueInitialization);
       state.pageLoadListenerAttached = true;
     }
   };

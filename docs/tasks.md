@@ -7,6 +7,7 @@ relevant source files for quick follow-up.
 
 | Category | Issue | Resolution | References |
 | --- | --- | --- | --- |
+| Performance | Remote OG font loader issued separate CSS requests per weight, fetched large TTF binaries, and lacked regression coverage. | Consolidated the Google Fonts request, preferenced WOFF2 sources, memoised CSS/binary downloads, tightened query subsets, and added remote-only tests to lock the workflow. | `docs/performance-plan.md`, `src/utils/loadGoogleFont.ts`, `src/utils/loadGoogleFont.test.ts` |
 | Documentation | README still used AstroPaper-focused messaging and assets. | Replaced the README with site-specific guidance for Unfold while preserving credit to AstroPaper. | `README.md` |
 | Bug Fix | Reading progress, back-to-top, and Giscus comments failed to appear after navigating from the homepage. | Layout preloads the enhancement scripts and the comments island remounts per route, so helpers initialize on first visit. | `src/layouts/Layout.astro`, `src/layouts/PostDetails.astro`, `src/components/BackToTopButton.astro`, `src/components/Comments.tsx` |
 | Bug Fix | `getPath` returned a leading slash when `includeBase` was false, producing incorrect dynamic route params. | Path builder now assembles slug segments without the `/posts` base and keeps nested directories slugified. | `src/utils/getPath.ts`, `src/utils/getPath.test.ts` |

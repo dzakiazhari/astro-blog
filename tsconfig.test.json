@@ -17,7 +17,9 @@
     "src/utils/getPath.ts",
     "src/utils/getPath.test.ts",
     "src/utils/postFilter.ts",
-    "src/utils/postFilter.test.ts"
+    "src/utils/postFilter.test.ts",
+    "src/utils/loadGoogleFont.ts",
+    "src/utils/loadGoogleFont.test.ts"
   ],
   "exclude": []
 }
