@@ -1,182 +1,122 @@
-# AstroPaper 📄
+# Unfold — Dzaki Azhari's Digital Garden
 
-![AstroPaper](public/astropaper-og.jpg)
-[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/community/file/1356898632249991861)
-![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![GitHub](https://img.shields.io/github/license/satnaing/astro-paper?color=%232F3741&style=for-the-badge)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=for-the-badge)](https://conventionalcommits.org)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
+Welcome to the codebase that powers [Unfold](https://dzakiazhari.com/), the personal blog of Dzaki Azhari. This repository hosts the source for essays, notes, and experiments about technology, learning, and personal growth. It is built on [Astro](https://astro.build/) with content stored in Markdown so the writing experience stays fast and distraction-free.
 
-AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro blog theme. This theme is designed and crafted based on [my personal blog](https://satnaing.dev/blog).
+## Project Goals
 
-Read [the blog posts](https://astro-paper.pages.dev/posts/) or check [the README Documentation Section](#-documentation) for more info.
+- **Share long-form ideas clearly.** The layout is tuned for readability on both mobile and desktop, supports light/dark themes, and ships accessible interactions.
+- **Keep publishing sustainable.** Posts live alongside code, letting Dzaki iterate on copy, styles, and metadata with version control.
+- **Stay friendly to contributors.** Clear scripts, linting rules, and content schemas make it easy to submit improvements or suggest edits.
 
-## 🔥 Features
+## Feature Highlights
 
-- [x] type-safe markdown
-- [x] super fast performance
-- [x] accessible (Keyboard/VoiceOver)
-- [x] responsive (mobile ~ desktops)
-- [x] SEO-friendly
-- [x] light & dark mode
-- [x] fuzzy search
-- [x] draft posts & pagination
-- [x] sitemap & rss feed
-- [x] followed best practices
-- [x] highly customizable
-- [x] dynamic OG image generation for blog posts [#15](https://github.com/satnaing/astro-paper/pull/15) ([Blog Post](https://astro-paper.pages.dev/posts/dynamic-og-image-generation-in-astropaper-blog-posts/))
+- Type-safe Markdown content validated through Astro Content Collections
+- Automatic pagination, scheduled publishing windows, and draft previews
+- Dynamic Open Graph image generation for posts and the homepage
+- Built-in dark/light theme toggle with persisted preference
+- Static site search via Pagefind, optimized for privacy and speed
+- RSS feed, sitemap, and SEO defaults tailored to the site branding
+- Optional Giscus-powered discussions on individual posts
 
-_Note: I've tested screen-reader accessibility of AstroPaper using **VoiceOver** on Mac and **TalkBack** on Android. I couldn't test all other screen-readers out there. However, accessibility enhancements in AstroPaper should be working fine on others as well._
+## Tech Stack
 
-## ✅ Lighthouse Score
+| Area       | Tools                                                                                 |
+| ---------- | ------------------------------------------------------------------------------------- |
+| Framework  | Astro 5 with island-based enhancements                                                |
+| Language   | TypeScript                                                                            |
+| Styling    | Tailwind CSS v4 plus custom typography styles                                         |
+| Content    | Markdown files validated by Zod schemas                                               |
+| Search     | Pagefind static index generated during `pnpm run build`                               |
+| Tooling    | ESLint, Prettier, Commitizen, and pnpm                                                |
+| Deployment | Optimized for static hosting providers (the production site runs on Cloudflare Pages) |
 
-<p align="center">
-  <a href="https://pagespeed.web.dev/report?url=https%3A%2F%2Fastro-paper.pages.dev%2F&form_factor=desktop">
-    <img width="710" alt="AstroPaper Lighthouse Score" src="AstroPaper-lighthouse-score.svg">
-  <a>
-</p>
+## Getting Started
 
-## 🚀 Project Structure
+1. **Install dependencies** (requires Node 18+ and [pnpm](https://pnpm.io/)):  
+   `pnpm install`
+2. **Run the dev server**:  
+   `pnpm run dev`
 
-Inside of AstroPaper, you'll see the following folders and files:
+The dev server listens on `0.0.0.0:4321` so you can preview from other devices or containers. If you prefer Docker, build and run with:
 
 ```bash
+docker build -t unfold-blog .
+docker run -p 4321:80 unfold-blog
+```
+
+## Common Commands
+
+| Command                 | Purpose                                           |
+| ----------------------- | ------------------------------------------------- |
+| `pnpm run dev`          | Start the local dev server                        |
+| `pnpm run build`        | Create an optimized production build in `dist/`   |
+| `pnpm run preview`      | Serve the production build locally                |
+| `pnpm run lint`         | Lint source files with ESLint                     |
+| `pnpm run format`       | Format files with Prettier + Tailwind plugin      |
+| `pnpm run format:check` | Verify formatting without writing changes         |
+| `pnpm run sync`         | Regenerate Astro content types after schema edits |
+| `pnpm run test`         | Execute the unit tests and Astro sync step        |
+
+## Project Structure
+
+```
 /
-├── public/
-│   ├── assets/
-|   ├── pagefind/ # auto-generated when build
-│   └── favicon.svg
-│   └── astropaper-og.jpg
-│   └── favicon.svg
-│   └── toggle-theme.js
+├── public/                 # Static assets served as-is
+│   ├── scripts/            # Vanilla JS helpers (theme toggle, reading progress, etc.)
+│   └── astropaper-og.jpg   # Default Open Graph fallback image
 ├── src/
-│   ├── assets/
-│   │   └── icons/
-│   │   └── images/
-│   ├── components/
-│   ├── data/
-│   │   └── blog/
-│   │       └── some-blog-posts.md
-│   ├── layouts/
-│   └── pages/
-│   └── styles/
-│   └── utils/
-│   └── config.ts
-│   └── constants.ts
-│   └── content.config.ts
-└── astro.config.ts
+│   ├── assets/             # Icons, images, and fonts used by components
+│   ├── components/         # UI building blocks and islands
+│   ├── data/blog/          # Markdown posts with frontmatter metadata
+│   ├── layouts/            # Page shells (Layout, Main, PostDetails)
+│   ├── pages/              # Astro routes (posts, archives, search, og images)
+│   ├── styles/             # Tailwind layer definitions and typography overrides
+│   ├── utils/              # Helpers such as path builders and OG templates
+│   └── config.ts           # Site-wide settings for Unfold
+├── astro.config.ts         # Astro configuration and integrations
+└── docs/tasks.md           # Running log of notable maintenance work
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Writing & Managing Content
 
-Any static assets, like images, can be placed in the `public/` directory.
+- Create new posts in `src/data/blog`. Filenames become part of the slug, so nest folders to group topics when needed.
+- Each Markdown file requires frontmatter. A minimal example:
+  ```md
+  ---
+  title: My New Post
+  description: A quick summary that appears in cards and meta tags.
+  pubDatetime: 2025-01-01T09:00:00.000Z
+  tags: [productivity, learning]
+  featured: true
+  ---
+  ```
+- Optional fields support scheduled publishing (`pubDatetime` in the future), drafts (`draft: true`), canonical URLs, custom OG images, and time zone overrides.
+- When you change `src/content.config.ts` or add new frontmatter fields, run `pnpm run sync` to refresh generated types.
+- Pagefind search results rely on a production build. Run `pnpm run build` while developing to refresh the static index before testing search locally.
 
-All blog posts are stored in `src/data/blog` directory.
+## Customization Tips
 
-## 📖 Documentation
+- Tweak site metadata, pagination, and feature toggles in `src/config.ts`.
+- Global colors, spacing, and typography live in `src/styles/global.css` and `src/styles/typography.css`.
+- Client-side enhancements—theme switching, reading progress, back-to-top button—reside in `public/scripts/` and are registered in the main layout.
+- Open Graph image templates are defined under `src/utils/og-templates/` and rendered through the `/og.png.ts` endpoints if you want to adjust typography or branding.
+- To enable Google Search Console verification, add a `.env` entry for `PUBLIC_GOOGLE_SITE_VERIFICATION`.
 
-Documentation can be read in two formats\_ _markdown_ & _blog post_.
+## Deployment Workflow
 
-- Configuration - [markdown](src/data/blog/how-to-configure-astropaper-theme.md) | [blog post](https://astro-paper.pages.dev/posts/how-to-configure-astropaper-theme/)
-- Add Posts - [markdown](src/data/blog/adding-new-post.md) | [blog post](https://astro-paper.pages.dev/posts/adding-new-posts-in-astropaper-theme/)
-- Customize Color Schemes - [markdown](src/data/blog/customizing-astropaper-theme-color-schemes.md) | [blog post](https://astro-paper.pages.dev/posts/customizing-astropaper-theme-color-schemes/)
-- Predefined Color Schemes - [markdown](src/data/blog/predefined-color-schemes.md) | [blog post](https://astro-paper.pages.dev/posts/predefined-color-schemes/)
+1. Push or merge changes to the default branch (currently `main`).
+2. Trigger a static build using `pnpm run build`; the `dist/` output can be uploaded to any static host.
+3. The live site at [dzakiazhari.com](https://dzakiazhari.com/) is deployed via Cloudflare Pages. Update the project there or integrate CI to publish automatically after builds succeed.
+4. Monitor lighthouse scores and search indexing periodically to ensure performance and discoverability stay high.
 
-## 💻 Tech Stack
+## Contributing
 
-**Main Framework** - [Astro](https://astro.build/)  
-**Type Checking** - [TypeScript](https://www.typescriptlang.org/)  
-**Styling** - [TailwindCSS](https://tailwindcss.com/)  
-**UI/UX** - [Figma Design File](https://www.figma.com/community/file/1356898632249991861)  
-**Static Search** - [Pagefind](https://pagefind.app/)
-**Icons** - [Tablers](https://tabler-icons.io/)  
-**Code Formatting** - [Prettier](https://prettier.io/)  
-**Deployment** - [Cloudflare Pages](https://pages.cloudflare.com/)  
-**Illustration in About Page** - [https://freesvgillustration.com](https://freesvgillustration.com/)  
-**Linting** - [ESLint](https://eslint.org)
+Issues and pull requests are welcome for bug fixes, wording tweaks, or new ideas. Please follow Conventional Commits (`pnpm dlx cz` is available) and run `pnpm run lint` + `pnpm run test` before opening a PR.
 
-## 👨🏻‍💻 Running Locally
+## Credits
 
-You can start using this project locally by running the following command in your desired directory:
+This site began from the excellent [AstroPaper](https://github.com/satnaing/astro-paper) theme by [Sat Naing](https://satnaing.dev/) and the open-source community. The design and content have been customized to reflect Dzaki Azhari's voice—many thanks to the original creators for their work and inspiration.
 
-```bash
-# pnpm
-pnpm create astro@latest --template satnaing/astro-paper
+## License
 
-# npm
-npm create astro@latest -- --template satnaing/astro-paper
-
-# yarn
-yarn create astro --template satnaing/astro-paper
-
-# bun
-bun create astro@latest -- --template satnaing/astro-paper
-```
-
-Then start the project by running the following commands:
-
-```bash
-# install dependencies if you haven't done so in the previous step.
-pnpm install
-
-# start running the project
-pnpm run dev
-```
-
-The dev script binds to `0.0.0.0:4321`, which keeps the site reachable from containerized tooling and remote previews. Forward that port (or use the Docker recipe below) to load the UI from another environment.
-
-As an alternative approach, if you have Docker installed, you can use Docker to run this project locally. Here's how:
-
-```bash
-# Build the Docker image
-docker build -t astropaper .
-
-# Run the Docker container
-docker run -p 4321:80 astropaper
-```
-
-## Google Site Verification (optional)
-
-You can easily add your [Google Site Verification HTML tag](https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag) in AstroPaper using an environment variable. This step is optional. If you don't add the following environment variable, the google-site-verification tag won't appear in the HTML `<head>` section.
-
-```bash
-# in your environment variable file (.env)
-PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-site-verification-value
-```
-
-> See [this discussion](https://github.com/satnaing/astro-paper/discussions/334#discussioncomment-10139247) for adding AstroPaper to the Google Search Console.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-> **_Note!_** For `Docker` commands we must have it [installed](https://docs.docker.com/engine/install/) in your machine.
-
-| Command                              | Action                                                                                                                           |
-| :----------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`                       | Installs dependencies                                                                                                            |
-| `pnpm run dev`                       | Starts local dev server at `0.0.0.0:4321`                                                                                        |
-| `pnpm run build`                     | Build your production site to `./dist/`                                                                                          |
-| `pnpm run preview`                   | Preview your build locally, before deploying                                                                                     |
-| `pnpm run format:check`              | Check code format with Prettier                                                                                                  |
-| `pnpm run format`                    | Format codes with Prettier                                                                                                       |
-| `pnpm run sync`                      | Generates TypeScript types for all Astro modules. [Learn more](https://docs.astro.build/en/reference/cli-reference/#astro-sync). |
-| `pnpm run lint`                      | Lint with ESLint                                                                                                                 |
-| `docker compose up -d`               | Run AstroPaper on docker, You can access with the same hostname and port informed on `dev` command.                              |
-| `docker compose run app npm install` | You can run any command above into the docker container.                                                                         |
-| `docker build -t astropaper .`       | Build Docker image for AstroPaper.                                                                                               |
-| `docker run -p 4321:80 astropaper`   | Run AstroPaper on Docker. The website will be accessible at `http://localhost:4321`.                                             |
-
-> **_Warning!_** Windows PowerShell users may need to install the [concurrently package](https://www.npmjs.com/package/concurrently) if they want to [run diagnostics](https://docs.astro.build/en/reference/cli-reference/#astro-check) during development (`astro check --watch & astro dev`). For more info, see [this issue](https://github.com/satnaing/astro-paper/issues/113).
-
-## ✨ Feedback & Suggestions
-
-If you have any suggestions/feedback, you can contact me via [my email](mailto:contact@satnaing.dev). Alternatively, feel free to open an issue if you find bugs or want to request new features.
-
-## 📜 License
-
-Licensed under the MIT License, Copyright © 2025
-
----
-
-Made with 🤍 by [Sat Naing](https://satnaing.dev) 👨🏻‍💻 and [contributors](https://github.com/satnaing/astro-paper/graphs/contributors).
+Released under the MIT License. See [LICENSE](LICENSE) for details.
