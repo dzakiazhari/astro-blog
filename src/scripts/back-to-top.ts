@@ -50,7 +50,8 @@ const applyProgress = (
 
   state.lastProgress = updateProgress(indicator, progress, state.lastProgress);
 
-  const isVisible = scrollHeight > 0 && scrollTop / scrollHeight > VISIBILITY_THRESHOLD;
+  const isVisible =
+    scrollHeight > 0 && scrollTop / scrollHeight > VISIBILITY_THRESHOLD;
   state.lastVisible = toggleVisibility(container, isVisible, state.lastVisible);
 };
 
@@ -60,8 +61,12 @@ export const initBackToTop = (manager: ScrollManager): (() => void) | null => {
   }
 
   const container = document.getElementById(CONTAINER_ID) as HTMLElement | null;
-  const button = document.querySelector(BUTTON_SELECTOR) as HTMLButtonElement | null;
-  const indicator = document.querySelector(PROGRESS_SELECTOR) as HTMLElement | null;
+  const button = document.querySelector(
+    BUTTON_SELECTOR
+  ) as HTMLButtonElement | null;
+  const indicator = document.querySelector(
+    PROGRESS_SELECTOR
+  ) as HTMLElement | null;
 
   if (!container || !button || !indicator) {
     return null;

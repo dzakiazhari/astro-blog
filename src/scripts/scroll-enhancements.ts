@@ -7,7 +7,10 @@ type IdleCallback = () => void;
 type IdleOptions = { timeout: number };
 
 interface IdleWindow extends Window {
-  requestIdleCallback?: (callback: IdleCallback, options?: IdleOptions) => IdleHandle;
+  requestIdleCallback?: (
+    callback: IdleCallback,
+    options?: IdleOptions
+  ) => IdleHandle;
   cancelIdleCallback?: (handle: IdleHandle) => void;
 }
 
@@ -34,9 +37,10 @@ const runEnhancements = () => {
     return;
   }
 
-  const cleanups = [initReadingProgress(manager), initBackToTop(manager)].filter(
-    Boolean
-  ) as Array<() => void>;
+  const cleanups = [
+    initReadingProgress(manager),
+    initBackToTop(manager),
+  ].filter(Boolean) as Array<() => void>;
 
   if (cleanups.length > 0) {
     cleanupFns = cleanups;
@@ -59,10 +63,13 @@ const queueIdle = () => {
   const idleWindow = getIdleWindow();
 
   if (idleWindow?.requestIdleCallback) {
-    pendingIdle = idleWindow.requestIdleCallback(() => {
-      pendingIdle = null;
-      runEnhancements();
-    }, { timeout: 300 });
+    pendingIdle = idleWindow.requestIdleCallback(
+      () => {
+        pendingIdle = null;
+        runEnhancements();
+      },
+      { timeout: 300 }
+    );
     return;
   }
 
