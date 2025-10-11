@@ -18,8 +18,8 @@ test("requests a single CSS payload for both weights and caches responses", asyn
   const cssCalls: string[] = [];
   const binaryCalls: string[] = [];
 
-  const woff2Regular = Uint8Array.from([1, 2, 3, 4]);
-  const woff2Bold = Uint8Array.from([5, 6, 7, 8]);
+  const woffRegular = Uint8Array.from([1, 2, 3, 4]);
+  const woffBold = Uint8Array.from([5, 6, 7, 8]);
 
   globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = getUrl(input);
@@ -34,8 +34,7 @@ test("requests a single CSS payload for both weights and caches responses", asyn
         "family query should request both weights"
       );
       assert.equal(search.get("display"), "swap");
-      assert.equal(search.get("subset"), "latin");
-      assert.equal(search.get("text"), "Astro Blog");
+      assert.equal(search.get("text"), "Astro Blg");
 
       const headers = new Headers(init?.headers);
       assert.equal(
@@ -45,22 +44,22 @@ test("requests a single CSS payload for both weights and caches responses", asyn
 
       return new Response(
         "" +
-          "@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; src: url('https://example.test/ibm-regular.woff2') format('woff2'); }" +
-          "@font-face { font-family: 'IBM Plex Mono'; font-style: bold; font-weight: 700; src: url('https://example.test/ibm-bold.woff2') format('woff2'); }"
+          "@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; src: url('https://example.test/ibm-regular.woff2') format('woff2'), url('https://example.test/ibm-regular.woff') format('woff'); }" +
+          "@font-face { font-family: 'IBM Plex Mono'; font-style: bold; font-weight: 700; src: url('https://example.test/ibm-bold.woff2') format('woff2'), url('https://example.test/ibm-bold.woff') format('woff'); }"
       );
     }
 
-    if (url === "https://example.test/ibm-regular.woff2") {
+    if (url === "https://example.test/ibm-regular.woff") {
       binaryCalls.push(url);
-      return new Response(woff2Regular.slice(), {
-        headers: { "content-type": "font/woff2" },
+      return new Response(woffRegular.slice(), {
+        headers: { "content-type": "font/woff" },
       });
     }
 
-    if (url === "https://example.test/ibm-bold.woff2") {
+    if (url === "https://example.test/ibm-bold.woff") {
       binaryCalls.push(url);
-      return new Response(woff2Bold.slice(), {
-        headers: { "content-type": "font/woff2" },
+      return new Response(woffBold.slice(), {
+        headers: { "content-type": "font/woff" },
       });
     }
 
@@ -87,8 +86,8 @@ test("requests a single CSS payload for both weights and caches responses", asyn
 
     assert.equal(regular?.style, "normal");
     assert.equal(bold?.style, "bold");
-    assert.equal(regular?.data.byteLength, woff2Regular.byteLength);
-    assert.equal(bold?.data.byteLength, woff2Bold.byteLength);
+    assert.equal(regular?.data.byteLength, woffRegular.byteLength);
+    assert.equal(bold?.data.byteLength, woffBold.byteLength);
   } finally {
     globalThis.fetch = originalFetch;
     __resetFontCaches();
@@ -118,4 +117,93 @@ test("throws when Google Fonts CSS omits downloadable sources", async () => {
 
   globalThis.fetch = originalFetch;
   __resetFontCaches();
+});
+
+test("retries without text when Google Fonts rejects the subset request", async () => {
+  __resetFontCaches();
+
+  const originalFetch = globalThis.fetch;
+  const cssCalls: string[] = [];
+  const binaryCalls: string[] = [];
+
+  const regular = Uint8Array.from([9, 9, 9]);
+  const bold = Uint8Array.from([3, 3, 3]);
+
+  globalThis.fetch = (async (input: RequestInfo | URL) => {
+    const url = getUrl(input);
+
+    if (url.startsWith(FONT_API)) {
+      cssCalls.push(url);
+
+      const search = new URL(url).searchParams;
+
+      if (search.has("text")) {
+        return new Response("", { status: 400 });
+      }
+
+      return new Response(
+        "" +
+          "@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; src: url('https://example.test/ibm-regular.woff2') format('woff2'), url('https://example.test/ibm-regular.woff') format('woff'); }" +
+          "@font-face { font-family: 'IBM Plex Mono'; font-style: bold; font-weight: 700; src: url('https://example.test/ibm-bold.woff2') format('woff2'), url('https://example.test/ibm-bold.woff') format('woff'); }"
+      );
+    }
+
+    if (url === "https://example.test/ibm-regular.woff") {
+      binaryCalls.push(url);
+      return new Response(regular.slice(), {
+        headers: { "content-type": "font/woff" },
+      });
+    }
+
+    if (url === "https://example.test/ibm-bold.woff") {
+      binaryCalls.push(url);
+      return new Response(bold.slice(), {
+        headers: { "content-type": "font/woff" },
+      });
+    }
+
+    throw new Error(`Unexpected request for ${url}`);
+  }) as typeof globalThis.fetch;
+
+  try {
+    const fonts = await loadGoogleFonts(
+      "Repeated text that will be squashed down"
+    );
+
+    assert.equal(fonts.length, 2);
+    assert.equal(cssCalls.length, 2, "should retry without text parameter");
+    assert.equal(
+      cssCalls.filter(url => new URL(url).searchParams.has("text")).length,
+      1
+    );
+    assert.equal(binaryCalls.length, 2);
+    assert.equal(fonts[0]?.data.byteLength, regular.byteLength);
+  } finally {
+    globalThis.fetch = originalFetch;
+    __resetFontCaches();
+  }
+});
+
+test("loads local fallback fonts when the network is unreachable", async () => {
+  __resetFontCaches();
+
+  const originalFetch = globalThis.fetch;
+
+  globalThis.fetch = (async () => {
+    const error = new TypeError("fetch failed");
+    (error as { cause?: unknown }).cause = { code: "ENETUNREACH" };
+    throw error;
+  }) as typeof globalThis.fetch;
+
+  try {
+    const fonts = await loadGoogleFonts("Astro Blog");
+
+    assert.equal(fonts.length, 2);
+    for (const font of fonts) {
+      assert.ok(font.data.byteLength > 0, "local fallback should supply data");
+    }
+  } finally {
+    globalThis.fetch = originalFetch;
+    __resetFontCaches();
+  }
 });

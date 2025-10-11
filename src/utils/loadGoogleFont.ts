@@ -1,3 +1,8 @@
+import { readFile } from "node:fs/promises";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+
 async function loadGoogleFonts(
   text: string
 ): Promise<
@@ -17,24 +22,39 @@ async function loadGoogleFonts(
   ];
 
   const weights = fontsConfig.map(item => item.weight);
-  const fontFaceMapPromise = getFontFaceMap(text, weights);
 
-  const results = await Promise.all(
-    fontsConfig.map(async ({ name, weight, style }) => {
-      const fontFaceMap = await fontFaceMapPromise;
-      const source = fontFaceMap.get(weight);
+  try {
+    const fontFaceMapPromise = getFontFaceMap(text, weights);
 
-      if (!source) {
-        throw new Error(`Font source missing for weight ${weight}`);
-      }
+    const results = await Promise.all(
+      fontsConfig.map(async ({ name, weight, style }) => {
+        const fontFaceMap = await fontFaceMapPromise;
+        const source = fontFaceMap.get(weight);
 
-      const data = await fetchFontBuffer(source.url);
+        if (!source) {
+          throw new Error(`Font source missing for weight ${weight}`);
+        }
 
-      return { name, data, weight, style };
-    })
-  );
+        const data = await fetchFontBuffer(source.url);
 
-  return results;
+        return { name, data, weight, style };
+      })
+    );
+
+    return results;
+  } catch (error) {
+    if (isNetworkError(error)) {
+      return Promise.all(
+        fontsConfig.map(async ({ name, weight, style }) => {
+          const data = await loadLocalFont(weight);
+
+          return { name, data, weight, style };
+        })
+      );
+    }
+
+    throw error;
+  }
 }
 
 export default loadGoogleFonts;
@@ -42,27 +62,66 @@ export default loadGoogleFonts;
 export function __resetFontCaches() {
   fontFaceCache.clear();
   fontBufferCache.clear();
+  localFontCache.clear();
 }
 
 const GOOGLE_FONTS_ENDPOINT = "https://fonts.googleapis.com/css2";
 const USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+const MAX_TEXT_LENGTH = 200;
 
 const fontFaceCache = new Map<
   string,
   Promise<Map<number, { style: string; url: string }>>
 >();
 const fontBufferCache = new Map<string, Promise<ArrayBuffer>>();
+const localFontCache = new Map<number, Promise<ArrayBuffer>>();
 
-function buildRequestUrl(text: string, weights: number[]) {
+const LOCAL_FONT_PATHS: Record<number, string> = {
+  400: "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff",
+  700: "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-700-normal.woff",
+};
+
+function normaliseText(input: string) {
+  if (!input) {
+    return "";
+  }
+
+  const unique: string[] = [];
+  const seen = new Set<string>();
+
+  for (const char of Array.from(input.normalize("NFC"))) {
+    if (seen.has(char)) {
+      continue;
+    }
+
+    seen.add(char);
+    unique.push(char);
+
+    if (unique.length >= MAX_TEXT_LENGTH) {
+      break;
+    }
+  }
+
+  return unique.join("");
+}
+
+function buildRequestConfig(text: string, weights: number[]) {
   const params = new URLSearchParams({
     family: `IBM+Plex+Mono:wght@${weights.join(";")}`,
-    text,
     display: "swap",
-    subset: "latin",
   });
 
-  return `${GOOGLE_FONTS_ENDPOINT}?${params.toString()}`;
+  const normalised = normaliseText(text);
+
+  if (normalised) {
+    params.set("text", normalised);
+  }
+
+  return {
+    url: `${GOOGLE_FONTS_ENDPOINT}?${params.toString()}`,
+    hasText: Boolean(normalised),
+  };
 }
 
 function stripQuotes(url: string) {
@@ -70,7 +129,8 @@ function stripQuotes(url: string) {
 }
 
 async function getFontFaceMap(text: string, weights: number[]) {
-  const cacheKey = `${text}:${weights.join(",")}`;
+  const normalisedText = normaliseText(text);
+  const cacheKey = `${normalisedText}:${weights.join(",")}`;
   const cached = fontFaceCache.get(cacheKey);
 
   if (cached) {
@@ -78,11 +138,20 @@ async function getFontFaceMap(text: string, weights: number[]) {
   }
 
   const promise = (async () => {
-    const response = await fetch(buildRequestUrl(text, weights), {
+    const requestConfig = buildRequestConfig(normalisedText, weights);
+    let response = await fetch(requestConfig.url, {
       headers: {
         "User-Agent": USER_AGENT,
       },
     });
+
+    if (!response.ok && requestConfig.hasText) {
+      response = await fetch(buildRequestConfig("", weights).url, {
+        headers: {
+          "User-Agent": USER_AGENT,
+        },
+      });
+    }
 
     if (!response.ok) {
       throw new Error(
@@ -119,8 +188,12 @@ async function getFontFaceMap(text: string, weights: number[]) {
         continue;
       }
 
+      const woffMatch = srcMatches.find(([, , format]) => format === "woff");
+      const opentypeMatch = srcMatches.find(([, , format]) =>
+        format === "opentype" || format === "truetype"
+      );
       const woff2Match = srcMatches.find(([, , format]) => format === "woff2");
-      const chosen = woff2Match ?? srcMatches[0];
+      const chosen = woffMatch ?? opentypeMatch ?? woff2Match ?? srcMatches[0];
       const url = stripQuotes(chosen[1]);
 
       fontFaceMap.set(weight, { style: styleMatch[1], url });
@@ -169,4 +242,58 @@ async function fetchFontBuffer(url: string) {
     fontBufferCache.delete(url);
     throw error;
   }
+}
+
+async function loadLocalFont(weight: number) {
+  const cached = localFontCache.get(weight);
+
+  if (cached) {
+    return cached;
+  }
+
+  const path = LOCAL_FONT_PATHS[weight];
+
+  if (!path) {
+    throw new Error(`No local fallback configured for weight ${weight}`);
+  }
+
+  const promise = readFile(require.resolve(path)).then(buffer => {
+    const view = buffer.buffer.slice(
+      buffer.byteOffset,
+      buffer.byteOffset + buffer.byteLength
+    );
+
+    return view as ArrayBuffer;
+  });
+
+  localFontCache.set(weight, promise);
+
+  try {
+    return await promise;
+  } catch (error) {
+    localFontCache.delete(weight);
+    throw error;
+  }
+}
+
+function isNetworkError(error: unknown) {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  if (error.message.includes("fetch failed")) {
+    return true;
+  }
+
+  const cause = (error as { cause?: unknown }).cause;
+
+  if (cause && typeof cause === "object") {
+    const code = (cause as { code?: unknown }).code;
+
+    if (typeof code === "string" && code.startsWith("ENET")) {
+      return true;
+    }
+  }
+
+  return false;
 }

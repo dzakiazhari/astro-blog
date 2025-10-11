@@ -33,6 +33,7 @@ const config = {
     Load comments now
   </button>
   <script
+    is:inline
     type="application/json"
     data-giscus-config
     set:html={JSON.stringify(config)}
@@ -41,4 +42,4 @@ const config = {
     Enable JavaScript to view the comments powered by Giscus.
   </noscript>
 </div>
-<script defer src="/scripts/comments.js"></script>
+<script is:inline defer src="/scripts/comments.js"></script>

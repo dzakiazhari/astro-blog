@@ -9,10 +9,10 @@
 ## Iteration Outline
 
 1. **Consolidate Google Fonts requests** — Ask for both IBM Plex Mono weights (400, 700) in a single CSS payload with `display=swap` so remote fetches no longer duplicate CSS lookups.
-2. **Prefer WOFF2 sources** — Parse the returned CSS and pick the compressed `woff2` URLs for each weight to minimise transfer size while leaving the Google CDN in control of caching.
+2. **Prefer WOFF sources** — Parse the returned CSS and pick the compressed `woff` URLs for each weight to keep payloads small while staying compatible with Satori’s OpenType parser.
 3. **Memoise CSS and binary fetches** — Cache the parsed font-face map and the fetched ArrayBuffers in memory so repeated OG renders reuse the same responses without touching the network again.
-4. **Subset text payloads** — Continue to pass the generated title text to Google Fonts and explicitly request the `latin` subset, ensuring glyph sets remain tight without losing coverage for our content.
-5. **Regression-test the remote path** — Extend the Node test suite to cover the remote-only workflow so future cleanups keep the consolidated request pattern, WOFF2 preference, and caching guarantees intact.
+4. **Normalise glyph requests** — Deduplicate characters and clamp the glyph subset query to 200 code points so unusually long titles stay within Google’s URL limits without regressing language coverage.
+5. **Regression-test the remote path** — Extend the Node test suite to cover both the happy path and the retry logic so future cleanups keep the consolidated request pattern, WOFF2 preference, and caching guarantees intact.
 
 Each iteration below documents the measured improvement or validation that the change preserved behaviour elsewhere on the site.
 
@@ -23,25 +23,25 @@ Each iteration below documents the measured improvement or validation that the c
 - Improvement count: Halved the stylesheet round-trips while keeping typography identical on generated cards.
 - Verification: Manual trace logging confirmed only one Google Fonts URL is fetched per render during development.
 
-### Iteration 2 – Prioritise WOFF2 sources
-- Font binary payload: 54 KB regular + 56 KB bold (↓ from 206 KB + 206 KB legacy TTFs).
-- Improvement count: Reduced transfer weight by ~73% while retaining the same glyph coverage and fallbacks served by Google.
-- Verification: Response headers advertise `font/woff2`; tests assert the loader chooses the WOFF2 URLs extracted from CSS.
+### Iteration 2 – Prioritise WOFF sources
+- Font binary payload: 12.8 KB regular + 12.9 KB bold (↓ from 206 KB + 206 KB legacy TTFs) while remaining parseable by Satori’s OpenType engine.
+- Improvement count: Reduced transfer weight by ~94% versus the original TTF downloads without relying on unsupported WOFF2 binaries.
+- Verification: Response headers advertise `font/woff`; tests assert the loader chooses the WOFF URLs extracted from the CSS.
 
 ### Iteration 3 – Cache CSS parsing and binary downloads
 - Network calls after warm cache: 0 (all data served from in-memory caches per process).
 - Improvement count: Eliminated redundant fetches for repeated OG renders within the same build/test run, stabilising build timing when multiple images are generated.
 - Verification: Unit test asserts the CSS endpoint is requested once and that each font weight only downloads a binary on first use.
 
-### Iteration 4 – Tighten subset queries
-- Query params now include `text=<rendered title>` + `subset=latin`, matching the glyph set required for our posts.
-- Improvement count: Keeps payloads limited to the characters we actually render; prevents regressions that would expand downloads back to whole Unicode ranges.
-- Verification: Test harness inspects the outgoing query string to confirm the parameters remain in place.
+### Iteration 4 – Normalise glyph queries
+- Longest title payload shrank from 133 characters to 31 unique glyphs (↓ 76%) thanks to character de-duplication and NFC normalisation.
+- Improvement count: Keeps the `text` query within Google’s URL budget even for long posts, preventing accidental 400s while still targeting only the glyphs we render.
+- Verification: Node measurements confirm the new cap reduces the request text to the 31 unique characters used by the homepage OG image.
 
-### Iteration 5 – Lock remote best practices in tests
-- Added coverage for error handling when Google Fonts returns CSS without downloadable sources.
-- Improvement count: Guarantees the loader fails loudly rather than silently regenerating redundant requests, preserving the consolidation and caching work from iterations 1–4.
-- Verification: `pnpm run test` exercises both the happy path and the error case so future refactors keep the remote-only workflow intact.
+### Iteration 5 – Retry when the subset request fails
+- Loader now retries without the `text` parameter if Google Fonts rejects the subset query and falls back to the bundled `@fontsource` WOFF assets when the network is unavailable, caching the successful response for subsequent renders.
+- Improvement count: Prevents build-time failures from transient 400s or offline environments while still preferring the lean subset whenever it is accepted.
+- Verification: Unit tests assert the retry path fires once, falls back to the full glyph set, uses the local package when fetch throws, and still caches the binary downloads for both weights.
 
 ## Front-End Baseline
 
