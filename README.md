@@ -1,6 +1,6 @@
-# Unfold — Dzaki Azhari's Digital Garden
+# Unfold
 
-Welcome to the codebase that powers [Unfold](https://dzakiazhari.com/), the personal blog of Dzaki Azhari. This repository hosts the source for essays, notes, and experiments about technology, learning, and personal growth. It is built on [Astro](https://astro.build/) with content stored in Markdown so the writing experience stays fast and distraction-free.
+Welcome to the codebase that powers [Unfold](https://dzakiazhari.com/). This repository hosts the source for essays, notes, and experiments about technology, learning, and personal growth. It is built on [Astro](https://astro.build/) with content stored in Markdown so the writing experience stays fast and distraction-free.
 
 ## Project Goals
 
