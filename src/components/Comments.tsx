@@ -1,6 +1,6 @@
 import Giscus, { type Theme } from "@giscus/react";
 import { GISCUS } from "@/constants";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CommentsProps {
   identifier: string;
@@ -29,6 +29,7 @@ export default function Comments({
 
   const [theme, setTheme] = useState(getPreferredTheme);
   const [renderNonce, setRenderNonce] = useState(0);
+  const isInitialRender = useRef(true);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -55,6 +56,11 @@ export default function Comments({
   }, []);
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
     setRenderNonce(nonce => nonce + 1);
   }, [identifier]);
 
@@ -63,16 +69,10 @@ export default function Comments({
       setRenderNonce(nonce => nonce + 1);
     };
 
-    document.addEventListener("astro:after-swap", rerender);
     document.addEventListener("astro:page-load", rerender);
-    window.addEventListener("astro:after-swap", rerender);
-    window.addEventListener("astro:page-load", rerender);
 
     return () => {
-      document.removeEventListener("astro:after-swap", rerender);
       document.removeEventListener("astro:page-load", rerender);
-      window.removeEventListener("astro:after-swap", rerender);
-      window.removeEventListener("astro:page-load", rerender);
     };
   }, []);
 
