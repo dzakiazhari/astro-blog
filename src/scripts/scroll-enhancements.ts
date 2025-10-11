@@ -2,8 +2,21 @@ import { ensureScrollManager } from "@/scripts/scroll-manager";
 import { initBackToTop } from "@/scripts/back-to-top";
 import { initReadingProgress } from "@/scripts/reading-progress";
 
+type IdleHandle = number;
+
+type IdleWindow = Window & {
+  requestIdleCallback?: (
+    callback: IdleRequestCallback,
+    options?: IdleRequestOptions
+  ) => IdleHandle;
+  cancelIdleCallback?: (handle: IdleHandle) => void;
+};
+
 let cleanupFns: Array<() => void> = [];
-let pendingIdle: ReturnType<typeof setTimeout> | number | null = null;
+let pendingIdle: IdleHandle | ReturnType<typeof setTimeout> | null = null;
+
+const getIdleWindow = (): IdleWindow | undefined =>
+  typeof window !== "undefined" ? (window as IdleWindow) : undefined;
 
 const disposeAll = () => {
   for (const cleanup of cleanupFns) {
@@ -22,9 +35,10 @@ const runEnhancements = () => {
     return;
   }
 
-  const cleanups = [initReadingProgress(manager), initBackToTop(manager)].filter(
-    Boolean
-  ) as Array<() => void>;
+  const cleanups = [
+    initReadingProgress(manager),
+    initBackToTop(manager),
+  ].filter(Boolean) as Array<() => void>;
 
   if (cleanups.length > 0) {
     cleanupFns = cleanups;
@@ -34,28 +48,38 @@ const runEnhancements = () => {
 
 const queueIdle = () => {
   if (pendingIdle !== null) {
-    if ("cancelIdleCallback" in window) {
-      (window as any).cancelIdleCallback(pendingIdle);
-    } else {
+    const idleWindow = getIdleWindow();
+
+    if (idleWindow?.cancelIdleCallback) {
+      idleWindow.cancelIdleCallback(pendingIdle as IdleHandle);
+    } else if (typeof window !== "undefined") {
       clearTimeout(pendingIdle as ReturnType<typeof setTimeout>);
     }
     pendingIdle = null;
   }
 
-  if ("requestIdleCallback" in window) {
-    pendingIdle = (window as any).requestIdleCallback(
+  const idleWindow = getIdleWindow();
+
+  if (idleWindow?.requestIdleCallback) {
+    pendingIdle = idleWindow.requestIdleCallback(
       () => {
         pendingIdle = null;
         runEnhancements();
       },
       { timeout: 300 }
     );
-  } else {
-    pendingIdle = setTimeout(() => {
-      pendingIdle = null;
-      runEnhancements();
-    }, 120);
+    return;
   }
+
+  if (typeof window === "undefined") {
+    runEnhancements();
+    return;
+  }
+
+  pendingIdle = window.setTimeout(() => {
+    pendingIdle = null;
+    runEnhancements();
+  }, 120);
 };
 
 const setup = () => {
@@ -77,9 +101,11 @@ document.addEventListener("astro:page-load", () => {
 // Cleanup before page is swapped or hidden
 const cleanupHandler = () => {
   if (pendingIdle !== null) {
-    if ("cancelIdleCallback" in window) {
-      (window as any).cancelIdleCallback(pendingIdle);
-    } else {
+    const idleWindow = getIdleWindow();
+
+    if (idleWindow?.cancelIdleCallback) {
+      idleWindow.cancelIdleCallback(pendingIdle as IdleHandle);
+    } else if (typeof window !== "undefined") {
       clearTimeout(pendingIdle as ReturnType<typeof setTimeout>);
     }
     pendingIdle = null;

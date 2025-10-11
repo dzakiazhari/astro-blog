@@ -12,7 +12,8 @@ const ensureProgressElements = (): {
   if (!container) {
     container = document.createElement("div");
     container.id = CONTAINER_ID;
-    container.className = "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+    container.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
     document.body.appendChild(container);
   }
 
