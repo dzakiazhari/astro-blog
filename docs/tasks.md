@@ -7,6 +7,7 @@ relevant source files for quick follow-up.
 
 | Category | Issue | Resolution | References |
 | --- | --- | --- | --- |
+| Bug Fix | Reading progress, back-to-top, and Giscus comments failed to appear after navigating from the homepage. | Layout preloads the enhancement scripts and the comments island remounts per route, so helpers initialize on first visit. | `src/layouts/Layout.astro`, `src/layouts/PostDetails.astro`, `src/components/BackToTopButton.astro`, `src/components/Comments.tsx` |
 | Bug Fix | `getPath` returned a leading slash when `includeBase` was false, producing incorrect dynamic route params. | Path builder now assembles slug segments without the `/posts` base and keeps nested directories slugified. | `src/utils/getPath.ts`, `src/utils/getPath.test.ts` |
 | Typo Fix | Search page comment misspelled "inn" and misdescribed the warning. | Comment copy now reads "Display warning in dev mode." | `src/pages/search.astro` |
 | Typo Fix | Back button script comment said "Search Praam" and downplayed the stored link behavior. | Clarified comment to describe synchronizing the stored back-link. | `src/components/BackButton.astro` |
