@@ -116,6 +116,7 @@ Issues and pull requests are welcome for bug fixes, wording tweaks, or new ideas
 ## Credits
 
 This site began from the excellent [AstroPaper](https://github.com/satnaing/astro-paper) theme by [Sat Naing](https://satnaing.dev/) and the open-source community.
+
 ## License
 
 Released under the MIT License. See [LICENSE](LICENSE) for details.
