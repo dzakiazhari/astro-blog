@@ -85,7 +85,9 @@ async function getFontFaceMap(text: string, weights: number[]) {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to download font CSS. Status: ${response.status}`);
+      throw new Error(
+        `Failed to download font CSS. Status: ${response.status}`
+      );
     }
 
     const css = await response.text();
@@ -109,7 +111,9 @@ async function getFontFaceMap(text: string, weights: number[]) {
         continue;
       }
 
-      const srcMatches = [...block.matchAll(/url\(([^)]+)\)\s*format\('([^']+)'\)/g)];
+      const srcMatches = [
+        ...block.matchAll(/url\(([^)]+)\)\s*format\('([^']+)'\)/g),
+      ];
 
       if (srcMatches.length === 0) {
         continue;
@@ -149,7 +153,9 @@ async function fetchFontBuffer(url: string) {
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(`Failed to download font binary. Status: ${response.status}`);
+      throw new Error(
+        `Failed to download font binary. Status: ${response.status}`
+      );
     }
 
     return response.arrayBuffer();

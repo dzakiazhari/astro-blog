@@ -22,7 +22,10 @@
 
     const scrollHeight = Math.max(root.scrollHeight - root.clientHeight, 0);
     const scrollTop = Math.max(root.scrollTop, 0);
-    const progress = scrollHeight > 0 ? Math.min(Math.round((scrollTop / scrollHeight) * 100), 100) : 0;
+    const progress =
+      scrollHeight > 0
+        ? Math.min(Math.round((scrollTop / scrollHeight) * 100), 100)
+        : 0;
 
     state.lastDetail = { progress, scrollTop, scrollHeight };
     return state.lastDetail;
