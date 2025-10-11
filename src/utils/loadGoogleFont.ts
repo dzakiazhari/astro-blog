@@ -189,8 +189,8 @@ async function getFontFaceMap(text: string, weights: number[]) {
       }
 
       const woffMatch = srcMatches.find(([, , format]) => format === "woff");
-      const opentypeMatch = srcMatches.find(([, , format]) =>
-        format === "opentype" || format === "truetype"
+      const opentypeMatch = srcMatches.find(
+        ([, , format]) => format === "opentype" || format === "truetype"
       );
       const woff2Match = srcMatches.find(([, , format]) => format === "woff2");
       const chosen = woffMatch ?? opentypeMatch ?? woff2Match ?? srcMatches[0];
