@@ -56,6 +56,8 @@ const ogImage = ogImageUrl
   ? new URL(ogImageUrl, Astro.url.origin).href
   : undefined;
 
+const pageIdentifier = Astro.url.pathname;
+
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
   author,
@@ -125,7 +127,7 @@ const nextPost =
     <!-- Giscus comments (React, theme-aware) -->
     <section id="comments" data-pagefind-ignore class="mt-6">
       <h2 class="sr-only">Comments</h2>
-      <Comments client:only="react" />
+      <Comments client:only="react" identifier={pageIdentifier} />
     </section>
 
     <BackToTopButton />
@@ -166,8 +168,6 @@ const nextPost =
   </main>
   <Footer />
 </Layout>
-
-<script src="/scripts/reading-progress.js" defer></script>
 
 <script is:inline data-astro-rerun>
   /** Attaches links to headings in the document,
