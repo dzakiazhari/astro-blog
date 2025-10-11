@@ -115,8 +115,7 @@ Issues and pull requests are welcome for bug fixes, wording tweaks, or new ideas
 
 ## Credits
 
-This site began from the excellent [AstroPaper](https://github.com/satnaing/astro-paper) theme by [Sat Naing](https://satnaing.dev/) and the open-source community. The design and content have been customized to reflect Dzaki Azhari's voice—many thanks to the original creators for their work and inspiration.
-
+This site began from the excellent [AstroPaper](https://github.com/satnaing/astro-paper) theme by [Sat Naing](https://satnaing.dev/) and the open-source community.
 ## License
 
 Released under the MIT License. See [LICENSE](LICENSE) for details.
