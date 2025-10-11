@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 48" role="img" aria-label="Unfold logo">
+  <title>Unfold logo</title>
+  <defs>
+    <linearGradient id="unfoldRight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.55" />
+    </linearGradient>
+  </defs>
+  <path d="M6 6L36 42H6Z" fill="var(--accent)" />
+  <path d="M66 6L36 42H66Z" fill="url(#unfoldRight)" />
+  <path d="M6 42H66" stroke="var(--accent)" stroke-linecap="round" stroke-width="3" />
+</svg>

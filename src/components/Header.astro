@@ -7,6 +7,7 @@ import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import LinkButton from "./LinkButton.astro";
+import LogoUnfold from "@/assets/icons/logo-unfold.svg";
 import { SITE } from "@/config";
 
 const { pathname } = Astro.url;
@@ -41,9 +42,10 @@ const isActive = (path: string) => {
     >
       <a
         href="/"
-        class="absolute py-1 text-2xl leading-8 font-semibold whitespace-nowrap text-accent sm:static sm:my-auto sm:text-3xl sm:leading-none"
+        class="absolute inline-flex items-center gap-2 py-1 text-2xl leading-8 font-semibold whitespace-nowrap text-accent sm:static sm:my-auto sm:text-3xl sm:leading-none"
       >
         {SITE.title}
+        <LogoUnfold class="h-[1.6em] w-auto flex-shrink-0 sm:h-[1.8em]" />
       </a>
       <nav
         id="nav-menu"
