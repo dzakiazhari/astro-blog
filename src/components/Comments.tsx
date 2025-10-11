@@ -3,23 +3,32 @@ import { GISCUS } from "@/constants";
 import { useEffect, useState } from "react";
 
 interface CommentsProps {
+  identifier: string;
   lightTheme?: Theme;
   darkTheme?: Theme;
 }
 
 export default function Comments({
+  identifier,
   lightTheme = "light",
   darkTheme = "dark",
 }: CommentsProps) {
-  const [theme, setTheme] = useState(() => {
-    const currentTheme = localStorage.getItem("theme");
+  const getPreferredTheme = () => {
+    if (typeof window === "undefined") {
+      return "light";
+    }
+
+    const currentTheme = window.localStorage.getItem("theme");
     const browserTheme = window.matchMedia("(prefers-color-scheme: dark)")
       .matches
       ? "dark"
       : "light";
 
     return currentTheme || browserTheme;
-  });
+  };
+
+  const [theme, setTheme] = useState(getPreferredTheme);
+  const [renderNonce, setRenderNonce] = useState(0);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -45,9 +54,35 @@ export default function Comments({
     return () => themeButton?.removeEventListener("click", handleClick);
   }, []);
 
+  useEffect(() => {
+    setRenderNonce(nonce => nonce + 1);
+  }, [identifier]);
+
+  useEffect(() => {
+    const rerender = () => {
+      setRenderNonce(nonce => nonce + 1);
+    };
+
+    document.addEventListener("astro:after-swap", rerender);
+    document.addEventListener("astro:page-load", rerender);
+    window.addEventListener("astro:after-swap", rerender);
+    window.addEventListener("astro:page-load", rerender);
+
+    return () => {
+      document.removeEventListener("astro:after-swap", rerender);
+      document.removeEventListener("astro:page-load", rerender);
+      window.removeEventListener("astro:after-swap", rerender);
+      window.removeEventListener("astro:page-load", rerender);
+    };
+  }, []);
+
   return (
     <div className="mt-8">
-      <Giscus theme={theme === "light" ? lightTheme : darkTheme} {...GISCUS} />
+      <Giscus
+        key={`${identifier}-${renderNonce}`}
+        theme={theme === "light" ? lightTheme : darkTheme}
+        {...GISCUS}
+      />
     </div>
   );
 }
