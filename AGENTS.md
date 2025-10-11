@@ -107,7 +107,7 @@ Search:
 - Code block UX: Copy buttons are attached by the inline script in `PostDetails.astro`. Buttons are wrapped in `.code-block` containers, re-run after `astro:page-load`/`astro:after-swap`, and styled via `.code-block .copy-code` in `src/styles/typography.css`. Maintain the shared CSS custom properties (`--code-card-*`) so padding, scroll affordances, and the copy pill stay aligned with the first code line. Tokens must retain Shiki-provided foreground colors while rendering on the neutral card surface (token backgrounds stay `transparent`). When iterating, preview both light/dark themes and narrow viewports via `pnpm run dev -- --host 0.0.0.0 --port 4321` to confirm the button remains clear of wrapped code.
 - Page shell: `src/layouts/Main.astro` (title/desc, breadcrumb, back-link persistence)
 - Theme: `public/toggle-theme.js` writes `data-theme` and meta `theme-color`, synced with prefers-color-scheme
-- UX helpers: `public/scripts/reading-progress.js`, `public/scripts/back-to-top.js`
+- UX helpers: `src/scripts/reading-progress.ts`, `src/scripts/back-to-top.ts`
 
 Tailwind v4:
 - Global styles: `src/styles/global.css`, typography overrides `src/styles/typography.css`
