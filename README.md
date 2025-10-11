@@ -20,14 +20,14 @@ Welcome to the codebase that powers [Unfold](https://dzakiazhari.com/), the pers
 
 ## Tech Stack
 
-| Area | Tools |
-| --- | --- |
-| Framework | Astro 5 with island-based enhancements |
-| Language | TypeScript |
-| Styling | Tailwind CSS v4 plus custom typography styles |
-| Content | Markdown files validated by Zod schemas |
-| Search | Pagefind static index generated during `pnpm run build` |
-| Tooling | ESLint, Prettier, Commitizen, and pnpm |
+| Area       | Tools                                                                                 |
+| ---------- | ------------------------------------------------------------------------------------- |
+| Framework  | Astro 5 with island-based enhancements                                                |
+| Language   | TypeScript                                                                            |
+| Styling    | Tailwind CSS v4 plus custom typography styles                                         |
+| Content    | Markdown files validated by Zod schemas                                               |
+| Search     | Pagefind static index generated during `pnpm run build`                               |
+| Tooling    | ESLint, Prettier, Commitizen, and pnpm                                                |
 | Deployment | Optimized for static hosting providers (the production site runs on Cloudflare Pages) |
 
 ## Getting Started
@@ -46,16 +46,16 @@ docker run -p 4321:80 unfold-blog
 
 ## Common Commands
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm run dev` | Start the local dev server |
-| `pnpm run build` | Create an optimized production build in `dist/` |
-| `pnpm run preview` | Serve the production build locally |
-| `pnpm run lint` | Lint source files with ESLint |
-| `pnpm run format` | Format files with Prettier + Tailwind plugin |
-| `pnpm run format:check` | Verify formatting without writing changes |
-| `pnpm run sync` | Regenerate Astro content types after schema edits |
-| `pnpm run test` | Execute the unit tests and Astro sync step |
+| Command                 | Purpose                                           |
+| ----------------------- | ------------------------------------------------- |
+| `pnpm run dev`          | Start the local dev server                        |
+| `pnpm run build`        | Create an optimized production build in `dist/`   |
+| `pnpm run preview`      | Serve the production build locally                |
+| `pnpm run lint`         | Lint source files with ESLint                     |
+| `pnpm run format`       | Format files with Prettier + Tailwind plugin      |
+| `pnpm run format:check` | Verify formatting without writing changes         |
+| `pnpm run sync`         | Regenerate Astro content types after schema edits |
+| `pnpm run test`         | Execute the unit tests and Astro sync step        |
 
 ## Project Structure
 
