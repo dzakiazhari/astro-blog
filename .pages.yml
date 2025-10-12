@@ -1,21 +1,36 @@
 # .pages.yml
 
 media:
-  input: public/images/uploads
-  output: /images/uploads
+  - name: uploads
+    label: Post assets
+    input: public/images/uploads
+    output: /images/uploads
+    categories: [image, document]
+  - name: site-assets
+    label: Site assets
+    input: public/assets
+    output: /assets
+    categories: [image, code, document]
 
 content:
   - name: blog
     label: Blog Posts
+    description: "Long-form stories that surface on dzakiazhari.com. Paths and metadata map directly to src/content.config.ts."
     type: collection
     # Keep this path aligned with BLOG_PATH in src/utils/blogPath.ts and getPath() expectations
     path: src/data/blog
     # Nested directories are slugified by src/utils/getPath.ts, so the CMS only needs the final segment here
     filename: "{year}/{slug}.md"
+    exclude:
+      - "**/_*/**"
+    subfolders: true
 
     view:
+      layout: tree
       primary: title
-      sort: [ pubDatetime, title ]
+      fields: [ pubDatetime, tags ]
+      sort: [ "pubDatetime desc", "title asc" ]
+      search: [ title, description, tags ]
       default:
         sort: pubDatetime
         order: desc
@@ -25,7 +40,11 @@ content:
       - name: year
         label: Year folder
         type: select
+        description: "Creates the folder segment under src/data/blog/{year}."
+        default: "2025"
         options:
+          placeholder: "Choose a year"
+          creatable: true
           values:
             - { label: "2023", value: "2023" }
             - { label: "2024", value: "2024" }
@@ -39,35 +58,102 @@ content:
       - name: slug
         label: Slug (filename)
         type: string
-        hint: "Lowercase with hyphens, no extension."
+        description: "Lowercase with hyphens only. The CMS writes {slug}.md under the chosen year."
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          message: "Use lowercase words separated by hyphens without the .md extension."
 
       # --- frontmatter (matches Astro schema) ---
-      - { name: title,       label: Title,         type: string }
-      - { name: description, label: Description,   type: text }
-      - { name: author,      label: Author,        type: string, default: "Dzaki Azhari" }
+      - name: title
+        label: Title
+        type: string
+        description: "Displayed as the page <h1> and the document title tag."
+
+      - name: description
+        label: Description
+        type: text
+        description: "Short summary for cards, RSS, and SEO meta tags."
+
+      - name: author
+        label: Author
+        type: select
+        default: "Dzaki Azhari"
+        options:
+          creatable: true
+          placeholder: "Select or type an author"
+          values:
+            - { label: "Dzaki Azhari", value: "Dzaki Azhari" }
 
       - name: pubDatetime
-        label: Publish Date/Time
+        label: Publish date & time
         type: date
         options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }
+        description: "Posts remain hidden until this timestamp (with a 15-minute grace window)."
 
       - name: modDatetime
-        label: Last Modified
+        label: Last modified
         type: date
         options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }
         required: false
+        description: "Optional edit timestamp for changelog banners and structured data."
 
-      - { name: featured,    label: Featured,      type: boolean, default: false }
-      - { name: draft,       label: Draft,         type: boolean, default: false }
+      - name: featured
+        label: Featured
+        type: boolean
+        default: false
+        description: "Mark true to pin on the homepage hero strip."
 
-      # list of strings
-      - { name: tags,        label: Tags,          type: text, list: true, default: [ "others" ] }
+      - name: draft
+        label: Draft
+        type: boolean
+        default: false
+        description: "Drafts stay local and are excluded from builds and the RSS feed."
+
+      - name: tags
+        label: Tags
+        type: select
+        default: [ "others" ]
+        options:
+          multiple: true
+          creatable: true
+          placeholder: "Add topics like dev, blog, garden"
+          values:
+            - { label: "dev", value: "dev" }
+            - { label: "blog", value: "blog" }
+            - { label: "garden", value: "garden" }
+            - { label: "life", value: "life" }
+            - { label: "productivity", value: "productivity" }
+            - { label: "notes", value: "notes" }
+            - { label: "others", value: "others" }
+        description: "Multi-select tags surface related content chips and search facets."
 
       # optionals
-      - { name: ogImage,     label: OG Image,      type: image,  required: false }
-      - { name: canonicalURL,label: Canonical URL, type: string, required: false }
-      - { name: hideEditPost,label: Hide "Suggest Changes", type: boolean, default: false }
-      - { name: timezone,    label: Timezone,      type: string, default: "Asia/Tokyo" }
+      - name: ogImage
+        label: OG image
+        type: image
+        required: false
+        description: "Uploads to /public/images/uploads. Leave blank to auto-generate dynamic OG art."
+
+      - name: canonicalURL
+        label: Canonical URL
+        type: string
+        required: false
+        description: "Use for cross-posts hosted elsewhere."
+
+      - name: hideEditPost
+        label: Hide "Suggest Changes"
+        type: boolean
+        default: false
+        description: "Toggle if a post should hide the GitHub edit link."
+
+      - name: timezone
+        label: Timezone
+        type: string
+        default: "Asia/Tokyo"
+        description: "Overrides the global SITE.timezone for posts written elsewhere."
 
       # body
-      - { name: body,        label: Body,          type: markdown }
+      - name: body
+        label: Body
+        type: markdown
+        description: 'Write in Markdown. Supports callouts, code fences with file="" metadata, and remark-collapse toggles.'

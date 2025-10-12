@@ -5,21 +5,21 @@
 
 :root,
 html[data-theme="light"] {
-  /* Light theme — breezy slate & lavender */
-  --background: #f6f7fc; /* clean shell */
-  --foreground: #151924; /* inky text */
-  --accent: #5d7cff; /* periwinkle accent */
-  --muted: #e4e7f6; /* subtle surface */
-  --border: #cdd2e6; /* separators */
+  /* Light theme — Quartz-inspired parchment */
+  --background: #faf8f8; /* warm canvas */
+  --foreground: #2b2b2b; /* ink body text */
+  --accent: #84a59d; /* sea-glass accent */
+  --muted: #e5e5e5; /* neutral panel */
+  --border: #d8d5d0; /* subtle outline */
 }
 
 html[data-theme="dark"] {
-  /* Dark theme — twilight indigo */
-  --background: #161a24; /* charcoal base */
-  --foreground: #eef1ff; /* lunar text */
-  --accent: #8ba4ff; /* cool glow */
-  --muted: #1f2533; /* panels */
-  --border: #2d3445; /* separators */
+  /* Dark theme — Quartz twilight */
+  --background: #161618; /* deep slate */
+  --foreground: #ebebec; /* soft moonlight */
+  --accent: #84a59d; /* balanced accent */
+  --muted: #393639; /* muted panel */
+  --border: #4a474c; /* gentle divider */
 }
 
 @theme inline {
@@ -40,7 +40,7 @@ html[data-theme="dark"] {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-sans text-foreground selection:bg-accent/70 selection:text-background;
   }
   a,
   button {
