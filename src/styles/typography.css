@@ -242,27 +242,22 @@
     text-transform: uppercase;
   }
 
-  /* Text highlight via <mark> — warm accent boxes */
+  /* Text highlight via <mark> — Quartz translucent note */
   mark {
     @apply rounded-md border px-1.5 py-0.5 font-medium;
     background-color: color-mix(
       in oklab,
-      var(--accent) 28%,
-      var(--background) 72%
+      var(--text-highlight) 100%,
+      transparent 0%
     );
-    border-color: color-mix(in oklab, var(--accent) 46%, transparent 54%);
+    border-color: color-mix(in oklab, var(--darkgray) 42%, transparent 58%);
     color: var(--foreground);
   }
 
   html[data-theme="dark"] mark {
-    background-color: color-mix(
-      in oklab,
-      var(--accent) 36%,
-      var(--background) 64%
-    );
-    border-color: color-mix(in oklab, var(--accent) 58%, transparent 42%);
+    border-color: color-mix(in oklab, var(--darkgray) 46%, transparent 54%);
     box-shadow: 0 0 0 1px
-      color-mix(in oklab, var(--accent) 42%, transparent 58%);
+      color-mix(in oklab, var(--highlight) 68%, transparent 32%);
     color: var(--foreground);
   }
 }
