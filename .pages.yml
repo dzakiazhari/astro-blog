@@ -28,7 +28,8 @@ content:
     view:
       layout: tree
       primary: title
-      fields: [ pubDatetime, tags ]
+      # Show the post title in the list, with date and tags alongside
+      fields: [ title, pubDatetime, tags ]
       sort: [ "pubDatetime desc", "title asc" ]
       search: [ title, description, tags ]
       default:
