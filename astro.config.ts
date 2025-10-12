@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
+import remarkCallouts from "./tools/remark-callouts.mjs";
 import react from "@astrojs/react";
 import expressiveCode, {
   type AstroExpressiveCodeOptions,
@@ -11,7 +12,7 @@ import expressiveCode, {
 import { SITE } from "./src/config";
 
 const expressiveCodeOptions: AstroExpressiveCodeOptions = {
-  themes: ["rose-pine", "rose-pine-dawn"],
+  themes: ["github-dark", "github-light"],
   useDarkModeMediaQuery: false,
   themeCssRoot: ":root",
   themeCssSelector: (theme: ExpressiveCodeTheme) =>
@@ -82,7 +83,11 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+    remarkPlugins: [
+      remarkToc,
+      [remarkCollapse, { test: "Table of contents" }],
+      remarkCallouts,
+    ],
   },
   vite: {
     // eslint-disable-next-line

@@ -5,21 +5,41 @@
 
 :root,
 html[data-theme="light"] {
-  /* Light theme — breezy slate & lavender */
-  --background: #f6f7fc; /* clean shell */
-  --foreground: #151924; /* inky text */
-  --accent: #5d7cff; /* periwinkle accent */
-  --muted: #e4e7f6; /* subtle surface */
-  --border: #cdd2e6; /* separators */
+  /* Private Quartz light mode palette */
+  --light: #f4f5ff;
+  --lightgray: #dbd9ff;
+  --gray: #9c97c9;
+  --darkgray: #3b3558;
+  --dark: #201a38;
+  --secondary: #6c5ce7;
+  --tertiary: #ff6ad5;
+  --highlight: rgba(108, 92, 231, 0.22);
+  --text-highlight: #ebe8ff;
+
+  --background: var(--light);
+  --foreground: var(--darkgray);
+  --accent: var(--secondary);
+  --muted: var(--lightgray);
+  --border: color-mix(in oklab, var(--lightgray) 88%, transparent 12%);
 }
 
 html[data-theme="dark"] {
-  /* Dark theme — twilight indigo */
-  --background: #161a24; /* charcoal base */
-  --foreground: #eef1ff; /* lunar text */
-  --accent: #8ba4ff; /* cool glow */
-  --muted: #1f2533; /* panels */
-  --border: #2d3445; /* separators */
+  /* Private Quartz dark mode palette */
+  --light: #0b0a19;
+  --lightgray: #1f1c36;
+  --gray: #5f5c87;
+  --darkgray: #dcd9ff;
+  --dark: #f7f6ff;
+  --secondary: #a99efb;
+  --tertiary: #ff9fe3;
+  --highlight: rgba(169, 158, 251, 0.24);
+  --text-highlight: #2f2a60;
+
+  --background: var(--light);
+  --foreground: var(--darkgray);
+  --accent: var(--secondary);
+  --muted: color-mix(in oklab, var(--lightgray) 94%, transparent 6%);
+  --border: color-mix(in oklab, var(--lightgray) 78%, var(--gray) 22%);
 }
 
 @theme inline {
@@ -28,6 +48,15 @@ html[data-theme="dark"] {
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-light: var(--light);
+  --color-lightgray: var(--lightgray);
+  --color-gray: var(--gray);
+  --color-darkgray: var(--darkgray);
+  --color-dark: var(--dark);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-highlight: var(--highlight);
+  --color-text-highlight: var(--text-highlight);
 }
 
 @layer base {
@@ -40,7 +69,11 @@ html[data-theme="dark"] {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-mono text-foreground;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--tertiary) 60%, transparent 40%);
+    color: var(--foreground);
   }
   a,
   button {
