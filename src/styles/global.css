@@ -5,21 +5,21 @@
 
 :root,
 html[data-theme="light"] {
-  /* Light theme — Quartz-inspired parchment */
+  /* Light theme — Quartz default palette */
   --background: #faf8f8; /* warm canvas */
-  --foreground: #2b2b2b; /* ink body text */
-  --accent: #84a59d; /* sea-glass accent */
+  --foreground: #2b2b2b; /* inky text */
+  --accent: #284b63; /* slate blue accent */
   --muted: #e5e5e5; /* neutral panel */
-  --border: #d8d5d0; /* subtle outline */
+  --border: #d4d4d4; /* understated divider */
 }
 
 html[data-theme="dark"] {
-  /* Dark theme — Quartz twilight */
+  /* Dark theme — Quartz twilight counterpart */
   --background: #161618; /* deep slate */
   --foreground: #ebebec; /* soft moonlight */
-  --accent: #84a59d; /* balanced accent */
+  --accent: #7b97aa; /* evening steel-blue */
   --muted: #393639; /* muted panel */
-  --border: #4a474c; /* gentle divider */
+  --border: #4c4a50; /* gentle divider */
 }
 
 @theme inline {
@@ -40,7 +40,7 @@ html[data-theme="dark"] {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-sans text-foreground selection:bg-accent/70 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/70 selection:text-background;
   }
   a,
   button {
