@@ -1,18 +1,16 @@
 ---
-year: "2025"
 slug: radius-of-my-reach
 title: Radius of My Reach
 description: An overview of the blog's substance.
 author: Dzaki Azhari
-pubDatetime: 2023-08-31T22:53:00Z
-modDatetime: 2023-09-01T01:00:00Z
-featured: false
+pubDatetime: 2023-08-31T22:53:09Z
+modDatetime: 2023-09-01T01:00:46Z
+featured: true
 draft: false
 tags:
   - blog
-hideEditPost: false
-timezone: Asia/Tokyo
 ---
+
 ## Table of Contents
 
 ## Radius 85 cm
