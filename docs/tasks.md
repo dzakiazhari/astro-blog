@@ -7,6 +7,7 @@ relevant source files for quick follow-up.
 
 | Category | Issue | Resolution | References |
 | --- | --- | --- | --- |
+| Bug Fix | External social and share links navigated away from the site and the RSS badge opened a new tab without `rel="noopener"`, leaving the opener vulnerable. | Link buttons can now opt into `_blank` targets with an automatic noopener rel, and social/share buttons pass the target so they open safely in a new tab while the RSS badge adds the missing rel. | `src/components/LinkButton.astro`, `src/components/Socials.astro`, `src/components/ShareLinks.astro`, `src/pages/index.astro` |
 | Bug Fix | Homepage social links bunched together because the wrapper lost its flex display when the `centered` prop was false. | Always render the socials container as a flexbox and only relax its justify rules for the hero layout. | `src/components/Socials.astro` |
 | Bug Fix | Mobile nav button gained duplicate listeners after SPA navigations, so the menu flickered closed immediately on click. | Guarded the hamburger toggle binding and re-attached it on page-load/view transitions only when needed. | `src/components/Header.astro` |
 | Bug Fix | Leaving `SITE.lang` blank produced an empty `lang` attribute on the `<html>` tag. | Normalised the configured language value and default to `en` when empty so the HTML attribute stays valid. | `src/layouts/Layout.astro` |
