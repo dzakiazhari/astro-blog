@@ -7,6 +7,7 @@ relevant source files for quick follow-up.
 
 | Category | Issue | Resolution | References |
 | --- | --- | --- | --- |
+| Bug Fix | Mobile nav button gained duplicate listeners after SPA navigations, so the menu flickered closed immediately on click. | Guarded the hamburger toggle binding and re-attached it on page-load/view transitions only when needed. | `src/components/Header.astro` |
 | Bug Fix | Leaving `SITE.lang` blank produced an empty `lang` attribute on the `<html>` tag. | Normalised the configured language value and default to `en` when empty so the HTML attribute stays valid. | `src/layouts/Layout.astro` |
 | Bug Fix | Structured data emitted a literal `"undefined"` publish timestamp when page dates were omitted. | Guarded the Schema.org payload so publish/modified dates only render when provided and normalised the remaining fields. | `src/layouts/Layout.astro` |
 | Theming | Astro blog palette did not match Private Quartz (light/dark). | Ported Private Quartz palette from the notes site and wired the tokens into existing CSS vars so UI, code blocks, and meta theme-color inherit correctly. | `src/styles/global.css`, `public/toggle-theme.js` |
