@@ -21,7 +21,25 @@ const {
   rel,
 } = Astro.props;
 
-const computedRel = rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
+const computedRel = (() => {
+  if (target !== "_blank") {
+    return rel;
+  }
+
+  const safeTokens = new Set(
+    (rel ?? "")
+      .split(/\s+/)
+      .map(token => token.trim())
+      .filter(Boolean),
+  );
+
+  safeTokens.add("noopener");
+  safeTokens.add("noreferrer");
+
+  const merged = Array.from(safeTokens).join(" ");
+
+  return merged === "" ? undefined : merged;
+})();
 ---
 
 {
