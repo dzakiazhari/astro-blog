@@ -6,6 +6,8 @@ export interface Props {
   ariaLabel?: string;
   title?: string;
   disabled?: boolean;
+  target?: string;
+  rel?: string;
 }
 
 const {
@@ -15,7 +17,33 @@ const {
   ariaLabel,
   title,
   disabled = false,
+  target,
+  rel,
 } = Astro.props;
+
+const trimmedTarget = target?.trim();
+const normalisedTarget = trimmedTarget?.toLowerCase();
+const computedTarget = trimmedTarget === "" ? undefined : trimmedTarget;
+
+const computedRel = (() => {
+  if (normalisedTarget !== "_blank") {
+    const cleanedRel = rel?.trim();
+
+    return cleanedRel === "" ? undefined : cleanedRel;
+  }
+
+  const safeTokens = new Set(
+    (rel ?? "")
+      .split(/\s+/)
+      .map(token => token.trim().toLowerCase())
+      .filter(Boolean)
+  );
+
+  safeTokens.add("noopener");
+  safeTokens.add("noreferrer");
+
+  return Array.from(safeTokens).join(" ");
+})();
 ---
 
 {
@@ -35,6 +63,8 @@ const {
       class:list={["group inline-block hover:text-accent", className]}
       aria-label={ariaLabel}
       title={title}
+      target={computedTarget}
+      rel={computedRel}
     >
       <slot />
     </a>

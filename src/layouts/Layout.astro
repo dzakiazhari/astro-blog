@@ -31,18 +31,23 @@ const {
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.url);
+const siteLanguage = (() => {
+  const value = (SITE.lang ?? "en").trim();
+
+  return value === "" ? "en" : value;
+})();
 
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  headline: `${title}`,
-  image: `${socialImageURL}`,
-  datePublished: `${pubDatetime?.toISOString()}`,
+  headline: title,
+  image: socialImageURL.toString(),
+  ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
   ...(modDatetime && { dateModified: modDatetime.toISOString() }),
   author: [
     {
       "@type": "Person",
-      name: `${author}`,
+      name: author,
       ...(profile && { url: profile }),
     },
   ],
@@ -52,7 +57,7 @@ const structuredData = {
 <!doctype html>
 <html
   dir={SITE.dir}
-  lang=`${SITE.lang ?? "en"}`
+  lang={siteLanguage}
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>

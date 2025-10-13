@@ -145,28 +145,42 @@ const isActive = (path: string) => {
 </header>
 
 <script>
-  function toggleNav() {
-    const menuBtn = document.querySelector("#menu-btn");
-    const menuItems = document.querySelector("#menu-items");
-    const menuIcon = document.querySelector("#menu-icon");
-    const closeIcon = document.querySelector("#close-icon");
+  (function () {
+    const attachToggle = () => {
+      const menuBtn = document.querySelector<HTMLButtonElement>("#menu-btn");
+      const menuItems = document.querySelector<HTMLUListElement>("#menu-items");
+      const menuIcon = document.querySelector<SVGElement>("#menu-icon");
+      const closeIcon = document.querySelector<SVGElement>("#close-icon");
 
-    if (!menuBtn || !menuItems || !menuIcon || !closeIcon) return;
+      if (!menuBtn || !menuItems || !menuIcon || !closeIcon) {
+        return;
+      }
 
-    menuBtn.addEventListener("click", () => {
-      const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
+      if (menuBtn.dataset.navBound === "true") {
+        return;
+      }
 
-      menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
-      menuBtn.setAttribute("aria-label", openMenu ? "Open Menu" : "Close Menu");
+      const toggle = () => {
+        const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
 
-      menuItems.classList.toggle("hidden");
-      menuIcon.classList.toggle("hidden");
-      closeIcon.classList.toggle("hidden");
-    });
-  }
+        menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
+        menuBtn.setAttribute(
+          "aria-label",
+          openMenu ? "Open Menu" : "Close Menu"
+        );
 
-  toggleNav();
+        menuItems.classList.toggle("hidden");
+        menuIcon.classList.toggle("hidden");
+        closeIcon.classList.toggle("hidden");
+      };
 
-  // Runs on view transitions navigation
-  document.addEventListener("astro:after-swap", toggleNav);
+      menuBtn.addEventListener("click", toggle);
+      menuBtn.dataset.navBound = "true";
+    };
+
+    attachToggle();
+
+    document.addEventListener("astro:after-swap", attachToggle);
+    document.addEventListener("astro:page-load", attachToggle);
+  })();
 </script>
