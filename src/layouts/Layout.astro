@@ -31,6 +31,11 @@ const {
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.url);
+const siteLanguage = (() => {
+  const value = (SITE.lang ?? "en").trim();
+
+  return value === "" ? "en" : value;
+})();
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -52,7 +57,7 @@ const structuredData = {
 <!doctype html>
 <html
   dir={SITE.dir}
-  lang=`${SITE.lang ?? "en"}`
+  lang={siteLanguage}
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
