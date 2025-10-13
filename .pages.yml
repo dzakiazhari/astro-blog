@@ -20,7 +20,8 @@ content:
     # Keep this path aligned with BLOG_PATH in src/utils/blogPath.ts and getPath() expectations
     path: src/data/blog
     # Nested directories are slugified by src/utils/getPath.ts, so the CMS only needs the final segment here
-    filename: "{year}/{slug}.md"
+    # Pages CMS uses moustache-style templating for field values.
+    filename: "{{year}}/{{slug}}.md"
     exclude:
       - "**/_*/**"
     subfolders: true

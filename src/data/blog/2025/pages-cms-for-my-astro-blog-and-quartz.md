@@ -45,7 +45,7 @@ content:
   - name: blog
     label: Blog Posts
     path: src/data/blog
-    filename: "{year}/{slug}.md"
+    filename: "{{year}}/{{slug}}.md"
     exclude:
       - "**/_*/**"
     subfolders: true
@@ -142,7 +142,7 @@ content:
     description: "Long-form stories that surface on dzakiazhari.com. Paths and metadata map directly to src/content.config.ts."
     type: collection
     path: src/data/blog
-    filename: "{year}/{slug}.md"
+    filename: "{{year}}/{{slug}}.md"
     exclude:
       - "**/_*/**"
     subfolders: true
@@ -302,7 +302,7 @@ content:
     type: collection
     path: content/Language Lab
     match: "**/*.md"
-    filename: "{primary}.md"
+    filename: "{{primary}}.md"
     subfolders: true
     view:
       layout: tree
@@ -333,7 +333,7 @@ content:
   - name: notes
     label: Notes
     path: content
-    filename: "{slug}.md"
+    filename: "{{slug}}.md"
     subfolders: true
 ```
 
