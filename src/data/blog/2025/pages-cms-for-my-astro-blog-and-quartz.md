@@ -4,8 +4,8 @@ slug: pages-cms-for-my-astro-blog-and-quartz-notes
 title: Pages CMS for My Astro Blog and Quartz Notes
 description: Step-by-step Pages CMS configuration for syncing Astro blog posts and Quartz notes.
 author: Dzaki Azhari
-pubDatetime: 2025-10-13T17:25:00Z
-modDatetime: 2025-10-13T17:26:00Z
+pubDatetime: 2025-10-13T08:25:00Z
+modDatetime: 2025-10-13T08:26:00Z
 featured: true
 draft: false
 tags:
