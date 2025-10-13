@@ -147,10 +147,10 @@ const isActive = (path: string) => {
 <script>
   (function () {
     const attachToggle = () => {
-      const menuBtn = document.querySelector("#menu-btn");
-      const menuItems = document.querySelector("#menu-items");
-      const menuIcon = document.querySelector("#menu-icon");
-      const closeIcon = document.querySelector("#close-icon");
+      const menuBtn = document.querySelector<HTMLButtonElement>("#menu-btn");
+      const menuItems = document.querySelector<HTMLUListElement>("#menu-items");
+      const menuIcon = document.querySelector<SVGElement>("#menu-icon");
+      const closeIcon = document.querySelector<SVGElement>("#close-icon");
 
       if (!menuBtn || !menuItems || !menuIcon || !closeIcon) {
         return;
