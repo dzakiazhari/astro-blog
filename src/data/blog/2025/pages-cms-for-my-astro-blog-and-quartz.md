@@ -2,6 +2,7 @@
 year: "2025"
 slug: pages-cms-for-my-astro-blog-and-quartz
 title: Pages CMS for My Astro Blog and Quartz
+description: Step-by-step Pages CMS configuration for syncing Astro blog posts and Quartz notes with schema-safe filenames.
 author: Dzaki Azhari
 pubDatetime: 2025-10-13T17:25:00Z
 modDatetime: 2025-10-13T17:26:00Z

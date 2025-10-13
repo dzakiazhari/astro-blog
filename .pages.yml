@@ -75,6 +75,7 @@ content:
         label: Description
         type: text
         description: "Short summary for cards, RSS, and SEO meta tags."
+        required: true
 
       - name: author
         label: Author
