@@ -7,6 +7,7 @@ relevant source files for quick follow-up.
 
 | Category | Issue | Resolution | References |
 | --- | --- | --- | --- |
+| Bug Fix | Structured data emitted a literal `"undefined"` publish timestamp when page dates were omitted. | Guarded the Schema.org payload so publish/modified dates only render when provided and normalised the remaining fields. | `src/layouts/Layout.astro` |
 | Theming | Astro blog palette did not match Private Quartz (light/dark). | Ported Private Quartz palette from the notes site and wired the tokens into existing CSS vars so UI, code blocks, and meta theme-color inherit correctly. | `src/styles/global.css`, `public/toggle-theme.js` |
 | UX | Base theme tokens still drifted from the Quartz palette, so light/dark canvases and highlights looked off. | Matched Quartz's light and dark color scales, exposed the palette tokens to Tailwind, and aligned mark highlights with the sister project's translucent tint. | `src/styles/global.css`, `src/styles/typography.css` |
 | UX | Quartz palette parity and CMS hints were missing from the site. | Adopted Quartz-inspired light/dark colors, refreshed heading accents, and expanded Pages CMS with folder-aware paths, presets for tags, and media buckets. | `.pages.yml`, `src/styles/global.css`, `src/styles/typography.css` |
