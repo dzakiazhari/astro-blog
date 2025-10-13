@@ -1,7 +1,8 @@
 ---
 year: "2025"
-slug: pages-cms-for-my-astro-blog-and-quartz
-title: Pages CMS for My Astro Blog and Quartz
+slug: pages-cms-for-my-astro-blog-and-quartz-notes
+title: Pages CMS for My Astro Blog and Quartz Notes
+description: Step-by-step Pages CMS configuration for syncing Astro blog posts and Quartz notes.
 author: Dzaki Azhari
 pubDatetime: 2025-10-13T17:25:00Z
 modDatetime: 2025-10-13T17:26:00Z
@@ -12,9 +13,10 @@ tags:
 hideEditPost: false
 timezone: Asia/Tokyo
 ---
+
 ## 1. Get the repos ready
 
-I keep two git projects side by side: `astro-blog` for the main site and `private-quartz` for the evergreen notes. Pages CMS reads files straight from the repository, so all I need locally is the repo on disk and a `.pages.yml` file in the root. I commit the config once and let Pages CMS generate commits when I publish content.
+I keep two git projects side by side: `astro-blog` for the main site and `private-quartz` for the evergreen notes. Pages CMS reads files straight from the repository, so all I need locally is the repo on disk and a `.pages.yml` file in the root. I commit the config once and let [Pages CMS](https://pagescms.org/docs/) generate commits when I publish content.
 
 ## 2. Configure media buckets for the Astro blog
 
@@ -32,7 +34,7 @@ media:
     input: public/assets
     output: /assets
     categories: [image, code, document]
-````
+```
 
 The `input` value tells Pages CMS which folder in the repo should hold the raw file. The `output` value is the public URL that the Markdown editor will insert. With this mapping, when I upload a screenshot the CMS writes it to `public/images/uploads` and references it as `/images/uploads/example.png`.
 
@@ -45,7 +47,7 @@ content:
   - name: blog
     label: Blog Posts
     path: src/data/blog
-    filename: "{year}/{slug}.md"
+    filename: "{{year}}/{{slug}}.md"
     exclude:
       - "**/_*/**"
     subfolders: true
@@ -53,9 +55,9 @@ content:
     view:
       layout: tree
       primary: title
-      fields: [ title, pubDatetime, tags ]
-      sort: [ "pubDatetime desc", "title asc" ]
-      search: [ title, description, tags ]
+      fields: [title, pubDatetime, tags]
+      sort: ["pubDatetime desc", "title asc"]
+      search: [title, description, tags]
       default:
         sort: pubDatetime
         order: desc
@@ -142,7 +144,7 @@ content:
     description: "Long-form stories that surface on dzakiazhari.com. Paths and metadata map directly to src/content.config.ts."
     type: collection
     path: src/data/blog
-    filename: "{year}/{slug}.md"
+    filename: "{{year}}/{{slug}}.md"
     exclude:
       - "**/_*/**"
     subfolders: true
@@ -150,9 +152,9 @@ content:
     view:
       layout: tree
       primary: title
-      fields: [ title, pubDatetime, tags ]
-      sort: [ "pubDatetime desc", "title asc" ]
-      search: [ title, description, tags ]
+      fields: [title, pubDatetime, tags]
+      sort: ["pubDatetime desc", "title asc"]
+      search: [title, description, tags]
       default:
         sort: pubDatetime
         order: desc
@@ -210,7 +212,7 @@ content:
       - name: tags
         label: Tags
         type: select
-        default: [ "others" ]
+        default: ["others"]
         options:
           multiple: true
           creatable: true
@@ -247,13 +249,17 @@ content:
 ```yaml
 # Pages CMS configuration for this Quartz site
 
+# Where media files are stored and how they resolve in the built site
+# Using the content folder keeps images co-located with notes.
 media:
   - name: content
     label: Content Media
     input: content
     output: /
 
+# Shared field definitions for garden notes. Update descriptions when adding new metadata.
 content:
+  # Home page (single file)
   - name: home
     label: Home Page
     type: file
@@ -262,49 +268,95 @@ content:
       - name: title
         label: Title
         type: string
+        description: "Primary heading shown in Quartz. Begin with the Johnny.Decimal code (e.g. 21.03 Symbol and Punctuation)."
       - name: description
         label: Description
         type: text
+        description: "One or two sentences to surface in search previews and link unfurls."
       - name: tags
         label: Tags
         type: string
         list: true
+        description: "Topics that power Quartz search, the graph view, and Pages CMS filters. Press Enter after each tag."
       - name: aliases
         label: Aliases
         type: string
         list: true
+        description: "Alternate names or translations so Quartz resolves wikilinks correctly."
       - name: draft
         label: Draft
         type: boolean
+        description: "Leave enabled while notes are in progress. Quartz hides drafted notes from publish and RSS feeds."
       - name: publish
         label: Publish
         type: boolean
+        description: "Set true once the note is ready to ship. Quartz uses this to decide whether to render the page."
       - name: share
         label: Share
         type: boolean
+        description: "Toggle to allow Quartz to include the note in shared and embed contexts."
+      - name: "dg-home"
+        label: "Digital Garden · Home"
+        type: boolean
+        description: "Pin this note to the Quartz home layout."
+      - name: "dg-publish"
+        label: "Digital Garden · Publish"
+        type: boolean
+        description: "Mirror of Quartz's publish toggle for compatibility with upstream tooling."
+      - name: "dg-pinned"
+        label: "Digital Garden · Pinned"
+        type: boolean
+        description: "Keeps the note at the top of the explorer sidebar."
+      - name: "dg-hide"
+        label: "Digital Garden · Hidden Sections"
+        type: string
+        list: true
+        description: "Hide specific explorer sections (by heading slug) from rendering."
+      - name: "dg-hide-in-graph"
+        label: "Digital Garden · Hide in Graph"
+        type: boolean
+        description: "Exclude the note from the Quartz graph view."
+      - name: "dg-enable-search"
+        label: "Digital Garden · Enable Search"
+        type: boolean
+        description: "Force-enable Quartz search for this note if it is disabled globally."
+      - name: "dg-permalink"
+        label: "Digital Garden · Permalink"
+        type: string
+        description: "Optional slug override for Quartz permalinks."
+      - name: "dg-show-toc"
+        label: "Digital Garden · Show Table of Contents"
+        type: boolean
+        description: "Toggle the Quartz table of contents per note."
       - name: password
         label: Password
         type: string
+        description: "Optional staticryption password. Leave blank unless you intend to protect the note."
       - name: date
         label: Date
         type: datetime
+        description: "Last edited date. Quartz uses this for ordering lists and RSS feeds."
       - name: created
         label: Created
         type: datetime
+        description: "Original creation timestamp for reference."
       - name: body
         label: Body
         type: markdown
+        description: "Markdown content of the note. Match the heading with the Johnny.Decimal title for consistency."
         ui:
           format: github
 
-  - name: language-lab
-    label: Language Lab
+  # Folder-based collections
+  - name: home-notes
+    label: Home Notes
+    description: "Johnny.Decimal 01–09: Home base, Meta docs, and Inbox processing."
     type: collection
-    path: content/Language Lab
+    path: content/Home
     match: "**/*.md"
     filename: "{primary}.md"
     subfolders: true
-    view:
+    view: &collection_view
       layout: tree
       primary: title
       fields: [title, tags, date, draft]
@@ -312,8 +364,52 @@ content:
       search: [title, tags]
     fields: *page_fields
 
-settings:
-  hide: true
+  - name: language-lab
+    label: Language Lab
+    description: "Johnny.Decimal 21–29: language study notes, practice logs, and references."
+    type: collection
+    path: content/Language Lab
+    match: "**/*.md"
+    filename: "{primary}.md"
+    subfolders: true
+    view: *collection_view
+    fields: *page_fields
+
+  - name: finbiz-hub
+    label: Finbiz Hub
+    description: "Johnny.Decimal 31–39: business intelligence decks, market analysis, and storyboards."
+    type: collection
+    path: content/Finbiz Hub
+    match: "**/*.md"
+    filename: "{primary}.md"
+    subfolders: true
+    view: *collection_view
+    fields: *page_fields
+
+  - name: living-chronicles
+    label: Living Chronicles
+    description: "Johnny.Decimal 41–49: personal chronicle entries and relocation journals."
+    type: collection
+    path: content/Living Chronicles
+    match: "**/*.md"
+    filename: "{primary}.md"
+    subfolders: true
+    view: *collection_view
+    fields: *page_fields
+
+  - name: references
+    label: References
+    description: "Johnny.Decimal 51–59: media logs, songs, and bibliographies."
+    type: collection
+    path: content/References
+    match: "**/*.md"
+    filename: "{primary}.md"
+    subfolders: true
+    view: *collection_view
+    fields: *page_fields
+# Settings (optional): hide the Settings page in the CMS for simplicity
+#settings:
+#  hide: true
 ```
 
 ---
@@ -333,45 +429,45 @@ content:
   - name: notes
     label: Notes
     path: content
-    filename: "{slug}.md"
+    filename: "{{slug}}.md"
     subfolders: true
 ```
 
-The Quartz tree view is simpler than the Astro one because I manage thousands of notes. I keep the sidebar in list mode and rely on the folder structure to keep context. 
+The Quartz tree view is simpler than the Astro one because I manage thousands of notes. I keep the sidebar in list mode and rely on the folder structure to keep context.
 
 ## 6. Mirror Quartz front matter
 
 Quartz relies on a handful of boolean switches that control publishing, sharing, and note status. I expose them as checkboxes so the CMS writes valid YAML every time. I also keep tags and aliases as multi-select lists because Quartz uses them for backlinks and display names.
 
 ```yaml
-    fields:
-      - name: slug
-        type: string
-        pattern:
-          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-      - name: title
-        type: string
-        required: false
-      - name: publish
-        type: boolean
-        default: false
-      - name: share
-        type: boolean
-        default: false
-      - name: draft
-        type: boolean
-        default: false
-      - name: tags
-        type: list
-        of: string
-      - name: aliases
-        type: list
-        of: string
-      - name: body
-        type: markdown
+fields:
+  - name: slug
+    type: string
+    pattern:
+      regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+  - name: title
+    type: string
+    required: false
+  - name: publish
+    type: boolean
+    default: false
+  - name: share
+    type: boolean
+    default: false
+  - name: draft
+    type: boolean
+    default: false
+  - name: tags
+    type: list
+    of: string
+  - name: aliases
+    type: list
+    of: string
+  - name: body
+    type: markdown
 ```
 
-When I flip `publish` to true, the Quartz deployment workflow picks up the note during the next sync. Leaving `draft` true keeps the note local even if `publish` was ticked accidentally. 
+When I flip `publish` to true, the Quartz deployment workflow picks up the note during the next sync. Leaving `draft` true keeps the note local even if `publish` was ticked accidentally.
 
 ## 7. Connect the repos to Pages CMS
 
@@ -379,7 +475,7 @@ Once both `.pages.yml` files are committed, I open the Pages CMS dashboard and a
 
 1. Authorize GitHub and select the repository.
 2. Choose the branch (I stick with `main`).
-3. Confirm the CMS sees the collection. The Astro repo shows the yearly archive tree, while the Quartz repo shows the note folders.
+3. Confirm the [Pages CMS](https://app.pagescms.org) sees the collection. The Astro repo shows the yearly archive tree, while the Quartz repo shows the note folders.
 4. Test a dry run by creating a draft entry, filling the required fields, and saving. Pages CMS opens a pull request containing the new Markdown file.
 
 After that, I can write from anywhere. The CMS fills the front matter for me, keeps uploads in the right folders, and never breaks the schema that the projects rely on.
