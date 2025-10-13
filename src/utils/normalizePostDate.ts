@@ -1,4 +1,5 @@
-const EXPLICIT_OFFSET_PATTERN = /([+-]\d{2}:\d{2}|[+-]\d{4})$/;
+const EXPLICIT_OFFSET_PATTERN = /([+-]\d{2}:?\d{2}|Z)$/i;
+const TRAILING_Z_PATTERN = /Z$/i;
 
 const getTimezoneOffsetMinutes = (instant: Date, timeZone: string) => {
   const localeTime = new Date(
@@ -23,32 +24,55 @@ const formatOffset = (minutes: number) => {
   return `${sign}${hoursPortion}:${minutesPortion}`;
 };
 
-export const normalizePostDateInput = (input: string, timeZone?: string) => {
-  if (!timeZone || EXPLICIT_OFFSET_PATTERN.test(input)) {
-    return input;
-  }
+const ensureColonInOffset = (value: string) =>
+  value.replace(
+    /([+-]\d{2})(\d{2})$/,
+    (_, hours: string, minutes: string) => `${hours}:${minutes}`
+  );
 
-  if (!input.endsWith("Z")) {
-    return input;
-  }
+const sanitiseInput = (input: string) => input.trim().replace(/\s+/, "T");
 
-  const instant = new Date(input);
+const appendTimezone = (value: string, timeZone: string) => {
+  const isoCandidate = TRAILING_Z_PATTERN.test(value) ? value : `${value}Z`;
+  const instant = new Date(isoCandidate);
 
   if (Number.isNaN(instant.getTime())) {
-    return input;
+    return value;
   }
 
   const offsetMinutes = getTimezoneOffsetMinutes(instant, timeZone);
 
-  if (!Number.isFinite(offsetMinutes) || offsetMinutes === 0) {
+  if (!Number.isFinite(offsetMinutes)) {
+    return value;
+  }
+
+  const base = TRAILING_Z_PATTERN.test(value) ? value.slice(0, -1) : value;
+
+  return `${base}${formatOffset(offsetMinutes)}`;
+};
+
+export const normalizePostDateInput = (input: string, timeZone?: string) => {
+  if (!timeZone) {
     return input;
   }
 
-  return `${input.slice(0, -1)}${formatOffset(offsetMinutes)}`;
+  const cleaned = sanitiseInput(input);
+
+  if (EXPLICIT_OFFSET_PATTERN.test(cleaned)) {
+    if (TRAILING_Z_PATTERN.test(cleaned)) {
+      return appendTimezone(cleaned, timeZone);
+    }
+
+    return ensureColonInOffset(cleaned);
+  }
+
+  return appendTimezone(cleaned, timeZone);
 };
 
 export const parsePostDate = (input: string | Date, timeZone?: string) => {
-  const raw = input instanceof Date ? input.toISOString() : input;
+  if (input instanceof Date) {
+    return new Date(normalizePostDateInput(input.toISOString(), timeZone));
+  }
 
-  return new Date(normalizePostDateInput(raw, timeZone));
+  return new Date(normalizePostDateInput(input, timeZone));
 };

@@ -23,7 +23,8 @@ const blog = defineCollection({
         timezone: z.string().optional(),
       })
       .transform((entry, ctx) => {
-        const pubDatetime = parsePostDate(entry.pubDatetime, entry.timezone);
+        const timezone = entry.timezone ?? SITE.timezone;
+        const pubDatetime = parsePostDate(entry.pubDatetime, timezone);
 
         if (Number.isNaN(pubDatetime.getTime())) {
           ctx.addIssue({
@@ -37,7 +38,7 @@ const blog = defineCollection({
         const modDatetime =
           entry.modDatetime === undefined || entry.modDatetime === null
             ? entry.modDatetime
-            : parsePostDate(entry.modDatetime, entry.timezone);
+            : parsePostDate(entry.modDatetime, timezone);
 
         if (
           modDatetime instanceof Date &&
@@ -55,6 +56,7 @@ const blog = defineCollection({
           ...entry,
           pubDatetime,
           modDatetime,
+          timezone,
         };
       }),
 });

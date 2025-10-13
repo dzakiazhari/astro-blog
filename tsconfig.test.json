@@ -18,6 +18,10 @@
     "src/utils/getPath.test.ts",
     "src/utils/postFilter.ts",
     "src/utils/postFilter.test.ts",
+    "src/utils/normalizePostDate.ts",
+    "src/utils/normalizePostDate.test.ts",
+    "src/utils/getSortedPosts.ts",
+    "src/utils/getSortedPosts.test.ts",
     "src/utils/loadGoogleFont.ts",
     "src/utils/loadGoogleFont.test.ts"
   ],

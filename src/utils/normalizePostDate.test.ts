@@ -13,6 +13,27 @@ test("normalises Pages CMS Z-suffixed timestamps to the declared timezone", () =
   assert.equal(result.toISOString(), "2025-10-13T08:25:00.000Z");
 });
 
+test("honours timezone hints when parsing Date instances", () => {
+  const raw = new Date("2025-10-13T17:25:00Z");
+  const result = parsePostDate(raw, "Asia/Tokyo");
+
+  assert.equal(result.toISOString(), "2025-10-13T08:25:00.000Z");
+});
+
+test("reformats compact numeric offsets", () => {
+  const raw = "2025-10-13T17:25:00+0900";
+  const normalised = normalizePostDateInput(raw, "Asia/Tokyo");
+
+  assert.equal(normalised, "2025-10-13T17:25:00+09:00");
+});
+
+test("treats offset-free timestamps as belonging to the declared timezone", () => {
+  const raw = "2025-10-13 17:25:00";
+  const normalised = normalizePostDateInput(raw, "Asia/Tokyo");
+
+  assert.equal(normalised, "2025-10-13T17:25:00+09:00");
+});
+
 test("keeps explicit offsets intact", () => {
   const raw = "2025-10-13T17:25:00+09:00";
   const normalised = normalizePostDateInput(raw, "Asia/Tokyo");
