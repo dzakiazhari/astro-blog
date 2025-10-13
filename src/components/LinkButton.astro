@@ -21,24 +21,28 @@ const {
   rel,
 } = Astro.props;
 
+const trimmedTarget = target?.trim();
+const normalisedTarget = trimmedTarget?.toLowerCase();
+const computedTarget = trimmedTarget === "" ? undefined : trimmedTarget;
+
 const computedRel = (() => {
-  if (target !== "_blank") {
-    return rel;
+  if (normalisedTarget !== "_blank") {
+    const cleanedRel = rel?.trim();
+
+    return cleanedRel === "" ? undefined : cleanedRel;
   }
 
   const safeTokens = new Set(
     (rel ?? "")
       .split(/\s+/)
-      .map(token => token.trim())
-      .filter(Boolean),
+      .map(token => token.trim().toLowerCase())
+      .filter(Boolean)
   );
 
   safeTokens.add("noopener");
   safeTokens.add("noreferrer");
 
-  const merged = Array.from(safeTokens).join(" ");
-
-  return merged === "" ? undefined : merged;
+  return Array.from(safeTokens).join(" ");
 })();
 ---
 
@@ -59,7 +63,7 @@ const computedRel = (() => {
       class:list={["group inline-block hover:text-accent", className]}
       aria-label={ariaLabel}
       title={title}
-      target={target}
+      target={computedTarget}
       rel={computedRel}
     >
       <slot />
