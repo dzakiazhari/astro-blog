@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 
 import postFilter from "./postFilter";
 import { SITE } from "@/config";
+import { parsePostDate } from "@/utils/normalizePostDate";
 
 type PostEntry = Parameters<typeof postFilter>[0];
 
@@ -57,4 +58,20 @@ test("keeps scheduled posts visible while developing", () => {
   const entry = createEntry({ pubDatetime: future });
 
   assert.equal(postFilter(entry, { now, isDev: true }), true);
+});
+
+test("accounts for timezone-tagged publish times from Pages CMS", () => {
+  const raw = "2024-01-01T09:00:00Z";
+  const parsed = parsePostDate(raw, "Asia/Tokyo");
+
+  const entry = createEntry({
+    pubDatetime: parsed,
+    timezone: "Asia/Tokyo",
+  });
+
+  const before = Date.UTC(2023, 11, 31, 23, 40, 0);
+  assert.equal(postFilter(entry, { now: before }), false);
+
+  const after = Date.UTC(2024, 0, 1, 0, 10, 0);
+  assert.equal(postFilter(entry, { now: after }), true);
 });
