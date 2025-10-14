@@ -20,6 +20,7 @@ const { page } = Astro.props;
         href={page.url.prev as string}
         class:list={["me-4 select-none", { "opacity-50": !page.url.prev }]}
         ariaLabel="Previous"
+        prefetch="hover"
       >
         <IconArrowLeft class="inline-block rtl:rotate-180" />
         Prev
@@ -30,6 +31,7 @@ const { page } = Astro.props;
         href={page.url.next as string}
         class:list={["ms-4 select-none", { "opacity-50": !page.url.next }]}
         ariaLabel="Next"
+        prefetch="hover"
       >
         Next
         <IconArrowRight class="inline-block rtl:rotate-180" />
