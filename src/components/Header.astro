@@ -101,6 +101,20 @@ const isActive = (path: string) => {
             </a>
           </li>
           {
+            SITE.notesUrl && (
+              <li class="col-span-2">
+                <a
+                  href={SITE.notesUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-astro-prefetch="false"
+                >
+                  Notes
+                </a>
+              </li>
+            )
+          }
+          {
             SITE.showArchives && (
               <li class="col-span-2">
                 <LinkButton
