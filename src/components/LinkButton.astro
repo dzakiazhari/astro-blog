@@ -8,6 +8,7 @@ export interface Props {
   disabled?: boolean;
   target?: string;
   rel?: string;
+  prefetch?: "auto" | "hover" | "tap" | "viewport" | "load" | false;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   disabled = false,
   target,
   rel,
+  prefetch = "auto",
 } = Astro.props;
 
 const trimmedTarget = target?.trim();
@@ -44,6 +46,34 @@ const computedRel = (() => {
 
   return Array.from(safeTokens).join(" ");
 })();
+
+const isExternalLink = (() => {
+  const base = "http://localhost";
+
+  try {
+    const parsed = new URL(href, base);
+
+    if (/^(mailto:|tel:)/i.test(parsed.protocol)) {
+      return true;
+    }
+
+    return parsed.origin !== base;
+  } catch {
+    return false;
+  }
+})();
+
+const prefetchAttr = (() => {
+  if (prefetch === false) {
+    return "false";
+  }
+
+  if (prefetch === "auto") {
+    return isExternalLink ? "false" : undefined;
+  }
+
+  return prefetch;
+})();
 ---
 
 {
@@ -65,6 +95,7 @@ const computedRel = (() => {
       title={title}
       target={computedTarget}
       rel={computedRel}
+      data-astro-prefetch={prefetchAttr}
     >
       <slot />
     </a>
