@@ -30,41 +30,7 @@ function collectHtmlFiles(dir, bucket) {
 }
 
 const allHtmlFiles = collectHtmlFiles(distDir, []).sort((a, b) => a.localeCompare(b));
-const relativeHtml = allHtmlFiles.map(file => relative(distDir, file));
-
-const prioritizedMatchers = [
-  path => path === "index.html",
-  path => path === "posts/index.html",
-  path => path === "tags/index.html",
-  path => path === "archives/index.html",
-  path => /^posts\/\d{4}\/[^/]+\/index\.html$/.test(path),
-];
-
-const sampledRelative = [];
-
-function selectPath(predicate) {
-  const match = relativeHtml.find(predicate);
-
-  if (match && !sampledRelative.includes(match)) {
-    sampledRelative.push(match);
-  }
-}
-
-for (const matcher of prioritizedMatchers) {
-  selectPath(matcher);
-}
-
-for (const path of relativeHtml) {
-  if (sampledRelative.length >= 5) {
-    break;
-  }
-
-  if (!sampledRelative.includes(path)) {
-    sampledRelative.push(path);
-  }
-}
-
-const sampled = sampledRelative.map(path => join(distDir, path));
+const sampled = allHtmlFiles.slice(0, 5);
 
 if (sampled.length < 5) {
   console.warn(`Only found ${sampled.length} HTML files. Metrics will use the available files.`);
@@ -88,7 +54,6 @@ const rows = sampled.map(file => {
     file: relative(distDir, file),
     anchors: anchorMatches.length,
     prefetchEnabled: enabledPrefetch,
-    missingPrefetch: anchorMatches.length - enabledPrefetch,
     coverage: anchorMatches.length
       ? Number((enabledPrefetch / anchorMatches.length).toFixed(3))
       : 0,
@@ -97,7 +62,6 @@ const rows = sampled.map(file => {
 
 const totalAnchors = rows.reduce((sum, row) => sum + row.anchors, 0);
 const totalPrefetch = rows.reduce((sum, row) => sum + row.prefetchEnabled, 0);
-const totalMissing = rows.reduce((sum, row) => sum + row.missingPrefetch, 0);
 const averageCoverage = rows.length
   ? Number((rows.reduce((sum, row) => sum + row.coverage, 0) / rows.length).toFixed(3))
   : 0;
@@ -109,5 +73,5 @@ for (const row of rows) {
   );
 }
 console.log(
-  `Aggregate: ${totalPrefetch}/${totalAnchors} anchors instrumented, ${totalMissing} missing prefetch, average coverage ${averageCoverage}`,
+  `Aggregate: ${totalPrefetch}/${totalAnchors} anchors instrumented, average coverage ${averageCoverage}`,
 );

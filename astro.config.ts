@@ -112,6 +112,7 @@ export default defineConfig({
       }),
     },
   },
+  prefetch: true,
   experimental: {
     preserveScriptOrder: true,
   },
