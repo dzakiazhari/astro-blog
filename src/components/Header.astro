@@ -43,6 +43,7 @@ const isActive = (path: string) => {
       <a
         href="/"
         class="absolute inline-flex items-center gap-2 py-1 text-2xl leading-8 font-semibold whitespace-nowrap text-accent sm:static sm:my-auto sm:text-3xl sm:leading-none"
+        data-astro-prefetch="viewport"
       >
         {SITE.title}
         <LogoUnfold
@@ -73,17 +74,29 @@ const isActive = (path: string) => {
           ]}
         >
           <li class="col-span-2">
-            <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
+            <a
+              href="/posts"
+              class:list={{ "active-nav": isActive("/posts") }}
+              data-astro-prefetch="viewport"
+            >
               Posts
             </a>
           </li>
           <li class="col-span-2">
-            <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
+            <a
+              href="/tags"
+              class:list={{ "active-nav": isActive("/tags") }}
+              data-astro-prefetch="viewport"
+            >
               Tags
             </a>
           </li>
           <li class="col-span-2">
-            <a href="/about" class:list={{ "active-nav": isActive("/about") }}>
+            <a
+              href="/about"
+              class:list={{ "active-nav": isActive("/about") }}
+              data-astro-prefetch="viewport"
+            >
               About
             </a>
           </li>
@@ -100,6 +113,7 @@ const isActive = (path: string) => {
                   ]}
                   ariaLabel="archives"
                   title="Archives"
+                  prefetch="viewport"
                 >
                   <IconArchive class="hidden sm:inline-block" />
                   <span class="sm:sr-only">Archives</span>
@@ -116,6 +130,7 @@ const isActive = (path: string) => {
               ]}
               ariaLabel="search"
               title="Search"
+              prefetch="viewport"
             >
               <IconSearch />
               <span class="sr-only">Search</span>
