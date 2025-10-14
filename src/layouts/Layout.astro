@@ -137,6 +137,11 @@ const structuredData = {
 
     <ClientRouter />
 
+    <script type="module" is:inline>
+      import { init as initPrefetch } from "astro:prefetch";
+
+      initPrefetch({ defaultStrategy: "hover" });
+    </script>
     <script is:inline src="/toggle-theme.js"></script>
     {
       enableScrollEnhancements && (
