@@ -43,6 +43,7 @@ relevant source files for quick follow-up.
 | DX | Dev server defaulted to localhost, so remote preview tools could not connect. | The dev script now binds to `0.0.0.0:4321` and documentation/agent notes highlight the accessible host. | `package.json`, `AGENTS.md`, `README.md` |
 | Process | CMS configuration could drift from blog path helpers after routing changes. | Agent guide now flags `.pages.yml` for review when blog structure shifts, and the CMS config references `BLOG_PATH` usage. | `AGENTS.md`, `.pages.yml` |
 | Bug Fix | Pages CMS saved a post without `description`, breaking the Astro content schema. | Restored the frontmatter description and marked the CMS field as required so future entries stay schema-safe. | `.pages.yml`, `src/data/blog/2025/pages-cms-for-my-astro-blog-and-quartz.md` |
+| Process | Pages CMS config still allowed underscore-prefixed drafts and optional frontmatter that the schema requires. | Switched filename templating to `fields.*`, blocked `_*.md`, enforced slug/title/date requirements, capped description length, and targeted OG uploads to the blog media bucket. | `.pages.yml` |
 
 ## Backlog
 
