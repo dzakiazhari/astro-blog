@@ -5,7 +5,7 @@ title: Pages CMS for My Astro Blog and Quartz Notes
 description: Step-by-step Pages CMS configuration for syncing Astro blog posts and Quartz notes.
 author: Dzaki Azhari
 pubDatetime: 2025-10-13T17:25:00Z
-modDatetime: 2025-10-14T02:00:00Z
+modDatetime: 2025-10-14T05:00:00Z
 featured: true
 draft: false
 tags:
@@ -20,7 +20,7 @@ I keep two git projects side by side: `astro-blog` for the main site and `privat
 
 ## 2. Configure media buckets for the Astro blog
 
-Pages CMS needs to know where to drop uploads. In the Astro project I keep two buckets—`uploads` for post-specific screenshots and `site-assets` for shared icons and downloads. Both point back into `public/` so Astro can serve files without extra glue, and the config now includes categories and inline descriptions that mirror the Pages CMS docs.
+Pages CMS needs to know where to drop uploads. In the Astro project I keep two buckets: `uploads` for post screenshots and `site-assets` for icons, downloads, and anything that might be reused. Both point back into `public/` so Astro can serve files without extra glue, and the config now mirrors the language that Pages CMS uses in its docs.
 
 ```yaml
 media:
@@ -36,11 +36,11 @@ media:
     categories: [image, code, document]
 ```
 
-The `input` value tells Pages CMS which folder in the repo should hold the raw file. The `output` value is the public URL that the Markdown editor will insert. With this mapping, uploads land in `public/images/uploads` and resolve as `/images/uploads/example.png`, matching the recommended media flow from the documentation.
+The `input` value tells Pages CMS which folder in the repo should hold the raw file. The `output` value is the public URL that the Markdown editor will insert. With this mapping, uploads land in `public/images/uploads` and resolve as `/images/uploads/example.png`, which lines up with how the docs recommend handling media.
 
 ## 3. Map the Astro collection with field templating
 
-My blog posts live inside `src/data/blog`, grouped by year folders. The CMS collection reflects that layout and now uses the recommended `{{fields.*}}` templating so Pages CMS understands how to build paths directly from user input. I also expand the `exclude` list to hide `_drafts` folders whether they’re files or directories.
+My blog posts live inside `src/data/blog`, grouped by year folders. The CMS collection reflects that layout and now uses the `{{fields.*}}` templating so Pages CMS builds paths straight from whatever I type into the form. I also expanded the `exclude` list to hide `_drafts` folders whether they’re files or directories.
 
 ```yaml
 content:
@@ -66,11 +66,11 @@ content:
         order: desc
 ```
 
-The tree view now highlights the draft state so I can spot unpublished work instantly. Using `{{fields.year}}` and `{{fields.slug}}` keeps the saved path aligned with `src/utils/getPath.ts` without relying on implicit collection values.
+The tree view highlights the draft state so I can spot unpublished work instantly. Using `{{fields.year}}` and `{{fields.slug}}` keeps the saved path aligned with `src/utils/getPath.ts` without relying on implicit collection values.
 
 ## 4. Mirror the Astro front matter schema (docs-aligned)
 
-Every field in the CMS corresponds to a field in `src/content.config.ts`. Following the Pages CMS guides, I grouped inputs by intent, added helper descriptions, and tightened validation so the editor prevents malformed front matter.
+Every field in the CMS corresponds to a field in `src/content.config.ts`. After re-reading the Pages CMS guides I grouped inputs by intent, added helper descriptions, and tightened validation so the editor blocks malformed front matter before it hits git.
 
 1. **Path controls** for the year and slug (select + regex pattern).
 2. **Required metadata** with labels, length hints, and `required: true` flags.
@@ -127,7 +127,7 @@ fields:
       regex: "^(https?:\\/\\/)([^\s]+)$"
 ```
 
-This higher-fidelity schema keeps Pages CMS aligned with the Astro Zod schema while leveraging the UI affordances—placeholders, regex messaging, and media bucket defaults—highlighted in the documentation. I’ve yet to hit a validation error after the refresh.
+The updated schema keeps Pages CMS aligned with the Astro Zod rules while leaning on the nicer UI touches from the documentation. Placeholders, regex messages, and media bucket defaults all kick in at the right moments, and so far I haven’t hit a validation error after the refresh.
 
 ---
 
@@ -425,7 +425,7 @@ content:
 
 ## 5. Configure Quartz media and layout
 
-My Quartz project keeps note assets inside `static/uploads`, so the Pages CMS config defines a single media bucket tied to that folder. Because Quartz publishes the `static` directory, the CMS output path is `/uploads`. The collection now relies on a single tree view, anchored by the reusable `&page_fields` block, so every Johnny.Decimal folder inherits the same metadata requirements without duplication.
+My Quartz project keeps note assets inside `static/uploads`, so the Pages CMS config defines a single media bucket tied to that folder. Because Quartz publishes the `static` directory, the CMS output path is `/uploads`. The collection now relies on a single tree view anchored by the reusable `&page_fields` block, so every Johnny.Decimal folder inherits the same metadata requirements without duplication.
 
 The updated field definitions also switch to the `type: list` syntax that Pages CMS recommends and mark the most important fields (`title`, `publish`, `draft`) as required or defaulted, which makes the editor guard against accidental public pushes.
 
