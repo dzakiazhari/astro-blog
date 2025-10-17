@@ -21,16 +21,17 @@ content:
     path: src/data/blog
     # Nested directories are slugified by src/utils/getPath.ts, so the CMS only needs the final segment here
     # Pages CMS uses moustache-style templating for field values.
-    filename: "{{year}}/{{slug}}.md"
+    filename: "{{fields.year}}/{{fields.slug}}.md"
     exclude:
       - "**/_*/**"
+      - "**/_*"
     subfolders: true
 
     view:
       layout: tree
       primary: title
       # Show the post title in the list, with date and tags alongside
-      fields: [ title, pubDatetime, tags ]
+      fields: [ title, pubDatetime, tags, draft ]
       sort: [ "pubDatetime desc", "title asc" ]
       search: [ title, description, tags ]
       default:
@@ -61,6 +62,7 @@ content:
         label: Slug (filename)
         type: string
         description: "Lowercase with hyphens only. The CMS writes {slug}.md under the chosen year."
+        required: true
         pattern:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           message: "Use lowercase words separated by hyphens without the .md extension."
@@ -70,12 +72,15 @@ content:
         label: Title
         type: string
         description: "Displayed as the page <h1> and the document title tag."
+        required: true
 
       - name: description
         label: Description
         type: text
         description: "Short summary for cards, RSS, and SEO meta tags."
         required: true
+        options:
+          maxlength: 180
 
       - name: author
         label: Author
@@ -92,6 +97,7 @@ content:
         type: date
         options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }
         description: "Posts remain hidden until this timestamp (with a 15-minute grace window)."
+        required: true
 
       - name: modDatetime
         label: Last modified
@@ -136,12 +142,17 @@ content:
         type: image
         required: false
         description: "Uploads to /public/images/uploads. Leave blank to auto-generate dynamic OG art."
+        options:
+          media: uploads
 
       - name: canonicalURL
         label: Canonical URL
         type: string
         required: false
         description: "Use for cross-posts hosted elsewhere."
+        pattern:
+          regex: "^(https?:\\/\\/)([^\s]+)$"
+          message: "Use an absolute URL starting with http:// or https://"
 
       - name: hideEditPost
         label: Hide "Suggest Changes"
