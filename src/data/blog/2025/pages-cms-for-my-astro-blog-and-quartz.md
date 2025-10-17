@@ -2,7 +2,8 @@
 year: "2025"
 slug: pages-cms-for-my-astro-blog-and-quartz-notes
 title: Pages CMS for My Astro Blog and Quartz Notes
-description: Step-by-step Pages CMS configuration for syncing Astro blog posts and Quartz notes.
+description: Step-by-step Pages CMS configuration for syncing Astro blog posts
+  and Quartz notes.
 author: Dzaki Azhari
 pubDatetime: 2025-10-13T17:25:00Z
 modDatetime: 2025-10-14T05:00:00Z
@@ -10,10 +11,10 @@ featured: true
 draft: false
 tags:
   - dev
+canonicalURL: https://dzakiazhari.com/posts/2025/pages-cms-for-my-astro-blog-and-quartz-notes/
 hideEditPost: false
 timezone: Asia/Tokyo
 ---
-
 ## 1. Get the repos ready
 
 I keep two git projects side by side: `astro-blog` for the main site and `private-quartz` for the evergreen notes. Pages CMS reads files straight from the repository, so all I need locally is the repo on disk and a `.pages.yml` file in the root. I commit the config once and let [Pages CMS](https://pagescms.org/docs/) generate commits when I publish content.
@@ -318,13 +319,17 @@ content:
 ```yaml
 # Pages CMS configuration for this Quartz site
 
+# Where media files are stored and how they resolve in the built site
+# Using the content folder keeps images co-located with notes.
 media:
-  - name: note-assets
-    label: Note assets
-    input: static/uploads
-    output: /uploads
+  - name: content
+    label: Content Media
+    input: content
+    output: /
 
+# Shared field definitions for garden notes. Update descriptions when adding new metadata.
 content:
+  # Home page (single file)
   - name: home
     label: Home Page
     type: file
@@ -334,91 +339,126 @@ content:
         label: Title
         type: string
         description: "Primary heading shown in Quartz. Begin with the Johnny.Decimal code (e.g. 21.03 Symbol and Punctuation)."
-        required: true
       - name: description
         label: Description
         type: text
         description: "One or two sentences to surface in search previews and link unfurls."
       - name: tags
         label: Tags
-        type: list
-        of: string
+        type: string
+        list: true
         description: "Topics that power Quartz search, the graph view, and Pages CMS filters. Press Enter after each tag."
+      - name: cssclasses
+        label: CSS classes
+        type: string
+        list: true
+        description: "Optional Quartz class names (e.g. cards) for bespoke styling hooks."
       - name: aliases
         label: Aliases
-        type: list
-        of: string
+        type: string
+        list: true
         description: "Alternate names or translations so Quartz resolves wikilinks correctly."
-      - name: publish
-        label: Publish
-        type: boolean
-        default: false
-        description: "Enable once the note is ready to ship. Quartz uses this to decide whether to render the page."
-      - name: share
-        label: Share
-        type: boolean
-        default: false
-        description: "Allow Quartz to include the note in shared and embed contexts."
       - name: draft
         label: Draft
         type: boolean
         default: false
-        description: "Keep enabled while notes are in progress so they stay local."
-      - name: "dg-home"
-        label: "Digital Garden · Home"
-        type: boolean
-      - name: "dg-publish"
-        label: "Digital Garden · Publish"
-        type: boolean
-      - name: "dg-pinned"
-        label: "Digital Garden · Pinned"
-        type: boolean
-      - name: "dg-hide"
-        label: "Digital Garden · Hidden Sections"
-        type: list
-        of: string
-      - name: "dg-hide-in-graph"
-        label: "Digital Garden · Hide in Graph"
-        type: boolean
-      - name: "dg-enable-search"
-        label: "Digital Garden · Enable Search"
-        type: boolean
-      - name: "dg-permalink"
-        label: "Digital Garden · Permalink"
+        description: "Leave enabled while notes are in progress. Quartz hides drafted notes from publish and RSS feeds."
+      - name: permalink
+        label: Permalink
         type: string
-      - name: "dg-show-toc"
-        label: "Digital Garden · Show Table of Contents"
+        description: "Optional slug override for Quartz permalinks (e.g. index, meta, disclaimer)."
+      - name: enableToc
+        label: Show table of contents
         type: boolean
+        description: "Disable when a page should hide the Quartz table of contents."
       - name: password
         label: Password
         type: string
-      - name: date
-        label: Date
-        type: datetime
+        description: "Optional staticryption password. Leave blank unless you intend to protect the note."
       - name: created
         label: Created
-        type: datetime
+        type: date
+        description: "Original creation timestamp in Japan Standard Time (UTC+09:00)."
+        options: &timestamp_options
+          time: true
+          step: 1
+          format: "yyyy-MM-dd'T'HH:mm:ss'+09:00'"
+      - name: updated
+        label: Updated
+        type: date
+        description: "Last updated timestamp in Japan Standard Time (UTC+09:00)."
+        options: *timestamp_options
       - name: body
         label: Body
         type: markdown
+        description: "Markdown content of the note. Match the heading with the Johnny.Decimal title for consistency."
         ui:
           format: github
 
-  - name: garden
-    label: Garden Notes
-    description: "Johnny.Decimal collections mirrored from Obsidian."
+  # Folder-based collections
+  - name: home-notes
+    label: Home Notes
+    description: "Johnny.Decimal 01–09: Home base, Meta docs, and Inbox processing."
     type: collection
-    path: content
+    path: content/Home
     match: "**/*.md"
     filename: "{primary}.md"
     subfolders: true
-    view:
+    view: &collection_view
       layout: tree
       primary: title
-      fields: [title, tags, date, draft]
+      fields: [title, tags, updated, draft]
       sort: ["title"]
       search: [title, tags]
     fields: *page_fields
+
+  - name: language-lab
+    label: Language Lab
+    description: "Johnny.Decimal 21–29: language study notes, practice logs, and references."
+    type: collection
+    path: content/Language Lab
+    match: "**/*.md"
+    filename: "{primary}.md"
+    subfolders: true
+    view: *collection_view
+    fields: *page_fields
+
+  - name: finbiz-hub
+    label: Finbiz Hub
+    description: "Johnny.Decimal 31–39: business intelligence decks, market analysis, and storyboards."
+    type: collection
+    path: content/Finbiz Hub
+    match: "**/*.md"
+    filename: "{primary}.md"
+    subfolders: true
+    view: *collection_view
+    fields: *page_fields
+
+  - name: living-chronicles
+    label: Living Chronicles
+    description: "Johnny.Decimal 41–49: personal chronicle entries and relocation journals."
+    type: collection
+    path: content/Living Chronicles
+    match: "**/*.md"
+    filename: "{primary}.md"
+    subfolders: true
+    view: *collection_view
+    fields: *page_fields
+
+  - name: references
+    label: References
+    description: "Johnny.Decimal 51–59: media logs, songs, and bibliographies."
+    type: collection
+    path: content/References
+    match: "**/*.md"
+    filename: "{primary}.md"
+    subfolders: true
+    view: *collection_view
+    fields: *page_fields
+
+# Settings (optional): hide the Settings page in the CMS for simplicity
+settings:
+  hide: false
 ```
 
 ---
