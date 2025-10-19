@@ -23,39 +23,46 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
 }
 ---
 
-<nav class="mx-auto mt-8 mb-1 w-full max-w-app px-4" aria-label="breadcrumb">
-  <ul
-    class="font-light [&>li]:inline [&>li:not(:last-child)>a]:hover:opacity-100"
-  >
+<nav
+  class="site-shell mt-6 mb-3 text-[0.72rem] font-medium tracking-[0.26em] text-foreground/60 uppercase"
+  aria-label="Breadcrumb"
+>
+  <ol class="flex flex-wrap items-center gap-2">
     <li>
-      <a href="/" class="opacity-80" data-astro-prefetch="hover">Home</a>
-      <span aria-hidden="true" class="opacity-80">&raquo;</span>
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-full border border-transparent px-3 py-1 transition-colors duration-150 hover:border-accent/40 hover:text-foreground"
+        data-astro-prefetch="hover"
+      >
+        Home
+      </a>
     </li>
     {
-      breadcrumbList.map((breadcrumb, index) =>
-        index + 1 === breadcrumbList.length ? (
-          <li>
-            <span
-              class:list={["capitalize opacity-75", { lowercase: index > 0 }]}
-              aria-current="page"
-            >
-              {/* make the last part lowercase in Home > Tags > some-tag */}
+      breadcrumbList.map((breadcrumb, index) => (
+        <li
+          class="inline-flex items-center gap-2"
+          aria-current={
+            index + 1 === breadcrumbList.length ? "page" : undefined
+          }
+        >
+          <span aria-hidden="true" class="text-foreground/40">
+            /
+          </span>
+          {index + 1 === breadcrumbList.length ? (
+            <span class:list={["capitalize", { lowercase: index > 0 }]}>
               {decodeURIComponent(breadcrumb)}
             </span>
-          </li>
-        ) : (
-          <li>
+          ) : (
             <a
               href={`/${breadcrumb}/`}
-              class="capitalize opacity-70"
+              class="inline-flex items-center gap-2 rounded-full border border-transparent px-3 py-1 transition-colors duration-150 hover:border-accent/40 hover:text-foreground"
               data-astro-prefetch="hover"
             >
               {breadcrumb}
             </a>
-            <span aria-hidden="true">&raquo;</span>
-          </li>
-        )
-      )
+          )}
+        </li>
+      ))
     }
-  </ul>
+  </ol>
 </nav>

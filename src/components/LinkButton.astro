@@ -80,7 +80,10 @@ const prefetchAttr = (() => {
   disabled ? (
     <span
       id={id}
-      class:list={["group inline-block", className]}
+      class:list={[
+        "inline-flex items-center gap-2 rounded-lg border border-border/60 px-4 py-2 text-[0.72rem] font-semibold tracking-[0.26em] text-foreground/70 uppercase transition-colors duration-150 hover:border-accent/40 hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/35 focus-visible:outline-none",
+        className,
+      ]}
       title={title}
       aria-disabled={disabled}
     >
@@ -90,7 +93,10 @@ const prefetchAttr = (() => {
     <a
       id={id}
       {href}
-      class:list={["group inline-block hover:text-accent", className]}
+      class:list={[
+        "inline-flex items-center gap-2 rounded-lg border border-border/60 px-4 py-2 text-[0.72rem] font-semibold tracking-[0.26em] text-foreground/70 uppercase transition-colors duration-150 hover:border-accent/40 hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/35 focus-visible:outline-none",
+        className,
+      ]}
       aria-label={ariaLabel}
       title={title}
       target={computedTarget}

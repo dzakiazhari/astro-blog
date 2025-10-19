@@ -13,59 +13,52 @@
       @apply mb-3 font-semibold text-foreground;
     }
 
-    /* Quartz-style horizontal header treatments */
     h1 {
-      @apply text-3xl sm:text-4xl md:text-5xl;
+      @apply text-3xl sm:text-[2.5rem] md:text-[2.75rem];
       text-wrap: balance;
+      letter-spacing: -0.01em;
     }
 
     h2,
     h3 {
-      @apply relative flex items-center gap-3;
+      @apply relative pl-5;
     }
 
     h2 {
-      @apply text-2xl sm:text-3xl;
+      @apply text-[1.65rem] sm:text-3xl;
       text-wrap: balance;
     }
 
     h3 {
-      @apply text-xl sm:text-2xl;
+      @apply text-xl sm:text-[1.4rem];
     }
 
     h2::before,
     h3::before {
       content: "";
-      display: inline-block;
-      border-radius: 0.35rem;
-      background: var(--color-accent);
-      box-shadow: 0 0 0 1px
-        color-mix(in oklab, var(--color-foreground) 8%, transparent 92%);
-    }
-
-    h2::before {
-      width: 0.85rem;
-      height: 0.85rem;
-    }
-
-    h3::before {
-      width: 0.65rem;
-      height: 0.65rem;
-    }
-
-    h2::after,
-    h3::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: color-mix(in oklab, var(--color-accent) 28%, transparent 72%);
+      position: absolute;
+      inset-block: 0.35em;
+      inset-inline-start: 0;
+      width: 0.18rem;
+      border-radius: 9999px;
+      background: linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--color-accent) 92%, transparent 8%),
+        color-mix(in oklab, var(--color-accent) 40%, transparent 60%)
+      );
     }
 
     h2 > a[aria-hidden="true"],
     h3 > a[aria-hidden="true"] {
-      order: 1;
-      margin-inline-start: 0.75rem;
-      @apply text-accent/40 transition-colors duration-150 ease-out;
+      position: absolute;
+      inset-inline-start: -1.85rem;
+      inset-block-start: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.35rem;
+      height: 1.35rem;
+      @apply text-accent/50 transition-colors duration-150 ease-out;
     }
 
     h2 > a[aria-hidden="true"]:where(:hover, :focus-visible),
@@ -74,20 +67,8 @@
     }
 
     h4 {
-      @apply mt-6 flex items-center gap-3 text-xs tracking-[0.18em] text-foreground/75 uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    h4::before,
-    h4::after {
-      content: "";
-      height: 1px;
-      background: color-mix(in oklab, var(--color-accent) 24%, transparent 76%);
-      flex: 1;
-    }
-
-    h4::before {
-      max-width: 1.75rem;
+      @apply mt-8 text-[0.72rem] tracking-[0.26em] text-foreground/70 uppercase;
+      letter-spacing: 0.26em;
     }
 
     p,
@@ -125,7 +106,7 @@
     }
 
     img {
-      @apply mx-auto rounded-md border border-border;
+      @apply mx-auto rounded border border-border/70 shadow-sm;
     }
 
     figcaption {
@@ -148,16 +129,21 @@
     }
 
     code {
-      @apply rounded bg-muted/70 p-1 break-words text-foreground before:content-none after:content-none;
+      @apply rounded-[0.35rem] bg-muted/60 px-1 py-0.5 break-words text-foreground before:content-none after:content-none;
     }
 
     /* Quartz-like blockquote */
     blockquote:not(.callout) {
-      border-left: 3px solid var(--color-accent);
-      padding-left: 1rem;
-      margin: 1rem 0;
+      border-inline-start: 2px solid
+        color-mix(in oklab, var(--color-accent) 55%, transparent 45%);
+      padding-inline-start: 1.1rem;
+      margin: 1.25rem 0;
       color: var(--color-foreground);
-      transition: border-color 0.2s ease;
+      background: color-mix(in oklab, var(--color-muted) 35%, transparent 65%);
+      border-radius: 0.5rem;
+      transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
     }
 
     details {
@@ -165,11 +151,11 @@
     }
 
     summary {
-      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:outline-dashed;
+      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:outline-dotted;
     }
 
     pre {
-      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
+      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dotted;
     }
   }
 
@@ -180,7 +166,7 @@
   }
 
   .expressive-code .frame {
-    border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));
+    border-radius: 1rem;
     overflow: clip;
     transition:
       box-shadow 180ms ease,
@@ -273,7 +259,7 @@
   .callout {
     border: 1px solid var(--border);
     background-color: var(--bg);
-    border-radius: 0.75rem;
+    border-radius: 0.6rem;
     padding: 0.75rem 1rem;
     margin: 1rem 0;
     box-sizing: border-box;
@@ -407,21 +393,21 @@
 
 .code-block pre {
   --code-copy-offset: 1.35rem;
-  @apply rounded-3xl border border-border/60 bg-muted/70 px-5 py-4 text-sm leading-7 text-foreground shadow-lg;
-  box-shadow: 0 22px 48px
-    color-mix(in oklab, var(--foreground) 7%, transparent 93%);
+  @apply rounded-xl border border-border/60 bg-muted/70 px-5 py-4 text-sm leading-7 text-foreground shadow-lg;
+  box-shadow: 0 18px 36px
+    color-mix(in oklab, var(--foreground) 6%, transparent 94%);
 }
 
 .code-block .copy-code {
-  @apply absolute inline-flex items-center gap-1 text-[0.68rem] font-semibold tracking-[0.08em] text-foreground/80 uppercase transition duration-150 ease-out focus-visible:ring-2 focus-visible:ring-accent/35 focus-visible:outline-none;
+  @apply absolute inline-flex items-center gap-1 text-[0.68rem] font-medium tracking-[0.12em] text-foreground/80 uppercase transition duration-150 ease-out focus-visible:ring-2 focus-visible:ring-accent/35 focus-visible:outline-none;
   min-height: 2.1rem;
   padding: 0.42rem 1rem;
   inset-inline-end: 1rem;
   inset-block-start: var(--copy-button-top, 1.2rem);
   transform: translateY(-50%);
-  border-radius: 9999px;
-  border: 1px solid color-mix(in oklab, var(--border) 64%, transparent 36%);
-  background: color-mix(in oklab, var(--background) 88%, var(--foreground) 12%);
+  border-radius: 0.85rem;
+  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent 30%);
+  background: color-mix(in oklab, var(--background) 82%, var(--foreground) 18%);
   touch-action: manipulation;
   z-index: 2;
   opacity: 0.75;
@@ -437,14 +423,14 @@
 .code-block .copy-code:focus-visible,
 .code-block:focus-within .copy-code {
   @apply text-foreground;
-  background: color-mix(in oklab, var(--background) 84%, var(--foreground) 16%);
-  border-color: color-mix(in oklab, var(--border) 70%, transparent 30%);
+  background: color-mix(in oklab, var(--background) 78%, var(--foreground) 22%);
+  border-color: color-mix(in oklab, var(--border) 72%, transparent 28%);
   opacity: 1;
 }
 
 .code-block .copy-code[data-state="copied"] {
   @apply text-accent;
-  background: color-mix(in oklab, var(--accent) 18%, transparent 82%);
+  background: color-mix(in oklab, var(--accent) 22%, transparent 78%);
   border-color: color-mix(in oklab, var(--accent) 36%, transparent 64%);
   opacity: 1;
 }
@@ -471,7 +457,7 @@ html[data-theme="dark"] .code-block pre {
 }
 
 html[data-theme="dark"] .code-block .copy-code {
-  background: color-mix(in oklab, var(--background) 74%, var(--foreground) 26%);
+  background: color-mix(in oklab, var(--background) 70%, var(--foreground) 30%);
   border-color: color-mix(in oklab, var(--border) 56%, transparent 44%);
   color: color-mix(in oklab, var(--foreground) 86%, var(--background) 14%);
 }

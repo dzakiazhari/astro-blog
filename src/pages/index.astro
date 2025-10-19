@@ -23,86 +23,98 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   <main
     id="main-content"
     data-layout="index"
-    class="mx-auto w-full max-w-app px-4 pt-14 pb-20 sm:pt-16"
+    class="site-shell space-y-12 pt-16 pb-20"
   >
-    <section id="hero" class="pb-12">
-      <div class="flex flex-wrap items-center gap-3">
-        <h1 class="text-4xl font-semibold text-foreground sm:text-5xl">
-          Hello.
-        </h1>
+    <section
+      class="rounded-xl border border-border/60 bg-background/75 px-6 py-12 shadow-[0_24px_68px_rgba(24,20,45,0.14)] backdrop-blur-sm"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="space-y-4">
+          <p
+            class="text-[0.75rem] font-semibold tracking-[0.32em] text-foreground/50 uppercase"
+          >
+            Welcome traveler
+          </p>
+          <h1 class="text-4xl font-semibold text-foreground sm:text-[2.8rem]">
+            Hello, I'm Dzaki.
+          </h1>
+          <p
+            class="max-w-2xl text-base leading-relaxed text-foreground/70 sm:text-lg"
+          >
+            Explore stories, research notes, and ideas from the studio. For
+            deeper rabbit holes, hop over to the
+            <LinkButton
+              class="border-transparent px-0 py-0 text-accent hover:text-accent"
+              href="https://notes.dzakiazhari.com"
+              prefetch="false"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              notes garden ↗
+            </LinkButton>
+            .
+          </p>
+        </div>
         <a
           target="_blank"
           href="/rss.xml"
-          class="inline-flex items-center justify-center rounded-full border border-accent/40 bg-accent/10 p-2 text-accent transition hover:border-accent/60 hover:bg-accent/15 focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
+          class="inline-flex items-center gap-2 rounded-lg border border-border/60 px-4 py-2 text-[0.72rem] font-semibold tracking-[0.26em] text-foreground/70 uppercase transition-colors duration-150 hover:border-accent/40 hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/35 focus-visible:outline-none"
           aria-label="rss feed"
           rel="noopener noreferrer"
           title="RSS Feed"
         >
-          <IconRss
-            width={18}
-            height={18}
-            class="stroke-current rtl:-rotate-90"
-          />
-          <span class="sr-only">RSS Feed</span>
+          <IconRss width={16} height={16} class="rtl:-rotate-90" />
+          RSS
         </a>
       </div>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-foreground/80">
-        Explore insights and growth on this <strong>blog</strong> or dive into my
-        <LinkButton
-          class="underline decoration-dashed underline-offset-4 hover:text-accent"
-          href="https://notes.dzakiazhari.com"
-          ><strong>&lt;/notes&gt;</strong></LinkButton
-        > archive.
-      </p>
 
       {
-        // only display if at least one social link is enabled
         SOCIALS.length > 0 && (
-          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
+          <div class="mt-8 flex flex-wrap items-center gap-4 border-t border-border/60 pt-6">
+            <span class="text-[0.68rem] tracking-[0.32em] text-foreground/50 uppercase">
+              Connect
+            </span>
             <Socials />
           </div>
         )
       }
     </section>
 
-    <section id="lists" class="pt-6">
-      <div class="grid grid-cols-1 gap-12 md:grid-cols-2">
-        {
-          featuredPosts.length > 0 && (
-            <div>
-              <h2 class="mb-5 border-s-4 border-accent/70 ps-3 text-2xl font-semibold tracking-wide text-foreground">
-                Featured
-              </h2>
-              <ul class="flex flex-col gap-4">
-                {featuredPosts.slice(0, 3).map(data => (
-                  <Card variant="h3" showDescription={false} {...data} />
-                ))}
-              </ul>
-            </div>
-          )
-        }
+    <section class="grid gap-10 md:grid-cols-2">
+      {
+        featuredPosts.length > 0 && (
+          <div class="space-y-5">
+            <h2 class="text-[0.82rem] font-semibold tracking-[0.32em] text-foreground/60 uppercase">
+              Featured
+            </h2>
+            <ul class="grid gap-6">
+              {featuredPosts.slice(0, 3).map(data => (
+                <Card variant="h3" showDescription={false} {...data} />
+              ))}
+            </ul>
+          </div>
+        )
+      }
 
-        {
-          recentPosts.length > 0 && (
-            <div>
-              <h2 class="mb-5 border-s-4 border-accent/70 ps-3 text-2xl font-semibold tracking-wide text-foreground">
-                Recent Posts
-              </h2>
-              <ul class="flex flex-col gap-4">
-                {recentPosts.slice(0, 3).map(data => (
-                  <Card variant="h3" showDescription={false} {...data} />
-                ))}
-              </ul>
-            </div>
-          )
-        }
-      </div>
+      {
+        recentPosts.length > 0 && (
+          <div class="space-y-5">
+            <h2 class="text-[0.82rem] font-semibold tracking-[0.32em] text-foreground/60 uppercase">
+              Recent Posts
+            </h2>
+            <ul class="grid gap-6">
+              {recentPosts.slice(0, 3).map(data => (
+                <Card variant="h3" showDescription={false} {...data} />
+              ))}
+            </ul>
+          </div>
+        )
+      }
     </section>
 
-    <div class="my-8 text-center">
+    <div class="flex justify-center">
       <LinkButton href="/posts/" prefetch="viewport">
-        All Posts
+        View archive
         <IconArrowRight class="inline-block rtl:-rotate-180" />
       </LinkButton>
     </div>

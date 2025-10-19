@@ -1,45 +1,66 @@
 @import "tailwindcss";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-sans/700.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-mono/600.css";
 @import "./typography.css";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root,
 html[data-theme="light"] {
-  /* Private Quartz light mode palette */
-  --light: #f4f5ff;
-  --lightgray: #dbd9ff;
-  --gray: #9c97c9;
-  --darkgray: #3b3558;
-  --dark: #201a38;
-  --secondary: #6c5ce7;
-  --tertiary: #ff6ad5;
-  --highlight: rgba(108, 92, 231, 0.22);
-  --text-highlight: #ebe8ff;
+  --font-sans:
+    "IBM Plex Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Noto Sans", sans-serif;
+  --font-mono:
+    "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono",
+    monospace;
 
-  --background: var(--light);
-  --foreground: var(--darkgray);
+  --light: #f7f6ff;
+  --lightgray: #dfddf7;
+  --gray: #8a86b9;
+  --darkgray: #201a38;
+  --dark: #110d23;
+  --secondary: #5c5ce0;
+  --tertiary: #ff79c6;
+  --highlight: rgba(92, 92, 224, 0.18);
+  --text-highlight: #ebe9ff;
+
+  --background: #f4f4ff;
+  --foreground: #221c3a;
   --accent: var(--secondary);
-  --muted: var(--lightgray);
-  --border: color-mix(in oklab, var(--lightgray) 88%, transparent 12%);
+  --muted: color-mix(in oklab, #f4f4ff 85%, #c4c0f1 15%);
+  --border: color-mix(in oklab, #d5d2f5 80%, transparent 20%);
+  --shell-shadow: 0 32px 80px color-mix(in oklab, #221c3a 12%, transparent 88%);
 }
 
 html[data-theme="dark"] {
-  /* Private Quartz dark mode palette */
-  --light: #0b0a19;
-  --lightgray: #1f1c36;
-  --gray: #5f5c87;
-  --darkgray: #dcd9ff;
-  --dark: #f7f6ff;
-  --secondary: #a99efb;
-  --tertiary: #ff9fe3;
-  --highlight: rgba(169, 158, 251, 0.24);
-  --text-highlight: #2f2a60;
+  --font-sans:
+    "IBM Plex Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Noto Sans", sans-serif;
+  --font-mono:
+    "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono",
+    monospace;
 
-  --background: var(--light);
-  --foreground: var(--darkgray);
+  --light: #0c0b1b;
+  --lightgray: #1b1930;
+  --gray: #585587;
+  --darkgray: #d5d3ff;
+  --dark: #f7f6ff;
+  --secondary: #9c9af8;
+  --tertiary: #ff9ce2;
+  --highlight: rgba(156, 154, 248, 0.28);
+  --text-highlight: #2a2654;
+
+  --background: #0f0e1f;
+  --foreground: #e6e4ff;
   --accent: var(--secondary);
-  --muted: color-mix(in oklab, var(--lightgray) 94%, transparent 6%);
-  --border: color-mix(in oklab, var(--lightgray) 78%, var(--gray) 22%);
+  --muted: color-mix(in oklab, #16142a 92%, #2f2b58 8%);
+  --border: color-mix(in oklab, #2b284a 76%, #5c5890 24%);
+  --shell-shadow: 0 32px 80px color-mix(in oklab, #0f0e1f 75%, transparent 25%);
 }
 
 @theme inline {
@@ -61,53 +82,85 @@ html[data-theme="dark"] {
 
 @layer base {
   * {
-    @apply border-border outline-accent/75;
-    scrollbar-width: auto;
-    scrollbar-color: var(--color-muted) transparent;
+    @apply border-border outline-accent/70;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(
+        in oklab,
+        var(--color-muted) 80%,
+        transparent 20%
+      )
+      transparent;
   }
+
   html {
     @apply overflow-y-scroll scroll-smooth;
+    background: var(--color-background);
   }
+
   body {
-    @apply flex min-h-svh flex-col bg-background font-mono text-foreground;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-sans);
+    font-feature-settings: "calt", "liga", "ss01";
+    color: var(--color-foreground);
+    background:
+      radial-gradient(
+        120% 120% at 100% 0%,
+        color-mix(in oklab, var(--color-accent) 7%, transparent 93%),
+        transparent 55%
+      ),
+      radial-gradient(
+        160% 120% at 0% 0%,
+        color-mix(in oklab, var(--color-tertiary) 6%, transparent 94%),
+        transparent 60%
+      ),
+      var(--color-background);
   }
+
   ::selection {
-    background: color-mix(in oklab, var(--tertiary) 60%, transparent 40%);
+    background: color-mix(in oklab, var(--tertiary) 52%, transparent 48%);
     color: var(--foreground);
   }
+
   a,
   button {
-    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+    @apply outline-offset-2 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dotted;
   }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
   section,
   footer {
-    @apply mx-auto max-w-app px-4;
+    @apply mx-auto max-w-app px-5;
   }
-  /* Card surface utility */
+
   .surface {
     background: color-mix(
       in oklab,
-      var(--color-background) 90%,
-      var(--color-foreground) 10%
+      var(--color-background) 88%,
+      var(--color-foreground) 12%
     );
   }
 
-  /* Equal-height grid rows helper */
   .grid-equal {
     grid-auto-rows: 1fr;
   }
 }
 
 @utility max-w-app {
-  @apply max-w-3xl;
+  @apply max-w-5xl;
+}
+
+@utility site-shell {
+  @apply mx-auto w-full max-w-6xl px-5 sm:px-6;
 }
 
 .active-nav {
-  @apply underline decoration-wavy decoration-2 underline-offset-4;
+  @apply text-accent;
 }
 
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
