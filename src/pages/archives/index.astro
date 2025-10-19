@@ -39,26 +39,26 @@ const posts = await getCollection("blog", ({ data }) => !data.draft);
           return (
             <section class="mt-12">
               <header class="flex items-center gap-3">
-                <span class="rounded-full border border-accent/30 bg-accent/10 px-4 py-1 text-xs font-semibold tracking-[0.32em] text-accent/80 uppercase">
+                <span class="rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-3 py-1 text-[0.68rem] font-semibold tracking-[0.3em] text-[color:var(--muted-text)] uppercase">
                   {year}
                 </span>
-                <sup class="text-sm text-foreground/50">
+                <sup class="text-sm text-[color:var(--muted-text)]">
                   {sortedYear.length}
                 </sup>
               </header>
-              <ol class="relative my-6 ms-3 space-y-4 border-s border-border/60 ps-5">
+              <ol class="relative my-6 ms-3 space-y-4 border-s border-[var(--divider-soft)] ps-5">
                 {topFive.map(({ data, id, filePath }) => (
-                  <li class="relative rounded-xl border border-border/50 bg-background/70 p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-lg">
-                    <span class="absolute start-[-2.65rem] top-1.5 inline-block size-2 rounded-full border border-accent/40 bg-accent/80" />
+                  <li class="relative rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-4 transition-colors duration-150 hover:border-[color:var(--border-strong)]">
+                    <span class="absolute start-[-2.65rem] top-1.5 inline-block size-2 border border-[color:var(--border-strong)] bg-[color:var(--nav-text-strong)]" />
                     <a
                       href={getPath(id, filePath)}
-                      class="block text-base font-semibold text-foreground transition hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:outline-none"
+                      class="block text-base font-semibold text-[color:var(--body-text)] transition-colors duration-150 hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
                       data-astro-prefetch="viewport"
                     >
                       {data.title}
                     </a>
                     <Datetime
-                      class="mt-2 text-xs text-foreground/60"
+                      class="mt-2 text-xs text-[color:var(--muted-text)]"
                       pubDatetime={data.pubDatetime}
                       modDatetime={data.modDatetime}
                       timezone={data.timezone}
@@ -66,7 +66,7 @@ const posts = await getCollection("blog", ({ data }) => !data.draft);
                   </li>
                 ))}
                 {hasMore && (
-                  <li class="relative ps-2 text-sm tracking-[0.28em] text-foreground/50 uppercase">
+                  <li class="relative ps-2 text-sm tracking-[0.28em] text-[color:var(--muted-text)] uppercase">
                     …
                   </li>
                 )}

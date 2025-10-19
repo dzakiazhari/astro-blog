@@ -27,28 +27,21 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     class="site-shell space-y-12 pt-16 pb-20"
   >
     <section
-      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-6 py-12 shadow-[0_30px_80px_rgba(32,26,20,0.22)] backdrop-blur"
+      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-6 py-12"
     >
       <div
         class="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] md:items-start"
       >
         <div class="space-y-5">
-          <p
-            class="text-[0.7rem] font-semibold tracking-[0.32em] text-[color:var(--muted-text)] uppercase"
-          >
-            Welcome traveler
-          </p>
           <h1
             class="text-4xl font-semibold text-[color:var(--nav-text-strong)] sm:text-[2.75rem]"
           >
-            Hello, I'm Dzaki.
+            Hello.
           </h1>
           <p
             class="max-w-2xl text-base leading-relaxed text-[color:var(--muted-text)] sm:text-lg"
           >
-            Explore stories, research notes, and the studio's experiments. When
-            you're ready to wander further, the garden awaits with deeper
-            threads and living documentation.
+            Explore stories, research notes, and the studio's experiments.
           </p>
           <div class="flex flex-wrap gap-3">
             <LinkButton href="/posts/" prefetch="viewport">
@@ -61,10 +54,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           </div>
         </div>
 
-        <div class="grid-equal grid gap-4 sm:grid-cols-2">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <a
             href={SITE.notesUrl ?? "https://notes.dzakiazhari.com"}
-            class="group relative flex min-h-[180px] flex-col justify-between overflow-hidden rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-5 text-left shadow-[0_20px_50px_rgba(28,22,16,0.18)] transition-transform duration-200 hover:-translate-y-[2px] hover:border-[color:var(--border-strong)] hover:shadow-[0_26px_64px_rgba(24,18,12,0.24)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+            class="group relative flex min-h-[180px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-5 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
             rel="noopener noreferrer"
             target="_blank"
             data-astro-prefetch="false"
@@ -79,14 +72,11 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
             >
               View the evergreen notes ↗
             </span>
-            <span
-              class="pointer-events-none absolute inset-0 -z-[1] bg-[radial-gradient(circle_at_top_left,rgba(125,197,137,0.22),transparent_65%)] transition-opacity duration-200 group-hover:opacity-90"
-            ></span>
           </a>
 
           <a
             href="/rss.xml"
-            class="group flex min-h-[180px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-raised)] p-5 text-left shadow-[0_20px_50px_rgba(28,22,16,0.16)] transition-transform duration-200 hover:-translate-y-[2px] hover:border-[color:var(--border-strong)] hover:shadow-[0_26px_64px_rgba(24,18,12,0.22)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+            class="group flex min-h-[180px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-raised)] p-5 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
             aria-label="rss feed"
             rel="noopener noreferrer"
             title="RSS Feed"

@@ -19,11 +19,17 @@ const {
 
 const { title, description, pubDatetime } = data;
 
-const formattedDate = new Intl.DateTimeFormat(undefined, {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-}).format(new Date(pubDatetime));
+const toIsoDots = (value: string | number | Date) => {
+  const date = new Date(value);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}.${month}.${day}`;
+};
+
+const formattedDate = toIsoDots(pubDatetime);
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
@@ -33,7 +39,7 @@ const headerProps = {
 <li class="my-0 h-full">
   <a
     href={getPath(id, filePath)}
-    class="group relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-6 py-7 shadow-[0_18px_48px_rgba(30,24,18,0.18)] transition-transform duration-200 ease-out hover:-translate-y-[2px] hover:border-[color:var(--border-strong)] hover:shadow-[0_28px_60px_rgba(26,20,14,0.26)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+    class="group relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-6 py-7 transition-colors duration-200 ease-out hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
     data-astro-prefetch="viewport"
   >
     <span

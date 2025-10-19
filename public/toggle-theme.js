@@ -1,4 +1,4 @@
-const primaryColorScheme = ""; // "light" | "dark"
+const primaryColorScheme = "light"; // "light" | "dark"
 
 const scheduleIdle =
   window.__scheduleIdle ||
@@ -57,7 +57,13 @@ const scheduleThemeColorUpdate = () => {
 
 function reflectPreference() {
   document.documentElement.setAttribute("data-theme", themeValue);
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
+  const toggleButton = document.querySelector("#theme-btn");
+  if (toggleButton) {
+    const nextLabel =
+      themeValue === "light" ? "Switch to dark theme" : "Switch to light theme";
+    toggleButton.setAttribute("aria-label", nextLabel);
+    toggleButton.setAttribute("title", nextLabel);
+  }
   scheduleThemeColorUpdate();
 }
 

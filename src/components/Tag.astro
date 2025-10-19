@@ -18,7 +18,7 @@ const prefetchAttr = prefetch === false ? "false" : prefetch;
     href={`/tags/${tag}/`}
     transition:name={tag}
     class:list={[
-      "inline-flex items-center gap-1.5 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2.5 py-1 text-[color:var(--muted-text)] transition duration-150 ease-out",
+      "inline-flex items-center gap-1.5 rounded-none border border-[var(--border-soft)] bg-transparent px-2.5 py-1 text-[color:var(--muted-text)] transition duration-150 ease-out",
       "hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
       size === "sm"
         ? "text-[0.65rem] font-semibold tracking-[0.26em] uppercase"
