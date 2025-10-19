@@ -33,41 +33,41 @@ const headerProps = {
 <li class="my-0 h-full">
   <a
     href={getPath(id, filePath)}
-    class="group flex h-full flex-col justify-between gap-6 rounded-2xl border border-border/70 bg-background/80 p-5 shadow-sm ring-1 ring-border/40 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:outline-none sm:p-6"
+    class="group relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-6 py-7 shadow-[0_18px_48px_rgba(30,24,18,0.18)] transition-transform duration-200 ease-out hover:-translate-y-[2px] hover:border-[color:var(--border-strong)] hover:shadow-[0_28px_60px_rgba(26,20,14,0.26)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
     data-astro-prefetch="viewport"
   >
-    <div class="space-y-3">
-      <div class="flex items-start justify-between gap-4">
-        {
-          variant === "h2" ? (
-            <h2
-              {...headerProps}
-              class="text-xl font-semibold text-balance text-foreground transition-colors group-hover:text-accent group-focus-visible:text-accent sm:text-2xl"
-            >
-              {title}
-            </h2>
-          ) : (
-            <h3
-              {...headerProps}
-              class="text-lg font-semibold text-balance text-foreground transition-colors group-hover:text-accent group-focus-visible:text-accent"
-            >
-              {title}
-            </h3>
-          )
-        }
-        <span
-          class="hidden rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[0.55rem] font-semibold tracking-[0.32em] text-accent/80 uppercase sm:inline-flex"
-        >
-          Post
-        </span>
-      </div>
-      <p class="text-xs tracking-[0.28em] text-foreground/50 uppercase">
+    <span
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-y-6 left-0 w-[3px] rounded-e-[var(--radius-xs)] bg-[color:var(--card-marker)] transition-all duration-200 group-hover:left-1 group-hover:w-[4px]"
+    ></span>
+
+    <div class="space-y-4 ps-4">
+      <p
+        class="text-[0.68rem] font-semibold tracking-[0.28em] text-[color:var(--muted-text)] uppercase"
+      >
         {formattedDate}
       </p>
       {
+        variant === "h2" ? (
+          <h2
+            {...headerProps}
+            class="text-xl font-semibold text-balance text-[color:var(--body-text)] transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)] sm:text-[1.55rem]"
+          >
+            {title}
+          </h2>
+        ) : (
+          <h3
+            {...headerProps}
+            class="text-lg font-semibold text-balance text-[color:var(--body-text)] transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)]"
+          >
+            {title}
+          </h3>
+        )
+      }
+      {
         showDescription && (
           <p
-            class="mt-1.5 text-sm leading-relaxed text-foreground/80 sm:text-base"
+            class="text-sm leading-relaxed text-[color:var(--muted-text)] sm:text-base"
             style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"
           >
             {description}
@@ -77,7 +77,7 @@ const headerProps = {
     </div>
 
     <span
-      class="mt-auto inline-flex items-center gap-2 text-xs font-semibold tracking-[0.32em] text-accent/80 uppercase transition group-hover:text-accent group-focus-visible:text-accent"
+      class="mt-auto inline-flex items-center gap-2 ps-4 text-[0.68rem] font-semibold tracking-[0.26em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)]"
     >
       Read
       <IconArrowRight class="size-3 rtl:rotate-180" />

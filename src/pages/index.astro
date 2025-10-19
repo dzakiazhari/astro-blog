@@ -10,6 +10,7 @@ import getSortedPosts from "@/utils/getSortedPosts";
 import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { SOCIALS } from "@/constants";
+import { SITE } from "@/config";
 
 const posts = await getCollection("blog");
 
@@ -23,86 +24,140 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   <main
     id="main-content"
     data-layout="index"
-    class="mx-auto w-full max-w-app px-4 pt-14 pb-20 sm:pt-16"
+    class="site-shell space-y-12 pt-16 pb-20"
   >
-    <section id="hero" class="pb-12">
-      <div class="flex flex-wrap items-center gap-3">
-        <h1 class="text-4xl font-semibold text-foreground sm:text-5xl">
-          Hello.
-        </h1>
-        <a
-          target="_blank"
-          href="/rss.xml"
-          class="inline-flex items-center justify-center rounded-full border border-accent/40 bg-accent/10 p-2 text-accent transition hover:border-accent/60 hover:bg-accent/15 focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
-          aria-label="rss feed"
-          rel="noopener noreferrer"
-          title="RSS Feed"
-        >
-          <IconRss
-            width={18}
-            height={18}
-            class="stroke-current rtl:-rotate-90"
-          />
-          <span class="sr-only">RSS Feed</span>
-        </a>
+    <section
+      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-6 py-12 shadow-[0_30px_80px_rgba(32,26,20,0.22)] backdrop-blur"
+    >
+      <div
+        class="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] md:items-start"
+      >
+        <div class="space-y-5">
+          <p
+            class="text-[0.7rem] font-semibold tracking-[0.32em] text-[color:var(--muted-text)] uppercase"
+          >
+            Welcome traveler
+          </p>
+          <h1
+            class="text-4xl font-semibold text-[color:var(--nav-text-strong)] sm:text-[2.75rem]"
+          >
+            Hello, I'm Dzaki.
+          </h1>
+          <p
+            class="max-w-2xl text-base leading-relaxed text-[color:var(--muted-text)] sm:text-lg"
+          >
+            Explore stories, research notes, and the studio's experiments. When
+            you're ready to wander further, the garden awaits with deeper
+            threads and living documentation.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <LinkButton href="/posts/" prefetch="viewport">
+              Latest posts
+              <IconArrowRight class="size-4 rtl:-rotate-180" />
+            </LinkButton>
+            <LinkButton href="/about" prefetch="viewport">
+              About the studio
+            </LinkButton>
+          </div>
+        </div>
+
+        <div class="grid-equal grid gap-4 sm:grid-cols-2">
+          <a
+            href={SITE.notesUrl ?? "https://notes.dzakiazhari.com"}
+            class="group relative flex min-h-[180px] flex-col justify-between overflow-hidden rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-5 text-left shadow-[0_20px_50px_rgba(28,22,16,0.18)] transition-transform duration-200 hover:-translate-y-[2px] hover:border-[color:var(--border-strong)] hover:shadow-[0_26px_64px_rgba(24,18,12,0.24)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+            rel="noopener noreferrer"
+            target="_blank"
+            data-astro-prefetch="false"
+          >
+            <span
+              class="text-[0.68rem] font-semibold tracking-[0.3em] text-[color:var(--muted-text)] uppercase"
+            >
+              Notes garden
+            </span>
+            <span
+              class="text-2xl leading-snug font-semibold text-[color:var(--nav-text-strong)]"
+            >
+              View the evergreen notes ↗
+            </span>
+            <span
+              class="pointer-events-none absolute inset-0 -z-[1] bg-[radial-gradient(circle_at_top_left,rgba(125,197,137,0.22),transparent_65%)] transition-opacity duration-200 group-hover:opacity-90"
+            ></span>
+          </a>
+
+          <a
+            href="/rss.xml"
+            class="group flex min-h-[180px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-raised)] p-5 text-left shadow-[0_20px_50px_rgba(28,22,16,0.16)] transition-transform duration-200 hover:-translate-y-[2px] hover:border-[color:var(--border-strong)] hover:shadow-[0_26px_64px_rgba(24,18,12,0.22)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+            aria-label="rss feed"
+            rel="noopener noreferrer"
+            title="RSS Feed"
+          >
+            <span
+              class="text-[0.68rem] font-semibold tracking-[0.3em] text-[color:var(--muted-text)] uppercase"
+            >
+              Stay updated
+            </span>
+            <span
+              class="text-2xl leading-snug font-semibold text-[color:var(--nav-text-strong)]"
+            >
+              Subscribe via RSS
+            </span>
+            <span
+              class="mt-auto inline-flex items-center gap-2 text-[0.68rem] font-semibold tracking-[0.26em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
+            >
+              Feed
+              <IconRss width={18} height={18} class="rtl:-rotate-90" />
+            </span>
+          </a>
+        </div>
       </div>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-foreground/80">
-        Explore insights and growth on this <strong>blog</strong> or dive into my
-        <LinkButton
-          class="underline decoration-dashed underline-offset-4 hover:text-accent"
-          href="https://notes.dzakiazhari.com"
-          ><strong>&lt;/notes&gt;</strong></LinkButton
-        > archive.
-      </p>
 
       {
-        // only display if at least one social link is enabled
         SOCIALS.length > 0 && (
-          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
+          <div class="mt-9 flex flex-wrap items-center gap-4 border-t border-[var(--divider-soft)] pt-6">
+            <span class="text-[0.66rem] tracking-[0.3em] text-[color:var(--muted-text)] uppercase">
+              Connect
+            </span>
             <Socials />
           </div>
         )
       }
     </section>
 
-    <section id="lists" class="pt-6">
-      <div class="grid grid-cols-1 gap-12 md:grid-cols-2">
-        {
-          featuredPosts.length > 0 && (
-            <div>
-              <h2 class="mb-5 border-s-4 border-accent/70 ps-3 text-2xl font-semibold tracking-wide text-foreground">
-                Featured
-              </h2>
-              <ul class="flex flex-col gap-4">
-                {featuredPosts.slice(0, 3).map(data => (
-                  <Card variant="h3" showDescription={false} {...data} />
-                ))}
-              </ul>
-            </div>
-          )
-        }
+    <section class="grid gap-10 md:grid-cols-2">
+      {
+        featuredPosts.length > 0 && (
+          <div class="space-y-5">
+            <h2 class="text-[0.78rem] font-semibold tracking-[0.28em] text-[color:var(--muted-text)] uppercase">
+              Featured
+            </h2>
+            <ul class="grid gap-6">
+              {featuredPosts.slice(0, 3).map(data => (
+                <Card variant="h3" showDescription={false} {...data} />
+              ))}
+            </ul>
+          </div>
+        )
+      }
 
-        {
-          recentPosts.length > 0 && (
-            <div>
-              <h2 class="mb-5 border-s-4 border-accent/70 ps-3 text-2xl font-semibold tracking-wide text-foreground">
-                Recent Posts
-              </h2>
-              <ul class="flex flex-col gap-4">
-                {recentPosts.slice(0, 3).map(data => (
-                  <Card variant="h3" showDescription={false} {...data} />
-                ))}
-              </ul>
-            </div>
-          )
-        }
-      </div>
+      {
+        recentPosts.length > 0 && (
+          <div class="space-y-5">
+            <h2 class="text-[0.78rem] font-semibold tracking-[0.28em] text-[color:var(--muted-text)] uppercase">
+              Recent Posts
+            </h2>
+            <ul class="grid gap-6">
+              {recentPosts.slice(0, 3).map(data => (
+                <Card variant="h3" showDescription={false} {...data} />
+              ))}
+            </ul>
+          </div>
+        )
+      }
     </section>
 
-    <div class="my-8 text-center">
+    <div class="flex justify-center">
       <LinkButton href="/posts/" prefetch="viewport">
-        All Posts
+        View archive
         <IconArrowRight class="inline-block rtl:-rotate-180" />
       </LinkButton>
     </div>

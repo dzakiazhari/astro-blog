@@ -15,6 +15,7 @@ canonicalURL: https://dzakiazhari.com/posts/2025/pages-cms-for-my-astro-blog-and
 hideEditPost: false
 timezone: Asia/Tokyo
 ---
+
 ## 1. Get the repos ready
 
 I keep two git projects side by side: `astro-blog` for the main site and `private-quartz` for the evergreen notes. Pages CMS reads files straight from the repository, so all I need locally is the repo on disk and a `.pages.yml` file in the root. I commit the config once and let [Pages CMS](https://pagescms.org/docs/) generate commits when I publish content.
