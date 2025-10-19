@@ -20,11 +20,32 @@ const isActive = (path: string) => {
   return currentPath === path || currentPathArray[0] === pathArray[0];
 };
 
-const navItems = [
-  { href: "/posts", label: "Posts", prefetch: "viewport" as const },
-  { href: "/tags", label: "Tags", prefetch: "viewport" as const },
-  { href: "/about", label: "About", prefetch: "viewport" as const },
+type PrefetchSetting = false | "auto" | "hover" | "tap" | "viewport" | "load";
+
+interface NavItem {
+  href: string;
+  label: string;
+  prefetch?: PrefetchSetting;
+  external?: boolean;
+}
+
+const navItems: NavItem[] = [
+  { href: "/posts", label: "Posts", prefetch: "viewport" },
+  { href: "/tags", label: "Tags", prefetch: "viewport" },
+  { href: "/about", label: "About", prefetch: "viewport" },
 ];
+
+const resolvePrefetchAttr = (value: PrefetchSetting | undefined) => {
+  if (value === undefined) {
+    return "auto" as const;
+  }
+
+  if (value === false) {
+    return "false" as const;
+  }
+
+  return value;
+};
 
 if (SITE.notesUrl) {
   navItems.push({
@@ -115,7 +136,7 @@ if (SITE.showArchives) {
                       ]}
                       target={item.external ? "_blank" : undefined}
                       rel={item.external ? "noopener noreferrer" : undefined}
-                      data-astro-prefetch={item.prefetch ?? "auto"}
+                      data-astro-prefetch={resolvePrefetchAttr(item.prefetch)}
                     >
                       <span>{item.label}</span>
                       {item.label === "Archives" ? (
