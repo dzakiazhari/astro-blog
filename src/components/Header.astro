@@ -6,6 +6,7 @@ import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconX from "@/assets/icons/IconX.svg";
 import LogoUnfold from "@/assets/icons/logo-unfold.svg";
+import BackButton from "./BackButton.astro";
 import { SITE } from "@/config";
 
 const { pathname } = Astro.url;
@@ -63,6 +64,8 @@ if (SITE.showArchives) {
     prefetch: "viewport" as const,
   });
 }
+
+const showBackButton = SITE.showBackButton && currentPath.startsWith("/posts/");
 ---
 
 <header
@@ -170,6 +173,7 @@ if (SITE.showArchives) {
                 </button>
               )
             }
+            {showBackButton && <BackButton class="ms-auto md:ms-3" />}
           </div>
         </div>
       </nav>

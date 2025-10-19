@@ -97,6 +97,11 @@ html[data-theme="light"] {
     color-mix(in srgb, var(--secondary) 48%, var(--tertiary))
   );
   --card-marker: color-mix(in srgb, var(--secondary) 70%, rgba(0, 0, 0, 0.08));
+  --card-marker-hover: color-mix(
+    in srgb,
+    var(--secondary) 68%,
+    rgba(255, 255, 255, 0.2)
+  );
   --card-marker-muted: color-mix(
     in srgb,
     var(--tertiary) 38%,
@@ -230,6 +235,11 @@ html[data-theme="dark"] {
     color-mix(in srgb, var(--secondary) 46%, var(--tertiary) 18%)
   );
   --card-marker: color-mix(in srgb, var(--secondary) 60%, rgba(0, 0, 0, 0.32));
+  --card-marker-hover: color-mix(
+    in srgb,
+    var(--secondary) 58%,
+    rgba(255, 255, 255, 0.24)
+  );
   --card-marker-muted: color-mix(
     in srgb,
     var(--tertiary) 34%,
