@@ -87,21 +87,20 @@ const nextPost =
 
 <Layout {...layoutProps}>
   <Header />
-  <BackButton />
   <main
     id="main-content"
-    class:list={[
-      "mx-auto w-full max-w-app px-4 pb-12",
-      { "mt-8": !SITE.showBackButton },
-    ]}
+    class="mx-auto w-full max-w-app px-4 pb-12"
     data-pagefind-body
   >
-    <h1
-      transition:name={slugifyStr(title)}
-      class="inline-block text-2xl font-bold text-accent sm:text-3xl"
-    >
-      {title}
-    </h1>
+    <div class="mb-6 flex flex-wrap items-center gap-4 sm:flex-nowrap">
+      <h1
+        transition:name={slugifyStr(title)}
+        class="flex-1 text-2xl font-bold text-accent sm:text-3xl"
+      >
+        {title}
+      </h1>
+      <BackButton class="ms-auto sm:ms-6" />
+    </div>
     <div class="my-2 flex items-center gap-2">
       <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
       <span
