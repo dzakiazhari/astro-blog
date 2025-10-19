@@ -1,6 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 @import "./typography.css";
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -99,8 +99,8 @@ html[data-theme="light"] {
   --card-marker: color-mix(in srgb, var(--secondary) 70%, rgba(0, 0, 0, 0.08));
   --card-marker-hover: color-mix(
     in srgb,
-    var(--secondary) 68%,
-    rgba(255, 255, 255, 0.2)
+    var(--secondary) 60%,
+    rgba(255, 255, 255, 0.4)
   );
   --card-marker-muted: color-mix(
     in srgb,
@@ -237,8 +237,8 @@ html[data-theme="dark"] {
   --card-marker: color-mix(in srgb, var(--secondary) 60%, rgba(0, 0, 0, 0.32));
   --card-marker-hover: color-mix(
     in srgb,
-    var(--secondary) 58%,
-    rgba(255, 255, 255, 0.24)
+    var(--secondary) 54%,
+    rgba(255, 255, 255, 0.45)
   );
   --card-marker-muted: color-mix(
     in srgb,
