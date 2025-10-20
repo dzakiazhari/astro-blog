@@ -21,35 +21,35 @@ const backUrl = SITE.showBackButton ? Astro.url.pathname : "/";
 ---
 
 <Breadcrumb />
-<main data-backUrl={backUrl} id="main-content" class="site-shell pb-6">
+<main data-backUrl={backUrl} id="main-content" class="site-shell pb-4">
   <section
-    class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-3.5 py-5 sm:px-4"
+    class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-2.5 py-4 sm:px-3.5"
   >
     {
       "titleTransition" in props ? (
-        <h1 class="text-[1.68rem] font-semibold tracking-[0.22em] text-[color:var(--nav-text-strong)] uppercase sm:text-[1.92rem]">
+        <h1 class="text-[1.48rem] font-semibold tracking-[0.2em] text-[color:var(--nav-text-strong)] uppercase sm:text-[1.7rem]">
           {props.pageTitle[0]}
           <span
             transition:name={props.titleTransition}
-            class="ms-2 inline-block text-[color:var(--nav-text)]"
+            class="ms-1.5 inline-block text-[color:var(--nav-text)]"
           >
             {props.pageTitle[1]}
           </span>
         </h1>
       ) : (
-        <h1 class="text-[1.68rem] font-semibold tracking-[0.22em] text-[color:var(--nav-text-strong)] uppercase sm:text-[1.92rem]">
+        <h1 class="text-[1.48rem] font-semibold tracking-[0.2em] text-[color:var(--nav-text-strong)] uppercase sm:text-[1.7rem]">
           {props.pageTitle}
         </h1>
       )
     }
     {
       props.pageDesc && (
-        <p class="mt-2.5 max-w-2xl text-sm leading-relaxed text-[color:var(--muted-text)] sm:text-[0.95rem]">
+        <p class="mt-1.5 max-w-2xl text-[0.82rem] leading-snug text-[color:var(--muted-text)] sm:text-[0.92rem]">
           {props.pageDesc}
         </p>
       )
     }
-    <div class="mt-4 flex flex-col gap-4">
+    <div class="mt-3 flex flex-col gap-3">
       <slot />
     </div>
   </section>

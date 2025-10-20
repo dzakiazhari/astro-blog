@@ -107,7 +107,7 @@ html[data-theme="light"] {
     color-mix(in srgb, var(--secondary) 48%, var(--tertiary))
   );
   --pill-radius: var(--radius-lg);
-  --pill-gap: 0.45rem;
+  --pill-gap: 0.28rem;
   --pill-surface: color-mix(in srgb, var(--surface-raised) 92%, white 8%);
   --pill-hover-surface: color-mix(
     in srgb,
@@ -248,8 +248,8 @@ html[data-theme="light"] {
   --prose-mark-text: color-mix(in srgb, var(--dark) 82%, var(--secondary) 18%);
   --prose-code-border: color-mix(in srgb, var(--badge-border) 82%, transparent);
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
-  --card-marker-width: 0.68rem;
-  --card-marker-offset: 0.42rem;
+  --card-marker-width: 0.52rem;
+  --card-marker-offset: 0.32rem;
   --card-marker: color-mix(in srgb, var(--secondary) 70%, rgba(0, 0, 0, 0.08));
   --card-marker-hover: color-mix(
     in srgb,
@@ -261,7 +261,7 @@ html[data-theme="light"] {
     var(--tertiary) 38%,
     rgba(0, 0, 0, 0.12)
   );
-  --layout-max-width: min(1100px, calc(100vw - 44px));
+  --layout-max-width: min(960px, calc(100vw - 28px));
 }
 
 html[data-theme="dark"] {
@@ -403,7 +403,7 @@ html[data-theme="dark"] {
     color-mix(in srgb, var(--secondary) 46%, var(--tertiary) 18%)
   );
   --pill-radius: var(--radius-lg);
-  --pill-gap: 0.55rem;
+  --pill-gap: 0.34rem;
   --pill-surface: color-mix(
     in srgb,
     var(--nav-surface) 88%,
@@ -568,8 +568,8 @@ html[data-theme="dark"] {
   );
   --prose-code-border: color-mix(in srgb, var(--badge-border) 70%, transparent);
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
-  --card-marker-width: 0.8rem;
-  --card-marker-offset: 0.38rem;
+  --card-marker-width: 0.6rem;
+  --card-marker-offset: 0.28rem;
   --card-marker: color-mix(in srgb, var(--secondary) 60%, rgba(0, 0, 0, 0.32));
   --card-marker-hover: color-mix(
     in srgb,
@@ -581,7 +581,7 @@ html[data-theme="dark"] {
     var(--tertiary) 34%,
     rgba(0, 0, 0, 0.38)
   );
-  --layout-max-width: min(1100px, calc(100vw - 44px));
+  --layout-max-width: min(960px, calc(100vw - 28px));
 }
 
 @theme inline {
@@ -653,8 +653,11 @@ html[data-theme="dark"] {
 
   section,
   footer {
-    width: min(var(--layout-max-width), calc(100% - clamp(3rem, 6vw, 4.5rem)));
-    @apply mx-auto px-5;
+    width: min(
+      var(--layout-max-width),
+      calc(100% - clamp(2rem, 4.5vw, 3.5rem))
+    );
+    @apply mx-auto px-3.5;
   }
 
   .surface {
@@ -680,15 +683,15 @@ html[data-theme="dark"] {
     align-items: center;
     justify-content: center;
     gap: var(--pill-gap);
-    padding-inline: var(--pill-padding-inline, 1rem);
-    padding-block: var(--pill-padding-block, 0.5rem);
+    padding-inline: var(--pill-padding-inline, 0.78rem);
+    padding-block: var(--pill-padding-block, 0.32rem);
     border-radius: var(--pill-radius);
     border: 1px solid var(--_pill-border);
     background: var(--_pill-bg);
     color: var(--_pill-text);
-    font-size: var(--pill-font-size, 0.7rem);
+    font-size: var(--pill-font-size, 0.62rem);
     font-weight: 600;
-    letter-spacing: var(--pill-letter-spacing, 0.24em);
+    letter-spacing: var(--pill-letter-spacing, 0.2em);
     text-transform: uppercase;
     line-height: 1;
     transition:
@@ -700,8 +703,8 @@ html[data-theme="dark"] {
   }
 
   .pill svg {
-    width: 1rem;
-    height: 1rem;
+    width: 0.85rem;
+    height: 0.85rem;
   }
 
   .pill:where(:hover, :focus-visible) {
@@ -738,23 +741,24 @@ html[data-theme="dark"] {
   }
 
   .pill--standard {
-    --pill-padding-block: 0.34rem;
-    --pill-padding-inline: 0.78rem;
+    --pill-padding-block: 0.28rem;
+    --pill-padding-inline: 0.68rem;
+    --pill-letter-spacing: 0.2em;
   }
 
   .pill--compact {
-    --pill-gap: 0.4rem;
-    --pill-padding-block: 0.38rem;
-    --pill-padding-inline: 0.85rem;
-    --pill-font-size: 0.64rem;
-    --pill-letter-spacing: 0.26em;
+    --pill-gap: 0.32rem;
+    --pill-padding-block: 0.26rem;
+    --pill-padding-inline: 0.64rem;
+    --pill-font-size: 0.58rem;
+    --pill-letter-spacing: 0.2em;
   }
 
   .pill--roomy {
-    --pill-gap: 0.6rem;
-    --pill-padding-block: 0.58rem;
-    --pill-padding-inline: 1.15rem;
-    --pill-font-size: 0.75rem;
+    --pill-gap: 0.46rem;
+    --pill-padding-block: 0.44rem;
+    --pill-padding-inline: 0.92rem;
+    --pill-font-size: 0.68rem;
   }
 
   .pill--ghost {
@@ -767,8 +771,8 @@ html[data-theme="dark"] {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 1.6rem;
+    height: 1.6rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--card-icon-border);
     background: var(--card-icon-surface);
@@ -780,8 +784,8 @@ html[data-theme="dark"] {
   }
 
   .card-icon svg {
-    width: 1rem;
-    height: 1rem;
+    width: 0.85rem;
+    height: 0.85rem;
   }
 
   .group:where(:hover, :focus-visible) .card-icon {
@@ -798,11 +802,8 @@ html[data-theme="dark"] {
 }
 
 @utility site-shell {
-  width: min(
-    var(--layout-max-width),
-    calc(100% - clamp(1.4rem, 3.5vw, 2.8rem))
-  );
-  @apply mx-auto px-2.5 sm:px-3;
+  width: min(var(--layout-max-width), calc(100% - clamp(0.8rem, 2.8vw, 2rem)));
+  @apply mx-auto px-1.5 sm:px-2.5;
 }
 
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */

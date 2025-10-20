@@ -25,26 +25,26 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   <main
     id="main-content"
     data-layout="index"
-    class="site-shell space-y-6 pt-8 pb-9"
+    class="site-shell space-y-4 pt-4 pb-6"
   >
     <section
-      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-3.5 py-6 sm:px-4 md:py-7"
+      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-2.5 py-4 sm:px-3.5 md:py-5"
     >
       <div
-        class="grid grid-cols-1 gap-5 md:grid-cols-12 md:items-start md:gap-6"
+        class="grid grid-cols-1 gap-3.5 md:grid-cols-12 md:items-start md:gap-4"
       >
-        <div class="space-y-3 md:col-span-6 md:pe-6 lg:col-span-6 lg:pe-7">
+        <div class="space-y-2 md:col-span-6 md:pe-5 lg:col-span-5 lg:pe-6">
           <h1
-            class="text-[2.15rem] font-semibold text-[color:var(--nav-text-strong)] sm:text-[2.3rem]"
+            class="text-[1.9rem] font-semibold text-[color:var(--nav-text-strong)] sm:text-[2rem]"
           >
             Hello.
           </h1>
           <p
-            class="max-w-2xl text-[0.92rem] leading-snug text-[color:var(--muted-text)] sm:text-[1rem]"
+            class="max-w-2xl text-[0.84rem] leading-snug text-[color:var(--muted-text)] sm:text-[0.92rem]"
           >
             Explore stories, research notes, and the studio's experiments.
           </p>
-          <div class="flex flex-wrap gap-1.5 md:gap-2">
+          <div class="flex flex-wrap gap-1 md:gap-1.5">
             <LinkButton href="/posts/" prefetch="viewport">
               Latest posts
             </LinkButton>
@@ -55,56 +55,56 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         </div>
 
         <div
-          class="grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:col-span-6 md:gap-3 lg:col-span-6"
+          class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:col-span-6 md:col-start-7 md:gap-2.5 lg:col-span-7"
         >
           <a
             href={SITE.notesUrl ?? "https://notes.dzakiazhari.com"}
-            class="group relative flex min-h-[140px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-3.5 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+            class="group relative flex min-h-[112px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-3 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
             rel="noopener noreferrer"
             target="_blank"
             data-astro-prefetch="false"
           >
             <span
-              class="inline-flex items-center gap-1 text-[0.64rem] font-semibold tracking-[0.26em] text-[color:var(--muted-text)] uppercase"
+              class="inline-flex items-center gap-0.5 text-[0.56rem] font-semibold tracking-[0.24em] text-[color:var(--muted-text)] uppercase"
             >
-              <IconGarden class="size-4" aria-hidden="true" />
+              <IconGarden class="size-[0.9rem]" aria-hidden="true" />
               Notes garden
             </span>
             <span
-              class="text-[1.4rem] leading-snug font-semibold text-[color:var(--nav-text-strong)]"
+              class="text-[1.28rem] leading-snug font-semibold text-[color:var(--nav-text-strong)]"
             >
               Visit the evergreen notes
             </span>
             <span
-              class="mt-auto inline-flex items-center gap-1 text-[0.62rem] font-semibold tracking-[0.24em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
+              class="mt-auto inline-flex items-center gap-0.5 text-[0.54rem] font-semibold tracking-[0.22em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
             >
               Explore notes
-              <IconGarden class="size-[0.95rem]" aria-hidden="true" />
+              <IconGarden class="size-[0.85rem]" aria-hidden="true" />
             </span>
           </a>
 
           <a
             href="/rss.xml"
-            class="group flex min-h-[140px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-raised)] p-3.5 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+            class="group flex min-h-[112px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-raised)] p-3 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
             aria-label="rss feed"
             rel="noopener noreferrer"
             title="RSS Feed"
           >
             <span
-              class="text-[0.64rem] font-semibold tracking-[0.26em] text-[color:var(--muted-text)] uppercase"
+              class="text-[0.56rem] font-semibold tracking-[0.24em] text-[color:var(--muted-text)] uppercase"
             >
               Stay updated
             </span>
             <span
-              class="text-[1.4rem] leading-snug font-semibold text-[color:var(--nav-text-strong)]"
+              class="text-[1.28rem] leading-snug font-semibold text-[color:var(--nav-text-strong)]"
             >
               Subscribe via RSS
             </span>
             <span
-              class="mt-auto inline-flex items-center gap-1 text-[0.62rem] font-semibold tracking-[0.24em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
+              class="mt-auto inline-flex items-center gap-0.5 text-[0.54rem] font-semibold tracking-[0.22em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
             >
               Feed
-              <IconRss width={18} height={18} class="rtl:-rotate-90" />
+              <IconRss width={16} height={16} class="rtl:-rotate-90" />
             </span>
           </a>
         </div>
@@ -112,8 +112,8 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
       {
         SOCIALS.length > 0 && (
-          <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-[var(--divider-soft)] pt-3">
-            <span class="text-[0.62rem] tracking-[0.26em] text-[color:var(--muted-text)] uppercase">
+          <div class="mt-3 flex flex-wrap items-center gap-1.5 border-t border-[var(--divider-soft)] pt-2">
+            <span class="text-[0.54rem] tracking-[0.22em] text-[color:var(--muted-text)] uppercase">
               Connect
             </span>
             <Socials />
@@ -122,15 +122,15 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       }
     </section>
 
-    <section class="grid grid-cols-1 gap-5 md:grid-cols-12 lg:gap-6">
+    <section class="grid grid-cols-1 gap-3.5 md:grid-cols-12 lg:gap-4">
       {
         featuredPosts.length > 0 && (
-          <div class="space-y-2.5 md:col-span-6">
-            <h2 class="text-[0.7rem] font-semibold tracking-[0.26em] text-[color:var(--muted-text)] uppercase">
+          <div class="space-y-2 md:col-span-6">
+            <h2 class="text-[0.62rem] font-semibold tracking-[0.22em] text-[color:var(--muted-text)] uppercase">
               Featured
             </h2>
-            <ul class="grid gap-3">
-              {featuredPosts.slice(0, 3).map(data => (
+            <ul class="grid gap-2.5 sm:grid-cols-2">
+              {featuredPosts.slice(0, 2).map(data => (
                 <Card variant="h3" showDescription={false} {...data} />
               ))}
             </ul>
@@ -140,12 +140,12 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
       {
         recentPosts.length > 0 && (
-          <div class="space-y-2.5 md:col-span-6">
-            <h2 class="text-[0.7rem] font-semibold tracking-[0.26em] text-[color:var(--muted-text)] uppercase">
+          <div class="space-y-2 md:col-span-6">
+            <h2 class="text-[0.62rem] font-semibold tracking-[0.22em] text-[color:var(--muted-text)] uppercase">
               Recent Posts
             </h2>
-            <ul class="grid gap-3">
-              {recentPosts.slice(0, 3).map(data => (
+            <ul class="grid gap-2.5 sm:grid-cols-2">
+              {recentPosts.slice(0, 2).map(data => (
                 <Card variant="h3" showDescription={false} {...data} />
               ))}
             </ul>
@@ -154,7 +154,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       }
     </section>
 
-    <div class="flex justify-center">
+    <div class="flex justify-center pt-1">
       <LinkButton href="/posts/" prefetch="viewport">
         View archive
         <IconArrowRight class="inline-block rtl:-rotate-180" />
