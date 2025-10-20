@@ -7,6 +7,7 @@ relevant source files for quick follow-up.
 
 | Category | Issue | Resolution | References |
 | --- | --- | --- | --- |
+| Build | `pnpm build` crashed because the custom heading remark plugin relied on `mdast-util-to-string` without declaring it, so pnpm's strict linker couldn't resolve the module. | Promoted `mdast-util-to-string` and `unist-util-visit` to runtime dependencies to keep the plugin available during Astro config evaluation. | `package.json`, `pnpm-lock.yaml` |
 | UI Polish | Copy controls still blended with surrounding code fences, leaving both Shiki wrappers and Expressive Code frames without a clear hover affordance. | Brightened the copy pill palette, overrode Expressive Code button variables, and revealed the control on hover/focus while keeping touch users in the default visible state. | `src/styles/global.css`, `src/styles/typography.css` |
 | UI Polish | Homepage hero columns drifted from the card grid, so the intro copy and CTA tiles no longer lined up with the featured posts below. | Matched the hero padding and grid to the post layout, tightened CTA spacing, and kept the section within the shared two-column rhythm. | `src/pages/index.astro` |
 | UI Polish | Markdown section headers kept a heavy drop shadow and the code copy pill stayed visible at rest, clashing with the flattened cards pass. | Removed the h2 drop shadow, aligned the copy pill with Expressive Code’s hover/focus reveal, and preserved tap access on touch devices via pointer-aware media queries. | `src/styles/typography.css` |
