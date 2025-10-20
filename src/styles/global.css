@@ -160,13 +160,29 @@ html[data-theme="light"] {
   --code-card-border: color-mix(in srgb, var(--border-strong) 86%, transparent);
   --code-card-shadow: 0 24px 52px -30px rgba(40, 32, 24, 0.28);
   --code-copy-offset: 1.25rem;
-  --code-copy-text: var(--pill-text);
-  --code-copy-bg: var(--pill-surface);
-  --code-copy-border: var(--pill-border-strong);
-  --code-copy-hover-bg: var(--pill-hover-surface);
-  --code-copy-active-bg: var(--pill-active-surface);
-  --code-copy-ring: color-mix(in srgb, var(--ring-accent) 84%, transparent);
-  --code-copy-success: color-mix(in srgb, var(--secondary) 88%, white 12%);
+  --code-copy-text: color-mix(in srgb, var(--nav-text-strong) 88%, white 12%);
+  --code-copy-bg: color-mix(
+    in srgb,
+    var(--pill-surface) 78%,
+    var(--secondary) 22%
+  );
+  --code-copy-border: color-mix(
+    in srgb,
+    var(--pill-border-strong) 72%,
+    var(--secondary) 28%
+  );
+  --code-copy-hover-bg: color-mix(
+    in srgb,
+    var(--pill-hover-surface) 72%,
+    var(--secondary) 28%
+  );
+  --code-copy-active-bg: color-mix(
+    in srgb,
+    var(--pill-active-surface) 64%,
+    var(--secondary) 36%
+  );
+  --code-copy-ring: color-mix(in srgb, var(--secondary) 68%, white 32%);
+  --code-copy-success: color-mix(in srgb, var(--secondary) 90%, white 10%);
   --prose-heading-surface: color-mix(
     in srgb,
     var(--surface-raised) 90%,
@@ -452,13 +468,29 @@ html[data-theme="dark"] {
   );
   --code-card-shadow: 0 28px 64px -34px rgba(0, 0, 0, 0.74);
   --code-copy-offset: 1.15rem;
-  --code-copy-text: var(--pill-text);
-  --code-copy-bg: var(--pill-surface);
-  --code-copy-border: var(--pill-border-strong);
-  --code-copy-hover-bg: var(--pill-hover-surface);
-  --code-copy-active-bg: var(--pill-active-surface);
-  --code-copy-ring: color-mix(in srgb, var(--ring-accent) 92%, transparent);
-  --code-copy-success: color-mix(in srgb, var(--secondary) 90%, white 10%);
+  --code-copy-text: color-mix(in srgb, var(--heading-accent) 84%, white 16%);
+  --code-copy-bg: color-mix(
+    in srgb,
+    var(--pill-surface) 70%,
+    rgba(115, 191, 146, 0.32)
+  );
+  --code-copy-border: color-mix(
+    in srgb,
+    var(--pill-border-strong) 82%,
+    rgba(115, 191, 146, 0.42)
+  );
+  --code-copy-hover-bg: color-mix(
+    in srgb,
+    var(--pill-hover-surface) 66%,
+    rgba(115, 191, 146, 0.42)
+  );
+  --code-copy-active-bg: color-mix(
+    in srgb,
+    var(--pill-active-surface) 60%,
+    rgba(115, 191, 146, 0.5)
+  );
+  --code-copy-ring: color-mix(in srgb, var(--secondary) 74%, white 26%);
+  --code-copy-success: color-mix(in srgb, var(--secondary) 92%, white 8%);
   --prose-heading-surface: color-mix(
     in srgb,
     var(--surface-raised) 86%,

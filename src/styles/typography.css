@@ -315,7 +315,7 @@
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
-      padding: 0.38rem 0.85rem;
+      padding: 0.38rem 0.88rem;
       border-radius: var(--radius-sm);
       border: 1px solid var(--code-copy-border);
       background: var(--code-copy-bg);
@@ -325,7 +325,6 @@
       letter-spacing: 0.22em;
       text-transform: uppercase;
       line-height: 1;
-      box-shadow: 0 18px 42px -28px rgba(0, 0, 0, 0.45);
       opacity: 0;
       pointer-events: none;
       z-index: 3;
@@ -333,7 +332,6 @@
         background-color 160ms ease,
         color 160ms ease,
         border-color 160ms ease,
-        box-shadow 160ms ease,
         opacity 160ms ease,
         transform 160ms ease;
     }
@@ -347,7 +345,6 @@
         var(--code-copy-border) 58%,
         transparent
       );
-      box-shadow: 0 24px 48px -28px rgba(0, 0, 0, 0.5);
       pointer-events: auto;
       opacity: 1;
     }
@@ -363,7 +360,6 @@
         var(--code-copy-border) 50%,
         var(--secondary) 50%
       );
-      box-shadow: 0 26px 52px -28px rgba(0, 0, 0, 0.52);
       opacity: 1;
       pointer-events: auto;
     }
@@ -376,7 +372,6 @@
         var(--code-copy-border) 46%,
         var(--secondary) 54%
       );
-      box-shadow: 0 28px 54px -28px rgba(0, 0, 0, 0.55);
       opacity: 1;
       pointer-events: auto;
     }
@@ -404,6 +399,83 @@
     .app-prose .code-block .copy-code {
       inset-inline-end: 0.75rem;
       letter-spacing: 0.18em;
+    }
+  }
+
+  .expressive-code {
+    --ec-frm-inlBtnBg: color-mix(
+      in srgb,
+      var(--code-copy-bg) 88%,
+      transparent 12%
+    );
+    --ec-frm-inlBtnBgIdleOpa: 0.9;
+    --ec-frm-inlBtnBgHoverOrFocusOpa: 1;
+    --ec-frm-inlBtnBgActOpa: 1;
+    --ec-frm-inlBtnBrd: color-mix(
+      in srgb,
+      var(--code-copy-border) 92%,
+      transparent 8%
+    );
+    --ec-frm-inlBtnBrdOpa: 1;
+    --ec-frm-inlBtnFg: var(--code-copy-text);
+    --ec-frm-tooltipSuccessBg: color-mix(
+      in srgb,
+      var(--code-copy-active-bg) 82%,
+      transparent 18%
+    );
+    --ec-frm-tooltipSuccessFg: var(--code-copy-text);
+  }
+
+  .expressive-code .copy button {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: var(--radius-sm);
+    opacity: 0;
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  .expressive-code .copy button div {
+    background: var(--code-copy-bg);
+    opacity: 0.9;
+    transition:
+      background-color 160ms ease,
+      opacity 160ms ease;
+  }
+
+  .expressive-code .copy button::before {
+    border-color: var(--code-copy-border);
+    opacity: 1;
+  }
+
+  .expressive-code .copy button::after {
+    background-color: var(--code-copy-text);
+  }
+
+  .expressive-code:where(:hover, :focus-within) .copy button,
+  .expressive-code .copy .feedback.show ~ button {
+    opacity: 1;
+  }
+
+  .expressive-code .copy button:hover,
+  .expressive-code .copy button:focus-visible {
+    transform: translate3d(0, -0.18rem, 0);
+  }
+
+  .expressive-code .copy button:hover div,
+  .expressive-code .copy button:focus-visible div {
+    background: var(--code-copy-hover-bg);
+    opacity: 1;
+  }
+
+  .expressive-code .copy button:active div {
+    background: var(--code-copy-active-bg);
+  }
+
+  @media (hover: none) {
+    .expressive-code .copy button {
+      opacity: 1;
     }
   }
 

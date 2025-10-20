@@ -28,12 +28,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     class="site-shell space-y-12 pt-16 pb-20"
   >
     <section
-      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-6 py-12"
+      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-5 py-12 sm:px-6 md:py-14"
     >
-      <div
-        class="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] md:items-start"
-      >
-        <div class="space-y-5">
+      <div class="grid gap-10 md:grid-cols-2 md:items-start">
+        <div class="space-y-6 md:max-w-xl md:pe-6 lg:pe-10">
           <h1
             class="text-4xl font-semibold text-[color:var(--nav-text-strong)] sm:text-[2.75rem]"
           >
@@ -44,7 +42,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           >
             Explore stories, research notes, and the studio's experiments.
           </p>
-          <div class="flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-3 md:gap-4">
             <LinkButton href="/posts/" prefetch="viewport">
               Latest posts
             </LinkButton>
@@ -54,7 +52,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5">
           <a
             href={SITE.notesUrl ?? "https://notes.dzakiazhari.com"}
             class="group relative flex min-h-[180px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-5 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
