@@ -150,6 +150,7 @@ html[data-theme="light"] {
   --card-meta-tracking: 0.22em;
   --card-heading-h2: 1.32rem;
   --card-heading-h3: 1.08rem;
+  --card-heading-h3-min-height: calc(var(--card-heading-h3) * 1.4 * 2);
   --card-body-size: 0.92rem;
   --card-body-leading: 1.45;
   --card-footer-size: 0.62rem;
@@ -462,6 +463,7 @@ html[data-theme="dark"] {
   --card-meta-tracking: 0.22em;
   --card-heading-h2: 1.32rem;
   --card-heading-h3: 1.08rem;
+  --card-heading-h3-min-height: calc(var(--card-heading-h3) * 1.4 * 2);
   --card-body-size: 0.92rem;
   --card-body-leading: 1.45;
   --card-footer-size: 0.62rem;
@@ -819,6 +821,15 @@ html[data-theme="dark"] {
 
   a[data-card-variant="h3"] {
     min-height: var(--card-min-height-h3);
+  }
+
+  a[data-card-variant="h3"] h3 {
+    min-height: var(--card-heading-h3-min-height);
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 
