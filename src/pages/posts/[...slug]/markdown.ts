@@ -47,3 +47,11 @@ export const GET: APIRoute = async ({ params }) => {
     });
   }
 };
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+
+  return posts.map(post => ({
+    params: { slug: getPath(post.id, post.filePath, false) },
+  }));
+}
