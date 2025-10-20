@@ -43,9 +43,16 @@ const { Content } = await render(post);
 
 let rawMarkdown = "";
 
-try {
-  rawMarkdown = await readFile(resolve(process.cwd(), post.filePath), "utf-8");
-} catch {
+if (post.filePath) {
+  try {
+    rawMarkdown = await readFile(
+      resolve(process.cwd(), post.filePath),
+      "utf-8"
+    );
+  } catch {
+    rawMarkdown = post.body ?? "";
+  }
+} else {
   rawMarkdown = post.body ?? "";
 }
 
@@ -201,6 +208,7 @@ const nextPost =
     {
       showMarkdownActions && (
         <script
+          is:inline
           type="application/json"
           id="post-markdown-source"
           set:html={JSON.stringify(trimmedMarkdown)}
@@ -266,16 +274,25 @@ const nextPost =
   <Footer />
 </Layout>
 
-<script>
+<script is:inline>
   (function () {
     const attachMarkdownActions = () => {
-      const container = document.querySelector("[data-post-markdown-actions]");
+      const containerNode = document.querySelector(
+        "[data-post-markdown-actions]"
+      );
       const dataNode = document.querySelector("#post-markdown-source");
 
-      if (!container || container.dataset.bound === "true" || !dataNode) {
+      if (
+        !(containerNode instanceof HTMLElement) ||
+        containerNode.dataset.bound === "true" ||
+        !(dataNode instanceof HTMLScriptElement)
+      ) {
         return;
       }
 
+      const container = containerNode;
+
+      /** @type {string | null} */
       let markdownSource = null;
 
       try {
@@ -288,36 +305,61 @@ const nextPost =
         return;
       }
 
-      const trigger = container.querySelector("[data-dropdown-trigger]");
-      const panel = container.querySelector("[data-dropdown-panel]");
-      const copyBtn = container.querySelector("[data-action='copy']");
-      const copyLabel = copyBtn?.querySelector("[data-copy-label]");
+      const triggerNode = container.querySelector("[data-dropdown-trigger]");
+      const panelNode = container.querySelector("[data-dropdown-panel]");
+      const copyBtnNode = container.querySelector("[data-action='copy']");
+
+      if (
+        !(triggerNode instanceof HTMLElement) ||
+        !(panelNode instanceof HTMLElement) ||
+        !(copyBtnNode instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      const copyBtn = copyBtnNode;
+      const trigger = triggerNode;
+      const panel = panelNode;
+      const copyLabel = copyBtn.querySelector("[data-copy-label]");
       const menuItems = panel
-        ? Array.from(panel.querySelectorAll("[data-menu-item]")).filter(
-            item => item instanceof HTMLElement
+        ? /** @type {HTMLElement[]} */ (
+            Array.from(panel.querySelectorAll("[data-menu-item]")).filter(
+              item => item instanceof HTMLElement
+            )
           )
         : [];
 
-      if (
-        !(trigger instanceof HTMLElement) ||
-        !(panel instanceof HTMLElement) ||
-        !(copyBtn instanceof HTMLElement) ||
-        menuItems.length === 0
-      ) {
+      if (menuItems.length === 0) {
         return;
       }
 
       const copyLabelElement =
         copyLabel instanceof HTMLElement ? copyLabel : null;
 
-      const fallbackLabel =
-        copyLabelElement?.textContent?.trim() || copyBtn.textContent || "Copy";
-      const defaultLabel = copyBtn.dataset.labelDefault || fallbackLabel;
-      const successLabel = copyBtn.dataset.labelSuccess || "Copied!";
-      const errorLabel = copyBtn.dataset.labelError || "Copy failed";
+      const fallbackLabel = (() => {
+        if (copyLabelElement && copyLabelElement.textContent) {
+          return copyLabelElement.textContent.trim();
+        }
+
+        if (copyBtn.textContent) {
+          return copyBtn.textContent.trim();
+        }
+
+        return "Copy";
+      })();
+
+      const defaultLabel =
+        copyBtn.getAttribute("data-label-default") ?? fallbackLabel;
+      const successLabel =
+        copyBtn.getAttribute("data-label-success") ?? "Copied!";
+      const errorLabel =
+        copyBtn.getAttribute("data-label-error") ?? "Copy failed";
+
+      /** @type {ReturnType<typeof window.setTimeout> | undefined} */
       let resetTimer;
       let dropdownOpen = false;
 
+      /** @param {string} next */
       const updateLabel = next => {
         if (copyLabelElement) {
           copyLabelElement.textContent = next;
@@ -380,6 +422,7 @@ const nextPost =
         }
       };
 
+      /** @param {KeyboardEvent} event */
       const handleTriggerKeydown = event => {
         if (event.key === " " || event.key === "Enter") {
           event.preventDefault();
@@ -397,6 +440,7 @@ const nextPost =
         }
       };
 
+      /** @param {KeyboardEvent} event */
       const handlePanelKeydown = event => {
         if (event.key === "Escape") {
           event.preventDefault();
@@ -411,11 +455,11 @@ const nextPost =
             return;
           }
 
-          const currentIndex = menuItems.indexOf(
-            document.activeElement instanceof HTMLElement
-              ? document.activeElement
-              : null
-          );
+          const activeElement = document.activeElement;
+          const currentIndex =
+            activeElement instanceof HTMLElement
+              ? menuItems.indexOf(activeElement)
+              : -1;
           let nextIndex = currentIndex;
 
           if (event.key === "ArrowDown") {
@@ -442,6 +486,7 @@ const nextPost =
         }
       };
 
+      /** @param {MouseEvent} event */
       const handleDocumentClick = event => {
         if (
           event.target instanceof Node &&
@@ -463,6 +508,7 @@ const nextPost =
         }
       };
 
+      /** @param {MouseEvent} event */
       const handleMenuItemClick = event => {
         const target = event.currentTarget;
 
@@ -485,13 +531,11 @@ const nextPost =
         item.addEventListener("click", handleMenuItemClick)
       );
 
-      window.addEventListener("click", handleDocumentClick, { capture: true });
+      window.addEventListener("click", handleDocumentClick, true);
 
       container.dataset.bound = "true";
       container.addEventListener("astro:after-swap", () => {
-        window.removeEventListener("click", handleDocumentClick, {
-          capture: true,
-        });
+        window.removeEventListener("click", handleDocumentClick, true);
       });
     };
 

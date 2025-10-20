@@ -179,7 +179,7 @@ if (SITE.showArchives) {
   </div>
 </header>
 
-<script>
+<script is:inline>
   (function () {
     const attachToggle = () => {
       const menuBtn = document.querySelector("#menu-btn");
@@ -187,7 +187,12 @@ if (SITE.showArchives) {
       const menuIcon = document.querySelector("#menu-icon");
       const closeIcon = document.querySelector("#close-icon");
 
-      if (!menuBtn || !menuItems || !menuIcon || !closeIcon) {
+      if (
+        !(menuBtn instanceof HTMLElement) ||
+        !(menuItems instanceof HTMLElement) ||
+        !(menuIcon instanceof SVGElement) ||
+        !(closeIcon instanceof SVGElement)
+      ) {
         return;
       }
 

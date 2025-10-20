@@ -27,25 +27,29 @@ export const GET: APIRoute = async ({ params }) => {
     return new Response("Not found", { status: 404 });
   }
 
-  try {
-    const absolutePath = resolve(process.cwd(), entry.filePath);
-    const fileContents = await readFile(absolutePath, "utf-8");
+  if (entry.filePath) {
+    try {
+      const absolutePath = resolve(process.cwd(), entry.filePath);
+      const fileContents = await readFile(absolutePath, "utf-8");
 
-    return new Response(fileContents, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/markdown; charset=utf-8",
-        "Cache-Control": "public, max-age=31536000, immutable",
-      },
-    });
-  } catch {
-    return new Response(entry.body ?? "", {
-      status: 200,
-      headers: {
-        "Content-Type": "text/markdown; charset=utf-8",
-      },
-    });
+      return new Response(fileContents, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/markdown; charset=utf-8",
+          "Cache-Control": "public, max-age=31536000, immutable",
+        },
+      });
+    } catch {
+      // fall through to use the cached body
+    }
   }
+
+  return new Response(entry.body ?? "", {
+    status: 200,
+    headers: {
+      "Content-Type": "text/markdown; charset=utf-8",
+    },
+  });
 };
 
 export async function getStaticPaths() {
