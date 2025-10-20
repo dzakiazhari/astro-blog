@@ -7,7 +7,7 @@ export interface Props {
 const { noPadding = false, ariaHidden = true } = Astro.props;
 ---
 
-<div class:list={["site-shell", noPadding ? "px-0" : "px-5"]}>
+<div class:list={["site-shell", { "px-0": noPadding }]}>
   <div
     class="h-px w-full bg-gradient-to-r from-transparent via-[color:var(--divider-soft)] to-transparent"
     aria-hidden={ariaHidden}

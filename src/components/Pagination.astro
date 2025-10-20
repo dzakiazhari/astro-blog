@@ -15,10 +15,10 @@ const { page } = Astro.props;
 {
   page.lastPage > 1 && (
     <nav
-      class="site-shell mt-10 mb-12 flex justify-center"
+      class="site-shell mt-3 mb-5 flex justify-center"
       aria-label="Pagination"
     >
-      <div class="flex items-center gap-4 text-[0.7rem] font-semibold tracking-[0.24em] text-[color:var(--muted-text)] uppercase">
+      <div class="flex items-center gap-2 text-[0.6rem] font-semibold tracking-[0.2em] text-[color:var(--muted-text)] uppercase">
         <LinkButton
           disabled={!page.url.prev}
           href={page.url.prev as string}
@@ -26,10 +26,10 @@ const { page } = Astro.props;
           ariaLabel="Previous"
           prefetch="hover"
         >
-          <IconArrowLeft class="inline-block h-[1.05rem] w-[1.05rem] rtl:rotate-180" />
+          <IconArrowLeft class="inline-block size-[1rem] rtl:rotate-180" />
           Prev
         </LinkButton>
-        <span class="inline-flex min-w-[4rem] justify-center text-[color:var(--muted-text)]/80">
+        <span class="inline-flex min-w-[2.9rem] justify-center text-[color:var(--muted-text)]/80">
           {page.currentPage} / {page.lastPage}
         </span>
         <LinkButton
@@ -40,7 +40,7 @@ const { page } = Astro.props;
           prefetch="hover"
         >
           Next
-          <IconArrowRight class="inline-block h-[1.05rem] w-[1.05rem] rtl:rotate-180" />
+          <IconArrowRight class="inline-block size-[1rem] rtl:rotate-180" />
         </LinkButton>
       </div>
     </nav>
