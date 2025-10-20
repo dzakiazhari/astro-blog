@@ -97,8 +97,8 @@ html[data-theme="light"] {
     color-mix(in srgb, var(--secondary) 48%, var(--tertiary))
   );
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
-  --card-marker-width: 1.1rem;
-  --card-marker-offset: 0.45rem;
+  --card-marker-width: 0.8rem;
+  --card-marker-offset: 0.5rem;
   --card-marker: color-mix(in srgb, var(--secondary) 70%, rgba(0, 0, 0, 0.08));
   --card-marker-hover: color-mix(
     in srgb,
