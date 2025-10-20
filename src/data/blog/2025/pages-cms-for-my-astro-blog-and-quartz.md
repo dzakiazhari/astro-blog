@@ -16,6 +16,8 @@ hideEditPost: false
 timezone: Asia/Tokyo
 ---
 
+## Table of Contents
+
 ## 1. Get the repos ready
 
 I keep two git projects side by side: `astro-blog` for the main site and `private-quartz` for the evergreen notes. Pages CMS reads files straight from the repository, so all I need locally is the repo on disk and a `.pages.yml` file in the root. I commit the config once and let [Pages CMS](https://pagescms.org/docs/) generate commits when I publish content.
@@ -137,9 +139,9 @@ The updated schema keeps Pages CMS aligned with the Astro Zod rules while leanin
 
 Below are the **complete `.pages.yml` configurations** for both Astro and Quartz projects for reference.
 
-### Astro `.pages.yml`
+### Astro
 
-```yaml
+```yaml title=".pages.yml"
 # .pages.yml
 
 media:
@@ -315,9 +317,9 @@ content:
         description: 'Write in Markdown. Supports callouts, code fences with file="" metadata, and remark-collapse toggles.'
 ```
 
-### Quartz `.pages.yml`
+### Quartz
 
-```yaml
+```yaml title=".pages.yml"
 # Pages CMS configuration for this Quartz site
 
 # Where media files are stored and how they resolve in the built site
