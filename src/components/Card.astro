@@ -42,9 +42,10 @@ const headerProps = {
     class="group relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-6 py-7 transition-colors duration-200 ease-out hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
     data-astro-prefetch="viewport"
   >
+    <!-- Marker sizing comes from --card-marker-width/--card-marker-offset in src/styles/global.css -->
     <span
       aria-hidden="true"
-      class="pointer-events-none absolute top-6 bottom-6 left-0 w-10 -translate-x-[0.6rem] bg-[color:var(--card-marker)] transition-colors duration-200 ease-out [clip-path:polygon(0%_0,100%_50%,0%_100%)] group-hover:bg-[color:var(--card-marker-hover)] group-focus-visible:bg-[color:var(--card-marker-hover)]"
+      class="pointer-events-none absolute top-6 bottom-6 left-0 w-[var(--card-marker-width)] -translate-x-[var(--card-marker-offset)] bg-[color:var(--card-marker)] transition-colors duration-200 ease-out [clip-path:polygon(0%_0,100%_50%,0%_100%)] group-hover:bg-[color:var(--card-marker-hover)] group-focus-visible:bg-[color:var(--card-marker-hover)]"
     ></span>
 
     <div class="relative z-[1] space-y-4 ps-5">
