@@ -107,7 +107,7 @@ html[data-theme="light"] {
     color-mix(in srgb, var(--secondary) 48%, var(--tertiary))
   );
   --pill-radius: var(--radius-lg);
-  --pill-gap: 0.55rem;
+  --pill-gap: 0.45rem;
   --pill-surface: color-mix(in srgb, var(--surface-raised) 92%, white 8%);
   --pill-hover-surface: color-mix(
     in srgb,
@@ -248,8 +248,8 @@ html[data-theme="light"] {
   --prose-mark-text: color-mix(in srgb, var(--dark) 82%, var(--secondary) 18%);
   --prose-code-border: color-mix(in srgb, var(--badge-border) 82%, transparent);
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
-  --card-marker-width: 0.8rem;
-  --card-marker-offset: 0.5rem;
+  --card-marker-width: 0.68rem;
+  --card-marker-offset: 0.42rem;
   --card-marker: color-mix(in srgb, var(--secondary) 70%, rgba(0, 0, 0, 0.08));
   --card-marker-hover: color-mix(
     in srgb,
@@ -261,7 +261,7 @@ html[data-theme="light"] {
     var(--tertiary) 38%,
     rgba(0, 0, 0, 0.12)
   );
-  --layout-max-width: min(1200px, calc(100vw - 52px));
+  --layout-max-width: min(1100px, calc(100vw - 44px));
 }
 
 html[data-theme="dark"] {
@@ -568,8 +568,8 @@ html[data-theme="dark"] {
   );
   --prose-code-border: color-mix(in srgb, var(--badge-border) 70%, transparent);
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
-  --card-marker-width: 1.1rem;
-  --card-marker-offset: 0.45rem;
+  --card-marker-width: 0.8rem;
+  --card-marker-offset: 0.38rem;
   --card-marker: color-mix(in srgb, var(--secondary) 60%, rgba(0, 0, 0, 0.32));
   --card-marker-hover: color-mix(
     in srgb,
@@ -581,7 +581,7 @@ html[data-theme="dark"] {
     var(--tertiary) 34%,
     rgba(0, 0, 0, 0.38)
   );
-  --layout-max-width: min(1200px, calc(100vw - 52px));
+  --layout-max-width: min(1100px, calc(100vw - 44px));
 }
 
 @theme inline {
@@ -738,8 +738,8 @@ html[data-theme="dark"] {
   }
 
   .pill--standard {
-    --pill-padding-block: 0.42rem;
-    --pill-padding-inline: 0.95rem;
+    --pill-padding-block: 0.34rem;
+    --pill-padding-inline: 0.78rem;
   }
 
   .pill--compact {
@@ -767,8 +767,8 @@ html[data-theme="dark"] {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.3rem;
-    height: 2.3rem;
+    width: 2.1rem;
+    height: 2.1rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--card-icon-border);
     background: var(--card-icon-surface);
@@ -780,8 +780,8 @@ html[data-theme="dark"] {
   }
 
   .card-icon svg {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1rem;
+    height: 1rem;
   }
 
   .group:where(:hover, :focus-visible) .card-icon {
@@ -793,16 +793,16 @@ html[data-theme="dark"] {
 @utility max-w-app {
   max-width: min(
     var(--layout-max-width),
-    calc(100vw - clamp(2.4rem, 6vw, 4.2rem))
+    calc(100vw - clamp(2rem, 5vw, 3.4rem))
   );
 }
 
 @utility site-shell {
   width: min(
     var(--layout-max-width),
-    calc(100% - clamp(1.9rem, 4.5vw, 3.4rem))
+    calc(100% - clamp(1.4rem, 3.5vw, 2.8rem))
   );
-  @apply mx-auto px-3 sm:px-4;
+  @apply mx-auto px-2.5 sm:px-3;
 }
 
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
