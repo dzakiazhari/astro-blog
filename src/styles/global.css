@@ -54,8 +54,8 @@ html[data-theme="light"] {
     var(--surface-outline-strong) 88%,
     transparent
   );
-  --card-shadow: 0 20px 42px -28px rgba(38, 30, 22, 0.24);
-  --card-shadow-hover: 0 30px 58px -28px rgba(38, 30, 22, 0.3);
+  --card-shadow: none;
+  --card-shadow-hover: none;
   --divider-soft: color-mix(in srgb, var(--surface-outline) 70%, transparent);
   --divider-strong: color-mix(
     in srgb,
@@ -317,8 +317,8 @@ html[data-theme="dark"] {
     var(--surface-outline-strong) 90%,
     rgba(255, 255, 255, 0.16)
   );
-  --card-shadow: 0 26px 58px -32px rgba(0, 0, 0, 0.7);
-  --card-shadow-hover: 0 34px 66px -30px rgba(0, 0, 0, 0.78);
+  --card-shadow: none;
+  --card-shadow-hover: none;
   --divider-soft: color-mix(in srgb, var(--surface-outline) 66%, transparent);
   --divider-strong: color-mix(
     in srgb,
