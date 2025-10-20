@@ -9,6 +9,13 @@ import LogoUnfold from "@/assets/icons/logo-unfold.svg";
 import BackButton from "./BackButton.astro";
 import { SITE } from "@/config";
 
+export interface Props {
+  postMarkdown?: string | null;
+  viewMarkdownUrl?: string | null;
+}
+
+const { postMarkdown = null, viewMarkdownUrl = null } = Astro.props;
+
 const { pathname } = Astro.url;
 
 const currentPath =
@@ -66,6 +73,13 @@ if (SITE.showArchives) {
 }
 
 const showBackButton = SITE.showBackButton && currentPath.startsWith("/posts/");
+const showMarkdownActions =
+  typeof postMarkdown === "string" &&
+  postMarkdown.length > 0 &&
+  !!viewMarkdownUrl;
+
+const actionButtonClass =
+  "inline-flex items-center gap-2 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-3 py-2 text-[0.64rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] whitespace-nowrap";
 ---
 
 <header
@@ -87,7 +101,41 @@ const showBackButton = SITE.showBackButton && currentPath.startsWith("/posts/");
           </a>
         </div>
 
-        <div class="flex items-center gap-3 md:gap-4">
+        <div class="flex flex-wrap items-center gap-3 md:flex-nowrap md:gap-4">
+          {
+            showMarkdownActions && (
+              <>
+                <div
+                  data-markdown-actions
+                  class="flex flex-wrap items-center gap-2 md:flex-nowrap md:gap-3"
+                >
+                  <button
+                    type="button"
+                    data-action="copy"
+                    data-label-default="Copy as Markdown"
+                    data-label-success="Copied!"
+                    data-label-error="Copy failed"
+                    class={actionButtonClass}
+                  >
+                    Copy as Markdown
+                  </button>
+                  <a
+                    href={viewMarkdownUrl ?? undefined}
+                    class={actionButtonClass}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View as Markdown
+                  </a>
+                </div>
+                <script
+                  type="application/json"
+                  id="post-markdown-source"
+                  set:html={JSON.stringify(postMarkdown)}
+                />
+              </>
+            )
+          }
           {
             SITE.lightAndDarkMode && (
               <button
@@ -186,10 +234,10 @@ const showBackButton = SITE.showBackButton && currentPath.startsWith("/posts/");
 <script>
   (function () {
     const attachToggle = () => {
-      const menuBtn = document.querySelector<HTMLButtonElement>("#menu-btn");
-      const menuItems = document.querySelector<HTMLElement>("#menu-items");
-      const menuIcon = document.querySelector<SVGElement>("#menu-icon");
-      const closeIcon = document.querySelector<SVGElement>("#close-icon");
+      const menuBtn = document.querySelector("#menu-btn");
+      const menuItems = document.querySelector("#menu-items");
+      const menuIcon = document.querySelector("#menu-icon");
+      const closeIcon = document.querySelector("#close-icon");
 
       if (!menuBtn || !menuItems || !menuIcon || !closeIcon) {
         return;
@@ -217,9 +265,103 @@ const showBackButton = SITE.showBackButton && currentPath.startsWith("/posts/");
       menuBtn.dataset.navBound = "true";
     };
 
-    attachToggle();
+    const attachMarkdownActions = () => {
+      const container = document.querySelector("[data-markdown-actions]");
 
-    document.addEventListener("astro:after-swap", attachToggle);
-    document.addEventListener("astro:page-load", attachToggle);
+      if (!container) {
+        return;
+      }
+
+      const copyBtn = container.querySelector("[data-action='copy']");
+
+      if (!copyBtn || copyBtn.dataset.bound === "true") {
+        return;
+      }
+
+      const dataNode = document.querySelector("#post-markdown-source");
+
+      if (!dataNode) {
+        return;
+      }
+
+      let markdownSource = null;
+
+      try {
+        markdownSource = JSON.parse(dataNode.textContent ?? "null");
+      } catch {
+        markdownSource = null;
+      }
+
+      if (!markdownSource) {
+        return;
+      }
+
+      const defaultLabel =
+        copyBtn.dataset.labelDefault || copyBtn.textContent || "Copy";
+      const successLabel = copyBtn.dataset.labelSuccess || "Copied!";
+      const errorLabel = copyBtn.dataset.labelError || "Copy failed";
+      let resetTimer;
+
+      const updateLabel = next => {
+        copyBtn.textContent = next;
+      };
+
+      const scheduleReset = () => {
+        if (resetTimer) {
+          window.clearTimeout(resetTimer);
+        }
+
+        resetTimer = window.setTimeout(() => {
+          updateLabel(defaultLabel);
+        }, 2000);
+      };
+
+      copyBtn.addEventListener("click", async () => {
+        const applyFallbackCopy = () => {
+          const textarea = document.createElement("textarea");
+          textarea.value = markdownSource;
+          textarea.setAttribute("readonly", "");
+          textarea.style.position = "absolute";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.select();
+          const successful = document.execCommand("copy");
+          document.body.removeChild(textarea);
+
+          if (!successful) {
+            throw new Error("Copy command failed");
+          }
+        };
+
+        try {
+          if (
+            navigator.clipboard &&
+            typeof navigator.clipboard.writeText === "function"
+          ) {
+            await navigator.clipboard.writeText(markdownSource);
+          } else {
+            applyFallbackCopy();
+          }
+
+          updateLabel(successLabel);
+        } catch {
+          updateLabel(errorLabel);
+        }
+
+        scheduleReset();
+      });
+
+      copyBtn.dataset.bound = "true";
+    };
+
+    const reattach = () => {
+      attachToggle();
+      attachMarkdownActions();
+    };
+
+    reattach();
+
+    document.addEventListener("astro:after-swap", reattach);
+    document.addEventListener("astro:page-load", reattach);
   })();
 </script>

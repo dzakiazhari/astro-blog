@@ -1,5 +1,7 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -36,6 +38,14 @@ const {
 
 const { Content } = await render(post);
 
+let rawMarkdown = "";
+
+try {
+  rawMarkdown = await readFile(resolve(process.cwd(), post.filePath), "utf-8");
+} catch {
+  rawMarkdown = post.body ?? "";
+}
+
 let ogImageUrl: string | undefined;
 
 // Determine OG image source
@@ -56,6 +66,7 @@ const ogImage = ogImageUrl
   : undefined;
 
 const pageIdentifier = Astro.url.pathname;
+const markdownUrl = `${getPath(post.id, post.filePath)}/markdown`;
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -90,7 +101,7 @@ const nextPost =
 ---
 
 <Layout {...layoutProps}>
-  <Header />
+  <Header postMarkdown={rawMarkdown} viewMarkdownUrl={markdownUrl} />
   <main
     id="main-content"
     class="mx-auto w-full max-w-app px-4 pt-14 pb-12 sm:pt-20"
