@@ -8,12 +8,15 @@ import Footer from "@/components/Footer.astro";
 import Tag from "@/components/Tag.astro";
 import Datetime from "@/components/Datetime.astro";
 import EditPost from "@/components/EditPost.astro";
+import BackButton from "@/components/BackButton.astro";
 import BackToTopButton from "@/components/BackToTopButton.astro";
 import Comments from "@/components/Comments.astro";
 import { getPath } from "@/utils/getPath";
 import { slugifyStr } from "@/utils/slugify";
+import IconClipboard from "@/assets/icons/IconClipboard.svg";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
+import IconMarkdown from "@/assets/icons/IconMarkdown.svg";
 import { SITE } from "@/config";
 
 export interface Props {
@@ -67,6 +70,13 @@ const ogImage = ogImageUrl
 
 const pageIdentifier = Astro.url.pathname;
 const markdownUrl = `${getPath(post.id, post.filePath)}/markdown`;
+const trimmedMarkdown = rawMarkdown.trim();
+const showMarkdownActions = trimmedMarkdown.length > 0;
+const showControlsRow = SITE.showBackButton || showMarkdownActions;
+const markdownTriggerClass =
+  "inline-flex items-center gap-2 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-3 py-2 text-[0.64rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)]";
+const markdownMenuItemClass =
+  "flex w-full items-center gap-2 px-3 py-2 text-left text-[0.64rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--muted-text)] transition-colors duration-150 hover:bg-[color:var(--control-hover)] hover:text-[color:var(--nav-text-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)]";
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -101,13 +111,81 @@ const nextPost =
 ---
 
 <Layout {...layoutProps}>
-  <Header postMarkdown={rawMarkdown} viewMarkdownUrl={markdownUrl} />
+  <Header />
   <main
     id="main-content"
     class="mx-auto w-full max-w-app px-4 pt-14 pb-12 sm:pt-20"
     data-pagefind-body
   >
-    <div class="mb-8">
+    <div class="mb-8 space-y-4">
+      {
+        showControlsRow && (
+          <div class="flex flex-wrap items-center gap-3">
+            <BackButton />
+            {showMarkdownActions && (
+              <>
+                <div data-post-markdown-actions class="relative inline-flex">
+                  <button
+                    type="button"
+                    class={markdownTriggerClass}
+                    data-dropdown-trigger
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                    aria-controls="markdown-actions-panel"
+                  >
+                    <IconMarkdown class="size-4" aria-hidden="true" />
+                    <span>Markdown</span>
+                    <IconChevronRight
+                      class="size-3 rotate-90"
+                      aria-hidden="true"
+                    />
+                  </button>
+                  <div
+                    id="markdown-actions-panel"
+                    data-dropdown-panel
+                    role="menu"
+                    class="absolute right-0 z-30 mt-2 hidden min-w-[12rem] overflow-hidden rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-[color:var(--header-surface)] shadow-lg"
+                  >
+                    <button
+                      type="button"
+                      role="menuitem"
+                      data-menu-item
+                      data-action="copy"
+                      data-label-default="Copy as Markdown"
+                      data-label-success="Copied!"
+                      data-label-error="Copy failed"
+                      class={markdownMenuItemClass}
+                    >
+                      <IconClipboard class="size-4" aria-hidden="true" />
+                      <span data-copy-label>Copy as Markdown</span>
+                    </button>
+                    <a
+                      href={markdownUrl}
+                      role="menuitem"
+                      data-menu-item
+                      class={markdownMenuItemClass}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <IconMarkdown class="size-4" aria-hidden="true" />
+                      <span>View as Markdown</span>
+                      <span aria-hidden="true" class="ms-auto">
+                        ↗
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <script
+                  type="application/json"
+                  id="post-markdown-source"
+                  set:html={JSON.stringify(trimmedMarkdown)}
+                />
+              </>
+            )}
+          </div>
+        )
+      }
+
       <h1
         transition:name={slugifyStr(title)}
         class="flex-1 text-2xl font-bold text-accent sm:text-3xl"
@@ -184,5 +262,239 @@ const nextPost =
   </main>
   <Footer />
 </Layout>
+
+<script>
+  (function () {
+    const attachMarkdownActions = () => {
+      const container = document.querySelector("[data-post-markdown-actions]");
+      const dataNode = document.querySelector("#post-markdown-source");
+
+      if (!container || container.dataset.bound === "true" || !dataNode) {
+        return;
+      }
+
+      let markdownSource = null;
+
+      try {
+        markdownSource = JSON.parse(dataNode.textContent ?? "null");
+      } catch {
+        markdownSource = null;
+      }
+
+      if (!markdownSource) {
+        return;
+      }
+
+      const trigger = container.querySelector("[data-dropdown-trigger]");
+      const panel = container.querySelector("[data-dropdown-panel]");
+      const copyBtn = container.querySelector("[data-action='copy']");
+      const copyLabel = copyBtn?.querySelector("[data-copy-label]");
+      const menuItems = panel
+        ? Array.from(panel.querySelectorAll("[data-menu-item]")).filter(
+            item => item instanceof HTMLElement
+          )
+        : [];
+
+      if (
+        !(trigger instanceof HTMLElement) ||
+        !(panel instanceof HTMLElement) ||
+        !(copyBtn instanceof HTMLElement) ||
+        menuItems.length === 0
+      ) {
+        return;
+      }
+
+      const copyLabelElement =
+        copyLabel instanceof HTMLElement ? copyLabel : null;
+
+      const fallbackLabel =
+        copyLabelElement?.textContent?.trim() || copyBtn.textContent || "Copy";
+      const defaultLabel = copyBtn.dataset.labelDefault || fallbackLabel;
+      const successLabel = copyBtn.dataset.labelSuccess || "Copied!";
+      const errorLabel = copyBtn.dataset.labelError || "Copy failed";
+      let resetTimer;
+      let dropdownOpen = false;
+
+      const updateLabel = next => {
+        if (copyLabelElement) {
+          copyLabelElement.textContent = next;
+        } else {
+          copyBtn.textContent = next;
+        }
+      };
+
+      const scheduleReset = () => {
+        if (resetTimer) {
+          window.clearTimeout(resetTimer);
+        }
+
+        resetTimer = window.setTimeout(() => {
+          updateLabel(defaultLabel);
+        }, 2000);
+      };
+
+      const closeDropdown = (focusTrigger = false) => {
+        if (!dropdownOpen) {
+          return;
+        }
+
+        dropdownOpen = false;
+        panel.classList.add("hidden");
+        trigger.setAttribute("aria-expanded", "false");
+        container.dataset.dropdownOpen = "false";
+
+        if (focusTrigger) {
+          trigger.focus();
+        }
+      };
+
+      const openDropdown = (focusFirst = false) => {
+        if (dropdownOpen) {
+          return;
+        }
+
+        dropdownOpen = true;
+        panel.classList.remove("hidden");
+        trigger.setAttribute("aria-expanded", "true");
+        container.dataset.dropdownOpen = "true";
+
+        if (focusFirst) {
+          const [firstItem] = menuItems;
+
+          if (firstItem) {
+            window.requestAnimationFrame(() => {
+              firstItem.focus();
+            });
+          }
+        }
+      };
+
+      const toggleDropdown = () => {
+        if (dropdownOpen) {
+          closeDropdown(true);
+        } else {
+          openDropdown(true);
+        }
+      };
+
+      const handleTriggerKeydown = event => {
+        if (event.key === " " || event.key === "Enter") {
+          event.preventDefault();
+          toggleDropdown();
+        }
+
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          openDropdown(true);
+        }
+
+        if (event.key === "Escape") {
+          event.preventDefault();
+          closeDropdown(true);
+        }
+      };
+
+      const handlePanelKeydown = event => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          closeDropdown(true);
+          return;
+        }
+
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+          event.preventDefault();
+
+          if (menuItems.length === 0) {
+            return;
+          }
+
+          const currentIndex = menuItems.indexOf(
+            document.activeElement instanceof HTMLElement
+              ? document.activeElement
+              : null
+          );
+          let nextIndex = currentIndex;
+
+          if (event.key === "ArrowDown") {
+            nextIndex = currentIndex + 1;
+          }
+
+          if (event.key === "ArrowUp") {
+            nextIndex = currentIndex - 1;
+          }
+
+          if (nextIndex < 0) {
+            nextIndex = menuItems.length - 1;
+          }
+
+          if (nextIndex >= menuItems.length) {
+            nextIndex = 0;
+          }
+
+          const nextItem = menuItems[nextIndex];
+
+          if (nextItem) {
+            nextItem.focus();
+          }
+        }
+      };
+
+      const handleDocumentClick = event => {
+        if (
+          event.target instanceof Node &&
+          !container.contains(event.target) &&
+          dropdownOpen
+        ) {
+          closeDropdown();
+        }
+      };
+
+      const handleCopy = async () => {
+        try {
+          await window.navigator.clipboard.writeText(markdownSource);
+          updateLabel(successLabel);
+          scheduleReset();
+        } catch {
+          updateLabel(errorLabel);
+          scheduleReset();
+        }
+      };
+
+      const handleMenuItemClick = event => {
+        const target = event.currentTarget;
+
+        if (!(target instanceof HTMLElement)) {
+          return;
+        }
+
+        if (target.dataset.action === "copy") {
+          event.preventDefault();
+          handleCopy();
+        }
+
+        closeDropdown();
+      };
+
+      trigger.addEventListener("click", toggleDropdown);
+      trigger.addEventListener("keydown", handleTriggerKeydown);
+      panel.addEventListener("keydown", handlePanelKeydown);
+      menuItems.forEach(item =>
+        item.addEventListener("click", handleMenuItemClick)
+      );
+
+      window.addEventListener("click", handleDocumentClick, { capture: true });
+
+      container.dataset.bound = "true";
+      container.addEventListener("astro:after-swap", () => {
+        window.removeEventListener("click", handleDocumentClick, {
+          capture: true,
+        });
+      });
+    };
+
+    document.addEventListener("astro:page-load", attachMarkdownActions);
+    attachMarkdownActions();
+  })();
+</script>
 
 <script is:inline defer src="/scripts/post-enhancements.js"></script>
