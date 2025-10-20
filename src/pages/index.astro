@@ -25,22 +25,24 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   <main
     id="main-content"
     data-layout="index"
-    class="site-shell space-y-5 pt-6 pb-10"
+    class="site-shell space-y-6 pt-6 pb-10"
   >
     <section
-      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-4 py-5 sm:px-5"
+      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-4 py-6 sm:px-6"
     >
       <div
-        class="grid grid-cols-1 gap-4 md:grid-cols-12 md:items-start md:gap-5"
+        class="grid grid-cols-1 gap-4 md:grid-cols-12 md:items-start md:gap-6"
       >
-        <div class="space-y-3 md:col-span-6 md:pe-6 lg:col-span-5 lg:pe-7">
+        <div
+          class="space-y-4 md:col-span-5 md:pe-4 lg:col-span-4 lg:pe-6 xl:col-span-4"
+        >
           <h1
             class="text-[2rem] leading-tight font-semibold text-[color:var(--nav-text-strong)] sm:text-[2.1rem]"
           >
             Hello.
           </h1>
           <p
-            class="max-w-2xl text-[0.95rem] leading-relaxed text-[color:var(--muted-text)] sm:text-[1.02rem]"
+            class="max-w-[26rem] text-[0.95rem] leading-relaxed text-[color:var(--muted-text)] sm:text-[1.02rem]"
           >
             Explore stories, research notes, and the studio's experiments.
           </p>
@@ -55,7 +57,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         </div>
 
         <div
-          class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:col-span-6 md:col-start-7 md:gap-3.5 lg:col-span-7"
+          class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:col-span-7 md:col-start-6 md:gap-3.5 lg:col-span-7"
         >
           <a
             href={SITE.notesUrl ?? "https://notes.dzakiazhari.com"}
@@ -122,16 +124,16 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       }
     </section>
 
-    <section class="grid grid-cols-1 gap-4 md:grid-cols-12 lg:gap-5">
+    <section class="grid grid-cols-1 gap-5 md:grid-cols-12">
       {
         featuredPosts.length > 0 && (
-          <div class="space-y-2.5 md:col-span-6">
+          <div class="space-y-3 md:col-span-6 md:pe-3">
             <h2 class="text-[0.66rem] font-semibold tracking-[0.22em] text-[color:var(--muted-text)] uppercase">
               Featured
             </h2>
-            <ul class="grid auto-rows-[1fr] gap-3 sm:grid-cols-2">
-              {featuredPosts.slice(0, 2).map(data => (
-                <Card variant="h3" showDescription={false} {...data} />
+            <ul class="flex flex-col gap-2.5">
+              {featuredPosts.slice(0, 3).map(data => (
+                <Card variant="bar" showDescription={false} {...data} />
               ))}
             </ul>
           </div>
@@ -140,13 +142,13 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
       {
         recentPosts.length > 0 && (
-          <div class="space-y-2.5 md:col-span-6">
+          <div class="space-y-3 md:col-span-6 md:ps-3">
             <h2 class="text-[0.66rem] font-semibold tracking-[0.22em] text-[color:var(--muted-text)] uppercase">
               Recent Posts
             </h2>
-            <ul class="grid auto-rows-[1fr] gap-3 sm:grid-cols-2">
-              {recentPosts.slice(0, 2).map(data => (
-                <Card variant="h3" showDescription={false} {...data} />
+            <ul class="flex flex-col gap-2.5">
+              {recentPosts.slice(0, 3).map(data => (
+                <Card variant="bar" showDescription={false} {...data} />
               ))}
             </ul>
           </div>
