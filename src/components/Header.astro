@@ -1,183 +1,193 @@
 ---
-import Hr from "./Hr.astro";
-import IconX from "@/assets/icons/IconX.svg";
+import IconArchive from "@/assets/icons/IconArchive.svg";
+import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconSearch from "@/assets/icons/IconSearch.svg";
-import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
-import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
-import LinkButton from "./LinkButton.astro";
+import IconX from "@/assets/icons/IconX.svg";
 import LogoUnfold from "@/assets/icons/logo-unfold.svg";
+import BackButton from "./BackButton.astro";
 import { SITE } from "@/config";
 
 const { pathname } = Astro.url;
 
-// Remove trailing slash from current pathname if exists
 const currentPath =
   pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
 
 const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter(p => p.trim());
-  const pathArray = path.split("/").filter(p => p.trim());
+  const currentPathArray = currentPath.split("/").filter(Boolean);
+  const pathArray = path.split("/").filter(Boolean);
 
   return currentPath === path || currentPathArray[0] === pathArray[0];
 };
+
+type PrefetchSetting = false | "auto" | "hover" | "tap" | "viewport" | "load";
+
+interface NavItem {
+  href: string;
+  label: string;
+  prefetch?: PrefetchSetting;
+  external?: boolean;
+}
+
+const navItems: NavItem[] = [
+  { href: "/posts", label: "Posts", prefetch: "viewport" },
+  { href: "/tags", label: "Tags", prefetch: "viewport" },
+  { href: "/about", label: "About", prefetch: "viewport" },
+];
+
+const resolvePrefetchAttr = (value: PrefetchSetting | undefined) => {
+  if (value === undefined) {
+    return "auto" as const;
+  }
+
+  if (value === false) {
+    return "false" as const;
+  }
+
+  return value;
+};
+
+if (SITE.notesUrl) {
+  navItems.push({
+    href: SITE.notesUrl,
+    label: "Notes",
+    prefetch: false,
+    external: true,
+  });
+}
+
+if (SITE.showArchives) {
+  navItems.push({
+    href: "/archives",
+    label: "Archives",
+    prefetch: "viewport" as const,
+  });
+}
+
+const showBackButton = SITE.showBackButton && currentPath.startsWith("/posts/");
 ---
 
-<header>
-  <a
-    id="skip-to-content"
-    href="#main-content"
-    class="absolute start-16 -top-full z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
-  >
-    Skip to content
-  </a>
-  <div
-    id="nav-container"
-    class="mx-auto flex max-w-app flex-col items-center justify-between sm:flex-row"
-  >
-    <div
-      id="top-nav-wrap"
-      class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"
-    >
-      <a
-        href="/"
-        class="absolute inline-flex items-center gap-2 py-1 text-2xl leading-8 font-semibold whitespace-nowrap text-accent sm:static sm:my-auto sm:text-3xl sm:leading-none"
-        data-astro-prefetch="viewport"
-      >
-        {SITE.title}
-        <LogoUnfold
-          class="h-[1.6em] w-auto flex-shrink-0 self-end sm:h-[1.2em]"
-        />
-      </a>
-      <nav
-        id="nav-menu"
-        class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
-      >
-        <button
-          id="menu-btn"
-          class="focus-outline self-end p-2 sm:hidden"
-          aria-label="Open Menu"
-          aria-expanded="false"
-          aria-controls="menu-items"
-        >
-          <IconX id="close-icon" class="hidden" />
-          <IconMenuDeep id="menu-icon" />
-        </button>
-        <ul
-          id="menu-items"
-          class:list={[
-            "mt-4 grid w-44 grid-cols-2 place-content-center gap-2",
-            "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
-            "hidden",
-            "sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0",
-          ]}
-        >
-          <li class="col-span-2">
-            <a
-              href="/posts"
-              class:list={{ "active-nav": isActive("/posts") }}
-              data-astro-prefetch="viewport"
-            >
-              Posts
-            </a>
-          </li>
-          <li class="col-span-2">
-            <a
-              href="/tags"
-              class:list={{ "active-nav": isActive("/tags") }}
-              data-astro-prefetch="viewport"
-            >
-              Tags
-            </a>
-          </li>
-          <li class="col-span-2">
-            <a
-              href="/about"
-              class:list={{ "active-nav": isActive("/about") }}
-              data-astro-prefetch="viewport"
-            >
-              About
-            </a>
-          </li>
-          {
-            SITE.notesUrl && (
-              <li class="col-span-2">
-                <a
-                  href={SITE.notesUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-astro-prefetch="false"
-                >
-                  Notes
-                </a>
-              </li>
-            )
-          }
-          {
-            SITE.showArchives && (
-              <li class="col-span-2">
-                <LinkButton
-                  href="/archives"
-                  class:list={[
-                    "focus-outline flex justify-center p-3 sm:p-1",
-                    {
-                      "active-nav [&>svg]:stroke-accent": isActive("/archives"),
-                    },
-                  ]}
-                  ariaLabel="archives"
-                  title="Archives"
-                  prefetch="viewport"
-                >
-                  <IconArchive class="hidden sm:inline-block" />
-                  <span class="sm:sr-only">Archives</span>
-                </LinkButton>
-              </li>
-            )
-          }
-          <li class="col-span-1 flex items-center justify-center">
-            <LinkButton
-              href="/search"
-              class:list={[
-                "focus-outline flex p-3 sm:p-1",
-                { "[&>svg]:stroke-accent": isActive("/search") },
-              ]}
-              ariaLabel="search"
-              title="Search"
-              prefetch="viewport"
-            >
-              <IconSearch />
-              <span class="sr-only">Search</span>
-            </LinkButton>
-          </li>
+<header
+  class="border-b border-[var(--header-divider)] bg-[var(--header-surface)]"
+>
+  <div class="site-shell">
+    <div class="flex flex-col gap-6 py-10">
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div class="max-w-2xl space-y-3">
+          <a
+            href="/"
+            class="group inline-flex items-center gap-3 text-[1.6rem] font-semibold tracking-[0.26em] text-[color:var(--heading-accent)] uppercase transition-colors duration-200 hover:text-[color:var(--link-hover)] focus-visible:text-[color:var(--link-hover)]"
+            data-astro-prefetch="viewport"
+          >
+            <span class="leading-none">{SITE.title}</span>
+            <LogoUnfold
+              class="h-[1.2em] w-auto text-[color:var(--heading-accent)] transition-transform duration-300 group-hover:-translate-y-0.5"
+            />
+          </a>
+        </div>
+
+        <div class="flex items-center gap-3 md:gap-4">
           {
             SITE.lightAndDarkMode && (
-              <li class="col-span-1 flex items-center justify-center">
-                <button
-                  id="theme-btn"
-                  class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
-                  title="Toggles light & dark"
-                  aria-label="auto"
-                  aria-live="polite"
-                >
-                  <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                  <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-                </button>
-              </li>
+              <button
+                id="theme-btn"
+                class="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--body-text)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+                title="Toggles light & dark"
+                aria-label="Switch to dark theme"
+                aria-live="polite"
+              >
+                <span class="sr-only">Toggle theme</span>
+                <span class="relative inline-flex size-5 items-center justify-center">
+                  <IconMoon class="absolute inset-0 scale-100 rotate-0 transition-all duration-300 dark:scale-0 dark:-rotate-90" />
+                  <IconSunHigh class="absolute inset-0 scale-0 rotate-90 transition-all duration-300 dark:scale-100 dark:rotate-0" />
+                </span>
+              </button>
             )
           }
-        </ul>
+          {showBackButton && <BackButton class="hidden md:inline-flex" />}
+          <button
+            id="menu-btn"
+            class="inline-flex items-center gap-2 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-3 py-2 text-[0.64rem] font-semibold tracking-[0.24em] text-[color:var(--muted-text)] uppercase transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none md:hidden"
+            aria-label="Open Menu"
+            aria-expanded="false"
+            aria-controls="menu-items"
+          >
+            Menu
+            <IconMenuDeep id="menu-icon" class="size-4" />
+            <IconX id="close-icon" class="hidden size-4" />
+          </button>
+          {showBackButton && <BackButton class="md:hidden" />}
+        </div>
+      </div>
+
+      <nav aria-label="Primary">
+        <div
+          id="menu-items"
+          class:list={[
+            "grid gap-4 border-t border-[var(--divider-soft)] pt-4 text-[0.68rem] font-semibold tracking-[0.24em] uppercase",
+            "md:flex md:items-center md:justify-between md:border-0 md:pt-0 md:text-[0.64rem]",
+            "hidden md:flex",
+          ]}
+        >
+          <ul class="grid gap-3 md:flex md:flex-wrap md:items-center md:gap-3">
+            {
+              navItems.map(item => (
+                <li>
+                  <a
+                    href={item.href}
+                    class:list={[
+                      "inline-flex items-center gap-2 rounded-[var(--radius-xs)] border border-transparent px-2.5 py-1.5 text-[color:var(--nav-text)] transition-colors duration-150 hover:border-[color:var(--nav-border)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
+                      {
+                        "border-[color:var(--nav-text-strong)] text-[color:var(--nav-text-strong)]":
+                          isActive(item.href),
+                      },
+                    ]}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                    data-astro-prefetch={resolvePrefetchAttr(item.prefetch)}
+                  >
+                    <span>{item.label}</span>
+                    {item.label === "Archives" ? (
+                      <IconArchive class="size-3.5" />
+                    ) : item.external ? (
+                      <span aria-hidden="true">↗</span>
+                    ) : null}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div
+            class="grid gap-3 border-t border-[var(--divider-soft)] pt-4 md:flex md:items-center md:gap-3 md:border-none md:pt-0 md:pl-6"
+          >
+            <a
+              href="/search"
+              class:list={[
+                "inline-flex items-center gap-2 rounded-[var(--radius-xs)] border border-transparent px-2.5 py-1.5 text-[color:var(--nav-text)] transition-colors duration-150 hover:border-[color:var(--nav-border)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
+                {
+                  "border-[color:var(--nav-text-strong)] text-[color:var(--nav-text-strong)]":
+                    isActive("/search"),
+                },
+              ]}
+              data-astro-prefetch="viewport"
+            >
+              <span>Search</span>
+              <IconSearch class="size-4" />
+            </a>
+          </div>
+        </div>
       </nav>
     </div>
   </div>
-  <Hr />
 </header>
 
 <script>
   (function () {
     const attachToggle = () => {
       const menuBtn = document.querySelector<HTMLButtonElement>("#menu-btn");
-      const menuItems = document.querySelector<HTMLUListElement>("#menu-items");
+      const menuItems = document.querySelector<HTMLElement>("#menu-items");
       const menuIcon = document.querySelector<SVGElement>("#menu-icon");
       const closeIcon = document.querySelector<SVGElement>("#close-icon");
 
