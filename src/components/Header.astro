@@ -70,12 +70,12 @@ if (SITE.showArchives) {
   class="border-b border-[var(--header-divider)] bg-[var(--header-surface)]"
 >
   <div class="site-shell">
-    <div class="flex flex-col gap-2 py-2.5">
-      <div class="flex flex-wrap items-center justify-between gap-1">
-        <div class="max-w-[42ch] space-y-0.5">
+    <div class="flex flex-col gap-3 py-3.5">
+      <div class="flex flex-wrap items-center justify-between gap-1.5">
+        <div class="max-w-[42ch] space-y-1">
           <a
             href="/"
-            class="group inline-flex items-center gap-1.5 text-[1.18rem] font-semibold tracking-[0.18em] text-[color:var(--heading-accent)] uppercase transition-colors duration-200 hover:text-[color:var(--link-hover)] focus-visible:text-[color:var(--link-hover)]"
+            class="group inline-flex items-center gap-2 text-[1.24rem] font-semibold tracking-[0.18em] text-[color:var(--heading-accent)] uppercase transition-colors duration-200 hover:text-[color:var(--link-hover)] focus-visible:text-[color:var(--link-hover)]"
             data-astro-prefetch="viewport"
           >
             <span class="leading-none">{SITE.title}</span>
@@ -87,7 +87,7 @@ if (SITE.showArchives) {
 
         <button
           id="menu-btn"
-          class="inline-flex items-center gap-1 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-1.5 py-0.5 text-[0.54rem] font-semibold tracking-[0.2em] text-[color:var(--muted-text)] uppercase transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none md:hidden"
+          class="inline-flex items-center gap-1.5 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2 py-0.75 text-[0.58rem] font-semibold tracking-[0.2em] text-[color:var(--muted-text)] uppercase transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none md:hidden"
           aria-label="Open Menu"
           aria-expanded="false"
           aria-controls="menu-items"
@@ -102,19 +102,21 @@ if (SITE.showArchives) {
         <div
           id="menu-items"
           class:list={[
-            "grid gap-1.5 border-t border-[var(--divider-soft)] pt-1.5 text-[0.56rem] font-semibold tracking-[0.2em] uppercase",
-            "md:flex md:items-center md:justify-between md:border-0 md:pt-0 md:text-[0.54rem]",
+            "grid gap-2 border-t border-[var(--divider-soft)] pt-1.5 text-[0.6rem] font-semibold tracking-[0.2em] uppercase",
+            "md:flex md:items-center md:justify-between md:border-0 md:pt-0 md:text-[0.58rem]",
             "hidden md:flex",
           ]}
         >
-          <ul class="grid gap-1 md:flex md:flex-wrap md:items-center md:gap-1">
+          <ul
+            class="grid gap-1.5 md:flex md:flex-wrap md:items-center md:gap-1.5"
+          >
             {
               navItems.map(item => (
                 <li>
                   <a
                     href={item.href}
                     class:list={[
-                      "inline-flex items-center gap-0.5 rounded-[var(--radius-xs)] border border-transparent px-1 py-0.5 text-[color:var(--nav-text)] transition-colors duration-150 hover:border-[color:var(--nav-border)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
+                      "inline-flex items-center gap-1 rounded-[var(--radius-xs)] border border-transparent px-2 py-0.75 text-[color:var(--nav-text)] transition-colors duration-150 hover:border-[color:var(--nav-border)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
                       {
                         "border-[color:var(--nav-text-strong)] text-[color:var(--nav-text-strong)]":
                           isActive(item.href),
@@ -139,12 +141,12 @@ if (SITE.showArchives) {
           </ul>
 
           <div
-            class="grid gap-1 border-t border-[var(--divider-soft)] pt-1.5 md:ml-auto md:flex md:items-center md:gap-1 md:border-none md:pt-0 md:pl-3"
+            class="grid gap-1.5 border-t border-[var(--divider-soft)] pt-1.75 md:ml-auto md:flex md:items-center md:gap-1.5 md:border-none md:pt-0 md:pl-4"
           >
             <a
               href="/search"
               class:list={[
-                "inline-flex h-6 items-center gap-0.5 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-1.5 text-[color:var(--nav-text)] transition-colors duration-150 hover:border-[color:var(--nav-border)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
+                "inline-flex h-7 items-center gap-1 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2 text-[color:var(--nav-text)] transition-colors duration-150 hover:border-[color:var(--nav-border)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
                 {
                   "border-[color:var(--nav-text-strong)] text-[color:var(--nav-text-strong)]":
                     isActive("/search"),
@@ -152,23 +154,23 @@ if (SITE.showArchives) {
               ]}
               data-astro-prefetch="viewport"
             >
-              <span class="text-[0.52rem] tracking-[0.18em] uppercase"
+              <span class="text-[0.58rem] tracking-[0.18em] uppercase"
                 >Search</span
               >
-              <IconSearch class="size-[0.95rem]" />
+              <IconSearch class="size-[1rem]" />
             </a>
 
             {
               SITE.lightAndDarkMode && (
                 <button
                   id="theme-btn"
-                  class="inline-flex h-6 w-6 items-center justify-center rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--body-text)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+                  class="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--body-text)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
                   title="Toggles light & dark"
                   aria-label="Switch to dark theme"
                   aria-live="polite"
                 >
                   <span class="sr-only">Toggle theme</span>
-                  <span class="relative inline-flex size-[0.9rem] items-center justify-center">
+                  <span class="relative inline-flex size-[1.05rem] items-center justify-center">
                     <IconMoon class="absolute inset-0 scale-100 rotate-0 transition-all duration-300 dark:scale-0 dark:-rotate-90" />
                     <IconSunHigh class="absolute inset-0 scale-0 rotate-90 transition-all duration-300 dark:scale-100 dark:rotate-0" />
                   </span>

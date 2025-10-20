@@ -24,14 +24,14 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
 ---
 
 <nav
-  class="site-shell mt-1.5 mb-0.5 text-[0.54rem] font-semibold tracking-[0.2em] text-[color:var(--muted-text)] uppercase"
+  class="site-shell mt-2 mb-1 text-[0.6rem] font-semibold tracking-[0.2em] text-[color:var(--muted-text)] uppercase"
   aria-label="Breadcrumb"
 >
-  <ol class="flex flex-wrap items-center gap-0.5">
+  <ol class="flex flex-wrap items-center gap-1">
     <li>
       <a
         href="/"
-        class="inline-flex items-center gap-0.5 rounded-[var(--radius-sm)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-1.5 py-0.5 transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)]"
+        class="inline-flex items-center gap-0.75 rounded-[var(--radius-sm)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-2 py-0.75 transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)]"
         data-astro-prefetch="hover"
       >
         Home
@@ -40,7 +40,7 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
     {
       breadcrumbList.map((breadcrumb, index) => (
         <li
-          class="inline-flex items-center gap-1.5"
+          class="inline-flex items-center gap-[0.9rem]"
           aria-current={
             index + 1 === breadcrumbList.length ? "page" : undefined
           }
@@ -55,7 +55,7 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
           ) : (
             <a
               href={`/${breadcrumb}/`}
-              class="inline-flex items-center gap-0.5 rounded-[var(--radius-sm)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-1.5 py-0.5 transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)]"
+              class="inline-flex items-center gap-0.75 rounded-[var(--radius-sm)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-2 py-0.75 transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)]"
               data-astro-prefetch="hover"
             >
               {breadcrumb}
