@@ -80,12 +80,7 @@ const prefetchAttr = (() => {
   disabled ? (
     <span
       id={id}
-      class:list={[
-        "inline-flex items-center gap-2 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-3 py-1.5 text-[0.68rem] font-semibold tracking-[0.24em] text-[color:var(--muted-text)] uppercase transition-colors duration-150",
-        "hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)]",
-        "focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
-        className,
-      ]}
+      class:list={["pill pill--standard pill--ghost", className]}
       title={title}
       aria-disabled={disabled}
     >
@@ -95,12 +90,7 @@ const prefetchAttr = (() => {
     <a
       id={id}
       {href}
-      class:list={[
-        "inline-flex items-center gap-2 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-3 py-1.5 text-[0.68rem] font-semibold tracking-[0.24em] text-[color:var(--muted-text)] uppercase transition-colors duration-150",
-        "hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)]",
-        "focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
-        className,
-      ]}
+      class:list={["pill pill--standard pill--ghost", className]}
       aria-label={ariaLabel}
       title={title}
       target={computedTarget}
