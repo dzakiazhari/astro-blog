@@ -37,6 +37,7 @@ This document consolidates the pending design refinement tasks for the Astro blo
   3. Update shared theme colors in `src/styles/variables.css` (or relevant theme file) for consistent accent usage.
   4. Validate the updates across dark-mode pages, refining hover and focus states as needed.
 - **Checkpoint:** Logo, navigation links, and primary buttons meet WCAG AA contrast against dark backgrounds.
+- **Status:** ✅ Theme tokens now supply a brighter accent and heading color in both palettes (`src/styles/global.css`), restoring logo and navigation contrast in dark mode.
 
 ## 2. Restore Card Delineation in Dark Mode
 - **Problem:** Card outlines disappear on dark backgrounds, reducing readability.
@@ -47,6 +48,7 @@ This document consolidates the pending design refinement tasks for the Astro blo
   3. Apply the new token to all card variants (home, notes, posts) and QA in both themes.
   4. Adjust spacing if necessary to maintain hierarchy.
 - **Checkpoint:** Cards display a perceptible border/shadow at 100% zoom in dark mode without overpowering content.
+- **Status:** ✅ Card surfaces now draw from dedicated border and shadow tokens with enhanced hover treatments (`src/components/Card.astro`, `src/styles/global.css`).
 
 ## 3. Rework Code Block Copy Button Styling
 - **Problem:** Copy buttons on code snippets blend into the background and are difficult to find.
@@ -57,6 +59,7 @@ This document consolidates the pending design refinement tasks for the Astro blo
   3. Add focus and hover states, ensuring accessible contrast ratios.
   4. Test across varying code lengths and responsive breakpoints.
 - **Checkpoint:** Copy button remains visible and reachable on narrow viewports, with keyboard focus states clearly highlighted.
+- **Status:** ✅ Copy controls receive a persistent, theme-aware pill treatment with responsive offsets and active states (`src/styles/global.css`, `src/styles/typography.css`).
 
 ## 4. Unify Pill Component Sizing and Alignment
 - **Problem:** Pill-shaped elements (buttons, tags, etc.) have inconsistent sizing and alignment.
@@ -112,9 +115,9 @@ This document consolidates the pending design refinement tasks for the Astro blo
 
 **Progress Tracking:**
 - **Milestone 1 – Dark-Mode Legibility**
-  - [ ] Contrast improvements shipped
-  - [ ] Card delineation updated
-  - [ ] Code copy buttons restyled
+  - [x] Contrast improvements shipped
+  - [x] Card delineation updated
+  - [x] Code copy buttons restyled
 - **Milestone 2 – Component Cohesion**
   - [ ] Pill components unified
   - [ ] Card icons implemented
