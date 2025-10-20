@@ -5,8 +5,8 @@
     @apply prose max-w-none;
     font-family: var(--font-sans);
     color: var(--body-text);
-    font-size: clamp(1.02rem, 0.99rem + 0.28vw, 1.12rem);
-    line-height: 1.75;
+    font-size: clamp(1.08rem, 1.01rem + 0.32vw, 1.2rem);
+    line-height: 1.8;
     letter-spacing: -0.004em;
 
     h1,
@@ -21,12 +21,13 @@
     }
 
     h1 {
-      @apply text-[2.2rem] sm:text-[2.6rem] lg:text-[2.95rem];
-      letter-spacing: -0.015em;
+      @apply text-[2.1rem] sm:text-[2.5rem] lg:text-[2.8rem];
+      letter-spacing: -0.02em;
       text-wrap: balance;
       position: relative;
-      margin-block: 2.9rem 1.9rem;
-      padding-block-end: 0.85rem;
+      margin-block: clamp(2.6rem, 2.1rem + 1.1vw, 3.1rem)
+        clamp(1.6rem, 1.3rem + 0.7vw, 2.1rem);
+      padding-block-end: 0.65rem;
 
       &::after {
         content: "";
@@ -35,7 +36,7 @@
         inset-inline-end: auto;
         inset-block-end: 0;
         height: 0.18rem;
-        width: clamp(5.5rem, 22vw, 9rem);
+        width: clamp(4.5rem, 16vw, 7.5rem);
         border-radius: var(--radius-sm);
         background: var(--accent-underline);
       }
@@ -44,49 +45,60 @@
     h2,
     h3 {
       position: relative;
-      margin-block: 2.8rem 1.45rem;
-      padding-block: 1.25rem 0.75rem;
-      padding-inline: clamp(1rem, 2.4vw, 1.55rem);
+      margin-block: clamp(2.3rem, 1.9rem + 1vw, 3rem)
+        clamp(1rem, 0.8rem + 0.5vw, 1.5rem);
+      padding-block: clamp(0.55rem, 0.4rem + 0.4vw, 0.9rem);
+      padding-inline-start: clamp(1rem, 0.9rem + 0.6vw, 1.6rem);
       border-radius: var(--radius-lg);
-      overflow: hidden;
-      background: linear-gradient(
-        120deg,
-        color-mix(in srgb, var(--surface-raised) 96%, white 4%),
-        color-mix(in srgb, var(--surface-raised) 88%, white 12%)
-      );
-      border: 1px solid
-        color-mix(in srgb, var(--border-strong) 88%, transparent);
-      box-shadow: 0 28px 62px -40px rgba(30, 24, 18, 0.36);
+      border: 1px solid color-mix(in srgb, var(--border-soft) 82%, transparent);
+      background: color-mix(in srgb, var(--surface-raised) 93%, transparent 7%);
+      box-shadow: 0 18px 46px -38px rgba(30, 24, 18, 0.3);
     }
 
     h2 {
-      @apply text-[1.68rem] sm:text-[2rem] lg:text-[2.25rem];
+      @apply text-[1.62rem] sm:text-[1.92rem] lg:text-[2.18rem];
     }
 
     h3 {
-      @apply text-[1.32rem] sm:text-[1.55rem] lg:text-[1.72rem];
+      @apply text-[1.34rem] sm:text-[1.54rem] lg:text-[1.72rem];
     }
 
     h2::before,
     h3::before {
       content: "";
       position: absolute;
-      inset-inline-start: clamp(0.85rem, 1.6vw, 1.25rem);
-      inset-block-start: clamp(0.55rem, 1.4vw, 0.85rem);
-      height: 0.32rem;
-      border-radius: var(--radius-xs);
+      inset-inline-start: clamp(0.68rem, 0.58rem + 0.24vw, 0.95rem);
+      inset-block-start: clamp(0.58rem, 0.5rem + 0.3vw, 0.85rem);
+      height: 0.26rem;
+      border-radius: 999px;
       box-shadow: inset 0 0 0 1px
         color-mix(in srgb, rgba(0, 0, 0, 0.06), transparent);
     }
 
     h2::before {
-      width: clamp(2.2rem, 5.4vw, 3.1rem);
+      width: clamp(1.9rem, 1.4rem + 1vw, 2.9rem);
       background: var(--prose-heading-accent);
     }
 
     h3::before {
-      width: clamp(1.7rem, 4.4vw, 2.5rem);
+      width: clamp(1.4rem, 1.1rem + 0.8vw, 2.3rem);
       background: var(--prose-subheading-accent);
+    }
+
+    [data-heading-role="table-of-contents"] {
+      margin-block: clamp(1.8rem, 1.6rem + 0.4vw, 2.1rem) 0.75rem;
+      padding: 0;
+      border: 0;
+      background: none;
+      box-shadow: none;
+      font-size: clamp(1.18rem, 1.04rem + 0.4vw, 1.38rem);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--muted-text) 72%, var(--secondary) 28%);
+    }
+
+    [data-heading-role="table-of-contents"]::before {
+      display: none;
     }
 
     h4 {
@@ -284,22 +296,22 @@
 
     details.remark-collapse {
       display: block;
-      width: min(28rem, 100%);
-      margin-block: 2.4rem;
-      padding: clamp(1rem, 0.92rem + 0.6vw, 1.35rem)
-        clamp(1rem, 0.92rem + 1vw, 1.6rem);
+      width: min(26rem, 100%);
+      margin-block: 1.35rem 2.4rem;
+      padding: clamp(0.85rem, 0.78rem + 0.5vw, 1.2rem)
+        clamp(0.9rem, 0.84rem + 0.8vw, 1.45rem);
       border-radius: var(--radius-lg);
-      border-color: color-mix(in srgb, var(--border-strong) 80%, transparent);
-      background: color-mix(in srgb, var(--surface-raised) 90%, white 10%);
-      box-shadow: 0 30px 64px -46px rgba(30, 26, 20, 0.32);
+      border-color: color-mix(in srgb, var(--border-soft) 86%, transparent);
+      background: color-mix(in srgb, var(--surface-raised) 95%, transparent 5%);
+      box-shadow: 0 22px 48px -40px rgba(32, 26, 18, 0.28);
     }
 
     details.remark-collapse > summary {
       @apply font-semibold;
-      font-size: 0.72rem;
-      letter-spacing: 0.26em;
+      font-size: 0.68rem;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: color-mix(in srgb, var(--muted-text) 80%, var(--secondary) 20%);
+      color: color-mix(in srgb, var(--muted-text) 78%, var(--secondary) 22%);
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
@@ -312,8 +324,8 @@
     details.remark-collapse[open] > summary {
       color: color-mix(
         in srgb,
-        var(--nav-text-strong) 80%,
-        var(--secondary) 20%
+        var(--nav-text-strong) 72%,
+        var(--secondary) 28%
       );
     }
 
@@ -329,14 +341,14 @@
     }
 
     details.remark-collapse > :not(summary) {
-      margin-block-start: clamp(0.85rem, 0.8rem + 0.4vw, 1.2rem);
+      margin-block-start: clamp(0.75rem, 0.7rem + 0.32vw, 1.05rem);
     }
 
     details.remark-collapse ol {
       margin: 0;
-      padding-inline-start: clamp(0.9rem, 1.1vw, 1.35rem);
-      font-size: 0.94rem;
-      line-height: 1.55;
+      padding-inline-start: clamp(0.85rem, 0.75rem + 0.6vw, 1.25rem);
+      font-size: 0.92rem;
+      line-height: 1.52;
       max-height: 22rem;
       overflow-y: auto;
       scrollbar-width: thin;
@@ -344,15 +356,15 @@
     }
 
     details.remark-collapse li {
-      margin-block: 0.4rem;
+      margin-block: 0.35rem;
       padding-inline-start: 0;
     }
 
     details.remark-collapse li ol {
       margin-block: 0.35rem 0.25rem;
-      padding-inline-start: clamp(0.8rem, 1vw, 1.2rem);
+      padding-inline-start: clamp(0.7rem, 0.6rem + 0.5vw, 1.1rem);
       border-inline-start: 1px dotted
-        color-mix(in srgb, var(--border-soft) 70%, transparent);
+        color-mix(in srgb, var(--border-soft) 65%, transparent);
     }
 
     details.remark-collapse ol::-webkit-scrollbar {
@@ -365,7 +377,7 @@
     }
 
     details.remark-collapse a {
-      color: color-mix(in srgb, var(--nav-text) 85%, var(--secondary) 15%);
+      color: color-mix(in srgb, var(--nav-text) 88%, var(--secondary) 12%);
       font-weight: 500;
       text-decoration: none;
       transition: color 140ms ease;
@@ -374,8 +386,8 @@
     details.remark-collapse a:where(:hover, :focus-visible) {
       color: color-mix(
         in srgb,
-        var(--nav-text-strong) 80%,
-        var(--secondary) 20%
+        var(--nav-text-strong) 74%,
+        var(--secondary) 26%
       );
     }
 
