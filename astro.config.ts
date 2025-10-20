@@ -85,9 +85,9 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [
-      remarkDemoteHeadings,
       remarkToc,
-      [remarkCollapse, { test: "Table of contents" }],
+      remarkDemoteHeadings,
+      [remarkCollapse, { test: /table of contents/i }],
       remarkCallouts,
     ],
   },
