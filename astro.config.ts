@@ -4,6 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import remarkCallouts from "./tools/remark-callouts.mjs";
+import remarkDemoteHeadings from "./tools/remark-demote-headings.mjs";
 import react from "@astrojs/react";
 import expressiveCode, {
   type AstroExpressiveCodeOptions,
@@ -84,6 +85,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [
+      remarkDemoteHeadings,
       remarkToc,
       [remarkCollapse, { test: "Table of contents" }],
       remarkCallouts,

@@ -30,8 +30,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     <section
       class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-5 py-12 sm:px-6 md:py-14"
     >
-      <div class="grid gap-10 md:grid-cols-2 md:items-start">
-        <div class="space-y-6 md:max-w-xl md:pe-6 lg:pe-10">
+      <div
+        class="grid grid-cols-1 gap-10 md:grid-cols-12 md:items-start lg:gap-12"
+      >
+        <div class="space-y-6 md:col-span-7 md:pe-8 lg:col-span-6 lg:pe-12">
           <h1
             class="text-4xl font-semibold text-[color:var(--nav-text-strong)] sm:text-[2.75rem]"
           >
@@ -52,7 +54,9 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5">
+        <div
+          class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:col-span-5 md:gap-5 lg:col-span-6"
+        >
           <a
             href={SITE.notesUrl ?? "https://notes.dzakiazhari.com"}
             class="group relative flex min-h-[180px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-5 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
@@ -118,10 +122,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       }
     </section>
 
-    <section class="grid gap-10 md:grid-cols-2">
+    <section class="grid grid-cols-1 gap-10 md:grid-cols-12 lg:gap-12">
       {
         featuredPosts.length > 0 && (
-          <div class="space-y-5">
+          <div class="space-y-5 md:col-span-6">
             <h2 class="text-[0.78rem] font-semibold tracking-[0.28em] text-[color:var(--muted-text)] uppercase">
               Featured
             </h2>
@@ -136,7 +140,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
       {
         recentPosts.length > 0 && (
-          <div class="space-y-5">
+          <div class="space-y-5 md:col-span-6">
             <h2 class="text-[0.78rem] font-semibold tracking-[0.28em] text-[color:var(--muted-text)] uppercase">
               Recent Posts
             </h2>
