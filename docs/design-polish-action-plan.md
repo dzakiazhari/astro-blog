@@ -103,6 +103,7 @@ This document consolidates the pending design refinement tasks for the Astro blo
   3. Update styles for tables, blockquotes, and lists to reflect the refreshed design language.
   4. Perform regression checks on existing posts to confirm readability improvements.
 - **Checkpoint:** Markdown headings scale down progressively from the post title, and tables/quotes maintain consistent spacing across viewports.
+- **Status:** ✅ Markdown hierarchy now respects the post title scale, and refreshed tokens style tables, blockquotes, and inline semantics for consistent theming (`src/styles/typography.css`, `src/styles/global.css`).
 
 ## 8. Update Garden Navigation Icons
 - **Problem:** Notes garden arrow icons feel mismatched with the new design direction.
@@ -113,6 +114,7 @@ This document consolidates the pending design refinement tasks for the Astro blo
   3. Integrate the new icons and adjust spacing and hover states as necessary.
   4. Validate in both themes, confirming screen reader labels remain accurate.
 - **Checkpoint:** Garden navigation icons ship with updated aria-labels and remain crisp at 1x resolution.
+- **Status:** ✅ The notes navigation swaps arrow glyphs for a sprout mark across the header and hero tile to reinforce the garden metaphor (`src/assets/icons/IconGarden.svg`, `src/components/Header.astro`, `src/pages/index.astro`).
 
 ---
 
@@ -126,7 +128,7 @@ This document consolidates the pending design refinement tasks for the Astro blo
   - [x] Card icons implemented
   - [x] Card arrows redesigned
 - **Milestone 3 – Content Presentation Polish**
-  - [ ] Markdown typography refined
-  - [ ] Garden icons updated
+  - [x] Markdown typography refined
+  - [x] Garden icons updated
 
 Update this document as tasks are completed or re-scoped.

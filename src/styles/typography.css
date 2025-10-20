@@ -10,17 +10,20 @@
     h2,
     h3,
     h4,
+    h5,
+    h6,
     th {
       @apply font-semibold;
-      color: color-mix(in srgb, var(--body-text) 92%, var(--secondary) 8%);
+      color: color-mix(in srgb, var(--body-text) 90%, var(--secondary) 10%);
     }
 
     h1 {
-      @apply text-3xl sm:text-[2.5rem];
+      @apply text-[1.95rem] sm:text-[2.25rem] lg:text-[2.4rem];
       letter-spacing: -0.01em;
       text-wrap: balance;
       position: relative;
-      padding-bottom: 0.85rem;
+      margin-block: 2.6rem 1.4rem;
+      padding-block-end: 0.75rem;
 
       &::after {
         content: "";
@@ -28,8 +31,8 @@
         inset-inline-start: 0;
         inset-inline-end: auto;
         inset-block-end: 0;
-        height: 0.22rem;
-        width: clamp(6rem, 24vw, 10rem);
+        height: 0.18rem;
+        width: clamp(5.5rem, 22vw, 9rem);
         border-radius: var(--radius-sm);
         background: var(--accent-underline);
       }
@@ -38,42 +41,52 @@
     h2,
     h3 {
       position: relative;
-      padding-inline-start: 1.1rem;
-      padding-block: 0.65rem;
-      margin-block: 2.4rem 1.2rem;
-      border-radius: var(--radius-md);
+      margin-block: 2.6rem 1.3rem;
+      padding-block: 1.2rem 0.7rem;
+      padding-inline: clamp(0.9rem, 2vw, 1.3rem);
+      border-radius: var(--radius-lg);
       overflow: hidden;
     }
 
     h2 {
-      @apply text-[1.6rem] sm:text-[2rem];
-      background: color-mix(in srgb, var(--highlight) 26%, transparent);
-      border: 1px solid color-mix(in srgb, var(--secondary) 52%, transparent);
-      box-shadow: 0 12px 30px -22px rgba(32, 26, 18, 0.35);
+      @apply text-[1.55rem] sm:text-[1.95rem];
+      background: var(--prose-heading-surface);
+      border: 1px solid var(--prose-heading-border);
+      box-shadow: 0 18px 40px -28px rgba(32, 26, 18, 0.28);
     }
 
     h3 {
-      @apply text-xl sm:text-[1.4rem];
-      background: color-mix(in srgb, var(--tertiary) 18%, transparent);
-      border: 1px solid color-mix(in srgb, var(--tertiary) 48%, transparent);
+      @apply text-[1.25rem] sm:text-[1.5rem];
+      background: var(--prose-subheading-surface);
+      border: 1px solid var(--prose-subheading-border);
     }
 
     h2::before,
     h3::before {
       content: "";
       position: absolute;
-      inset-block: 0.4rem;
-      inset-inline-start: 0.5rem;
-      width: 0.24rem;
-      border-radius: var(--radius-sm);
-      background: color-mix(in srgb, var(--secondary) 80%, var(--tertiary) 20%);
+      inset-inline-start: clamp(0.75rem, 1.5vw, 1rem);
+      inset-block-start: clamp(0.5rem, 1.5vw, 0.75rem);
+      height: 0.3rem;
+      border-radius: var(--radius-xs);
       box-shadow: inset 0 0 0 1px
         color-mix(in srgb, rgba(0, 0, 0, 0.08), transparent);
     }
 
+    h2::before {
+      width: clamp(1.8rem, 5vw, 2.8rem);
+      background: var(--prose-heading-accent);
+    }
+
+    h3::before {
+      width: clamp(1.4rem, 4vw, 2.2rem);
+      background: var(--prose-subheading-accent);
+    }
+
     h4 {
-      @apply mt-8 text-[0.74rem] tracking-[0.26em] uppercase;
-      color: color-mix(in srgb, var(--muted-text) 82%, var(--secondary) 18%);
+      @apply mt-8 text-[0.76rem] tracking-[0.28em] uppercase;
+      color: color-mix(in srgb, var(--muted-text) 78%, var(--secondary) 22%);
+      letter-spacing: 0.28em;
     }
 
     p,
@@ -108,17 +121,28 @@
       }
     }
 
-    ul {
+    ul,
+    ol {
       @apply overflow-x-clip;
       padding-inline-start: 1.25rem;
+      margin-block: 1.4rem;
     }
 
     li {
       @apply marker:text-current;
+      padding-inline-start: 0.2rem;
+    }
+
+    li::marker {
+      color: color-mix(in srgb, var(--secondary) 72%, var(--body-text) 28%);
+    }
+
+    li + li {
+      margin-block-start: 0.35rem;
     }
 
     hr {
-      border-color: var(--divider-soft);
+      border-color: var(--prose-rule);
     }
 
     img {
@@ -128,30 +152,41 @@
       box-shadow: 0 18px 44px -30px rgba(0, 0, 0, 0.25);
     }
 
-    figcaption {
-      color: color-mix(in srgb, var(--muted-text) 80%, var(--secondary) 20%);
+    figcaption,
+    caption {
+      color: var(--prose-caption);
+      font-size: 0.82rem;
+      margin-top: 0.75rem;
+      text-align: center;
     }
 
     table {
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-strong);
+      width: 100%;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--prose-table-grid);
+      background: color-mix(in srgb, var(--surface-raised) 92%, transparent);
       overflow: hidden;
+      box-shadow: 0 20px 48px -30px rgba(32, 26, 18, 0.24);
+
+      thead {
+        background: var(--prose-table-header);
+      }
 
       th,
       td {
-        border-color: var(--divider-soft);
-        padding: 0.75rem 1rem;
+        border-color: var(--prose-table-grid);
+        padding: 0.8rem 1rem;
       }
 
       th {
-        background: color-mix(in srgb, var(--surface-subtle) 95%, transparent);
         letter-spacing: 0.08em;
         text-transform: uppercase;
         font-size: 0.72rem;
+        color: color-mix(in srgb, var(--body-text) 78%, var(--secondary) 22%);
       }
 
       tbody tr:nth-child(2n) {
-        background: color-mix(in srgb, var(--surface-subtle) 80%, transparent);
+        background: var(--prose-table-row-alt);
       }
 
       code {
@@ -161,22 +196,60 @@
 
     code {
       font-family: var(--font-mono);
-      background: var(--badge-surface);
+      background: color-mix(in srgb, var(--badge-surface) 90%, transparent);
       border-radius: var(--radius-sm);
-      border: 1px solid var(--badge-border);
-      padding: 0.05rem 0.35rem;
+      border: 1px solid var(--prose-code-border);
+      padding: 0.05rem 0.4rem;
       box-shadow: inset 0 0 0 1px
-        color-mix(in srgb, rgba(0, 0, 0, 0.05), transparent);
+        color-mix(in srgb, rgba(0, 0, 0, 0.04), transparent);
+    }
+
+    kbd {
+      font-family: var(--font-mono);
+      background: var(--prose-kbd-surface);
+      border: 1px solid var(--prose-kbd-border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--prose-kbd-shadow);
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--muted-text) 72%, var(--body-text) 28%);
+    }
+
+    mark {
+      background: var(--prose-mark-bg);
+      color: var(--prose-mark-text);
+      border-radius: var(--radius-sm);
+      padding: 0.1rem 0.3rem;
+      box-shadow: inset 0 0 0 1px
+        color-mix(in srgb, rgba(0, 0, 0, 0.08), transparent);
     }
 
     blockquote:not(.callout) {
-      border-inline-start: 2px solid
-        color-mix(in srgb, var(--secondary) 60%, transparent);
-      padding: 1.15rem 1.25rem;
-      margin: 1.6rem 0;
-      background: color-mix(in srgb, var(--highlight) 28%, transparent);
+      border-inline-start: 3px solid var(--prose-blockquote-border);
+      padding: 1.25rem clamp(1.25rem, 4vw, 1.85rem);
+      margin: 1.8rem 0;
+      background: var(--prose-blockquote-surface);
       border-radius: var(--radius-lg);
-      box-shadow: 0 18px 40px -28px rgba(33, 27, 20, 0.22);
+      box-shadow: 0 22px 48px -32px rgba(33, 27, 20, 0.3);
+      color: var(--prose-blockquote-text);
+
+      & > :first-child {
+        margin-top: 0;
+      }
+
+      & > :last-child {
+        margin-bottom: 0;
+      }
+
+      cite {
+        display: block;
+        margin-top: 1rem;
+        font-size: 0.82rem;
+        font-style: normal;
+        color: color-mix(in srgb, var(--muted-text) 80%, var(--secondary) 20%);
+      }
     }
 
     details {

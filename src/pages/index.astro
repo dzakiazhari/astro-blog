@@ -7,6 +7,7 @@ import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
+import IconGarden from "@/assets/icons/IconGarden.svg";
 import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { SOCIALS } from "@/constants";
@@ -63,14 +64,21 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
             data-astro-prefetch="false"
           >
             <span
-              class="text-[0.68rem] font-semibold tracking-[0.3em] text-[color:var(--muted-text)] uppercase"
+              class="inline-flex items-center gap-2 text-[0.68rem] font-semibold tracking-[0.3em] text-[color:var(--muted-text)] uppercase"
             >
+              <IconGarden class="size-4" aria-hidden="true" />
               Notes garden
             </span>
             <span
               class="text-2xl leading-snug font-semibold text-[color:var(--nav-text-strong)]"
             >
-              View the evergreen notes ↗
+              Visit the evergreen notes
+            </span>
+            <span
+              class="mt-auto inline-flex items-center gap-2 text-[0.66rem] font-semibold tracking-[0.26em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
+            >
+              Explore notes
+              <IconGarden class="size-[0.95rem]" aria-hidden="true" />
             </span>
           </a>
 

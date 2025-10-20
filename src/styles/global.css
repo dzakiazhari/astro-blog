@@ -167,6 +167,70 @@ html[data-theme="light"] {
   --code-copy-active-bg: var(--pill-active-surface);
   --code-copy-ring: color-mix(in srgb, var(--ring-accent) 84%, transparent);
   --code-copy-success: color-mix(in srgb, var(--secondary) 88%, white 12%);
+  --prose-heading-surface: color-mix(
+    in srgb,
+    var(--surface-raised) 90%,
+    white 10%
+  );
+  --prose-heading-border: color-mix(
+    in srgb,
+    var(--border-strong) 86%,
+    transparent
+  );
+  --prose-heading-accent: color-mix(
+    in srgb,
+    var(--secondary) 82%,
+    var(--darkgray) 18%
+  );
+  --prose-subheading-surface: color-mix(
+    in srgb,
+    var(--surface-subtle) 94%,
+    transparent
+  );
+  --prose-subheading-border: color-mix(
+    in srgb,
+    var(--border-soft) 90%,
+    transparent
+  );
+  --prose-subheading-accent: color-mix(
+    in srgb,
+    var(--tertiary) 68%,
+    var(--secondary) 32%
+  );
+  --prose-rule: color-mix(in srgb, var(--divider-soft) 92%, transparent);
+  --prose-blockquote-surface: color-mix(
+    in srgb,
+    var(--highlight) 34%,
+    transparent
+  );
+  --prose-blockquote-border: color-mix(
+    in srgb,
+    var(--secondary) 66%,
+    transparent
+  );
+  --prose-blockquote-text: color-mix(
+    in srgb,
+    var(--body-text) 88%,
+    var(--secondary) 12%
+  );
+  --prose-table-header: color-mix(in srgb, var(--surface-subtle) 96%, white 4%);
+  --prose-table-grid: color-mix(in srgb, var(--divider-soft) 90%, transparent);
+  --prose-table-row-alt: color-mix(
+    in srgb,
+    var(--surface-subtle) 88%,
+    transparent
+  );
+  --prose-caption: color-mix(
+    in srgb,
+    var(--muted-text) 82%,
+    var(--secondary) 18%
+  );
+  --prose-kbd-surface: color-mix(in srgb, var(--surface-raised) 92%, white 8%);
+  --prose-kbd-border: color-mix(in srgb, var(--border-soft) 88%, transparent);
+  --prose-kbd-shadow: 0 6px 18px -12px rgba(38, 30, 22, 0.28);
+  --prose-mark-bg: color-mix(in srgb, var(--text-highlight) 76%, transparent);
+  --prose-mark-text: color-mix(in srgb, var(--dark) 82%, var(--secondary) 18%);
+  --prose-code-border: color-mix(in srgb, var(--badge-border) 82%, transparent);
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
   --card-marker-width: 0.8rem;
   --card-marker-offset: 0.5rem;
@@ -395,6 +459,82 @@ html[data-theme="dark"] {
   --code-copy-active-bg: var(--pill-active-surface);
   --code-copy-ring: color-mix(in srgb, var(--ring-accent) 92%, transparent);
   --code-copy-success: color-mix(in srgb, var(--secondary) 90%, white 10%);
+  --prose-heading-surface: color-mix(
+    in srgb,
+    var(--surface-raised) 86%,
+    rgba(0, 0, 0, 0.36)
+  );
+  --prose-heading-border: color-mix(
+    in srgb,
+    var(--border-strong) 74%,
+    transparent
+  );
+  --prose-heading-accent: color-mix(
+    in srgb,
+    var(--secondary) 85%,
+    var(--light) 15%
+  );
+  --prose-subheading-surface: color-mix(
+    in srgb,
+    var(--surface-subtle) 78%,
+    rgba(0, 0, 0, 0.36)
+  );
+  --prose-subheading-border: color-mix(
+    in srgb,
+    var(--border-soft) 72%,
+    transparent
+  );
+  --prose-subheading-accent: color-mix(
+    in srgb,
+    var(--tertiary) 70%,
+    var(--secondary) 30%
+  );
+  --prose-rule: color-mix(in srgb, var(--divider-soft) 70%, transparent);
+  --prose-blockquote-surface: color-mix(
+    in srgb,
+    rgba(125, 197, 137, 0.32),
+    transparent
+  );
+  --prose-blockquote-border: color-mix(
+    in srgb,
+    var(--secondary) 72%,
+    transparent
+  );
+  --prose-blockquote-text: color-mix(
+    in srgb,
+    var(--body-text) 84%,
+    var(--secondary) 16%
+  );
+  --prose-table-header: color-mix(
+    in srgb,
+    var(--surface-raised) 82%,
+    rgba(0, 0, 0, 0.3)
+  );
+  --prose-table-grid: color-mix(in srgb, var(--divider-soft) 72%, transparent);
+  --prose-table-row-alt: color-mix(
+    in srgb,
+    var(--surface-subtle) 74%,
+    rgba(0, 0, 0, 0.3)
+  );
+  --prose-caption: color-mix(
+    in srgb,
+    var(--muted-text) 78%,
+    var(--secondary) 22%
+  );
+  --prose-kbd-surface: color-mix(
+    in srgb,
+    var(--surface-raised) 84%,
+    rgba(0, 0, 0, 0.4)
+  );
+  --prose-kbd-border: color-mix(in srgb, var(--border-soft) 68%, transparent);
+  --prose-kbd-shadow: 0 12px 30px -20px rgba(0, 0, 0, 0.66);
+  --prose-mark-bg: color-mix(in srgb, rgba(125, 197, 137, 0.32), transparent);
+  --prose-mark-text: color-mix(
+    in srgb,
+    var(--body-text) 88%,
+    var(--secondary) 12%
+  );
+  --prose-code-border: color-mix(in srgb, var(--badge-border) 70%, transparent);
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
   --card-marker-width: 1.1rem;
   --card-marker-offset: 0.45rem;
