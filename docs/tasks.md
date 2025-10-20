@@ -7,6 +7,7 @@ relevant source files for quick follow-up.
 
 | Category | Issue | Resolution | References |
 | --- | --- | --- | --- |
+| UI Polish | Markdown section headers kept a heavy drop shadow and the code copy pill stayed visible at rest, clashing with the flattened cards pass. | Removed the h2 drop shadow, aligned the copy pill with Expressive Code’s hover/focus reveal, and preserved tap access on touch devices via pointer-aware media queries. | `src/styles/typography.css` |
 | UI Polish | Markdown headings overshadowed the page title and supporting elements (tables, quotes, inline callouts) drifted from the refreshed palette. | Introduced prose-specific tokens and rescaled the Markdown hierarchy so headings, tables, blockquotes, and inline semantics share the new surface, border, and accent treatments. | `src/styles/global.css`, `src/styles/typography.css` |
 | UI Polish | Card drop shadows clashed with the flatter Quartz-inspired aesthetic once borders were strengthened. | Removed the card shadow tokens and hover treatment so card separation now relies on the refreshed border contrast in both themes. | `src/components/Card.astro`, `src/styles/global.css` |
 | UI Polish | Notes garden links still used generic arrow glyphs, diluting the garden motif in navigation. | Added a sprout icon asset and wired it into the header and homepage hero so the notes entry carries bespoke iconography. | `src/assets/icons/IconGarden.svg`, `src/components/Header.astro`, `src/pages/index.astro` |

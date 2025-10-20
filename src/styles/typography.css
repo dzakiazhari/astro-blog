@@ -52,7 +52,6 @@
       @apply text-[1.55rem] sm:text-[1.95rem];
       background: var(--prose-heading-surface);
       border: 1px solid var(--prose-heading-border);
-      box-shadow: 0 18px 40px -28px rgba(32, 26, 18, 0.28);
     }
 
     h3 {
@@ -327,13 +326,15 @@
       text-transform: uppercase;
       line-height: 1;
       box-shadow: 0 18px 42px -28px rgba(0, 0, 0, 0.45);
-      opacity: 1;
+      opacity: 0;
+      pointer-events: none;
       z-index: 3;
       transition:
         background-color 160ms ease,
         color 160ms ease,
         border-color 160ms ease,
         box-shadow 160ms ease,
+        opacity 160ms ease,
         transform 160ms ease;
     }
 
@@ -347,6 +348,8 @@
         transparent
       );
       box-shadow: 0 24px 48px -28px rgba(0, 0, 0, 0.5);
+      pointer-events: auto;
+      opacity: 1;
     }
 
     .code-block .copy-code:focus-visible {
@@ -361,6 +364,8 @@
         var(--secondary) 50%
       );
       box-shadow: 0 26px 52px -28px rgba(0, 0, 0, 0.52);
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .code-block .copy-code[data-state="copied"] {
@@ -372,10 +377,20 @@
         var(--secondary) 54%
       );
       box-shadow: 0 28px 54px -28px rgba(0, 0, 0, 0.55);
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .code-block:where(:hover, :focus-within) .copy-code {
       opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (hover: none) {
+      .code-block .copy-code {
+        opacity: 1;
+        pointer-events: auto;
+      }
     }
   }
 
