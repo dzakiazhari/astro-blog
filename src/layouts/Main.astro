@@ -21,9 +21,9 @@ const backUrl = SITE.showBackButton ? Astro.url.pathname : "/";
 ---
 
 <Breadcrumb />
-<main data-backUrl={backUrl} id="main-content" class="site-shell pb-6">
+<main data-backUrl={backUrl} id="main-content" class="site-shell mt-2 pb-8">
   <section
-    class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-4 py-5 sm:px-5"
+    class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-5 py-6 sm:px-6 sm:py-7"
   >
     {
       "titleTransition" in props ? (
@@ -49,7 +49,7 @@ const backUrl = SITE.showBackButton ? Astro.url.pathname : "/";
         </p>
       )
     }
-    <div class="mt-4 flex flex-col gap-3.5">
+    <div class="mt-5 flex flex-col gap-4">
       <slot />
     </div>
   </section>
