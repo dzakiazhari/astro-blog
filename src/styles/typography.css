@@ -5,8 +5,12 @@
     @apply prose max-w-none;
     font-family: var(--font-sans);
     color: var(--body-text);
-    font-size: clamp(1.02rem, 0.94rem + 0.24vw, 1.16rem);
-    line-height: 1.72;
+    --app-prose-h1: clamp(2.08rem, 1.78rem + 1.4vw, 2.64rem);
+    --app-prose-h2: clamp(1.42rem, 1.26rem + 0.68vw, 1.86rem);
+    --app-prose-h3: clamp(1.12rem, 1.02rem + 0.46vw, 1.42rem);
+
+    font-size: clamp(0.96rem, 0.9rem + 0.2vw, 1.08rem);
+    line-height: 1.68;
     letter-spacing: -0.006em;
 
     h1,
@@ -21,7 +25,7 @@
     }
 
     h1 {
-      @apply text-[2.2rem] sm:text-[2.6rem] lg:text-[2.85rem];
+      font-size: var(--app-prose-h1);
       letter-spacing: -0.02em;
       text-wrap: balance;
       position: relative;
@@ -53,12 +57,12 @@
     }
 
     h2 {
-      @apply text-[1.54rem] sm:text-[1.82rem] lg:text-[2.06rem];
+      font-size: var(--app-prose-h2);
       letter-spacing: -0.014em;
     }
 
     h3 {
-      @apply text-[1.22rem] sm:text-[1.4rem] lg:text-[1.58rem];
+      font-size: var(--app-prose-h3);
       letter-spacing: -0.01em;
     }
 
@@ -94,7 +98,7 @@
       border: 0;
       background: none;
       box-shadow: none;
-      font-size: clamp(1.22rem, 1.4rem, 1.58rem);
+      font-size: var(--app-prose-h3);
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: color-mix(in srgb, var(--muted-text) 74%, var(--secondary) 26%);
