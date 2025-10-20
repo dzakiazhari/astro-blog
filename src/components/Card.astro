@@ -41,6 +41,7 @@ const headerProps = {
   <a
     href={getPath(id, filePath)}
     class="group relative flex h-full flex-col justify-between gap-[var(--card-content-gap)] overflow-hidden rounded-[var(--radius-md)] border border-[color:var(--card-border)] bg-[color:var(--surface-raised)] px-[var(--card-padding-inline)] py-[var(--card-padding-block)] transition-colors duration-200 ease-out hover:border-[color:var(--card-border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+    data-card-variant={variant}
     data-astro-prefetch="viewport"
   >
     <!-- Marker sizing comes from --card-marker-width/--card-marker-offset in src/styles/global.css -->

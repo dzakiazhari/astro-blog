@@ -164,15 +164,15 @@ if (SITE.showArchives) {
               SITE.lightAndDarkMode && (
                 <button
                   id="theme-btn"
-                  class="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--body-text)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+                  class="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent leading-none text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--body-text)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
                   title="Toggles light & dark"
                   aria-label="Switch to dark theme"
                   aria-live="polite"
                 >
                   <span class="sr-only">Toggle theme</span>
-                  <span class="relative inline-flex size-[1.05rem] items-center justify-center">
-                    <IconMoon class="absolute inset-0 scale-100 rotate-0 transition-all duration-300 dark:scale-0 dark:-rotate-90" />
-                    <IconSunHigh class="absolute inset-0 scale-0 rotate-90 transition-all duration-300 dark:scale-100 dark:rotate-0" />
+                  <span class="relative grid size-[1.15rem] place-items-center">
+                    <IconMoon class="col-start-1 row-start-1 size-[1.05rem] scale-100 rotate-0 transition-all duration-300 dark:scale-0 dark:-rotate-90" />
+                    <IconSunHigh class="col-start-1 row-start-1 size-[1.05rem] scale-0 rotate-90 transition-all duration-300 dark:scale-100 dark:rotate-0" />
                   </span>
                 </button>
               )

@@ -154,6 +154,7 @@ html[data-theme="light"] {
   --card-body-leading: 1.45;
   --card-footer-size: 0.62rem;
   --card-footer-tracking: 0.2em;
+  --card-min-height-h3: 10.75rem;
   --card-icon-surface: color-mix(in srgb, var(--surface-raised) 90%, white 10%);
   --card-icon-border: color-mix(
     in srgb,
@@ -465,6 +466,7 @@ html[data-theme="dark"] {
   --card-body-leading: 1.45;
   --card-footer-size: 0.62rem;
   --card-footer-tracking: 0.2em;
+  --card-min-height-h3: 10.75rem;
   --card-icon-surface: color-mix(
     in srgb,
     var(--nav-surface-strong) 88%,
@@ -813,6 +815,10 @@ html[data-theme="dark"] {
   .group:where(:hover, :focus-visible) .card-icon {
     transform: translateY(-0.1rem);
     box-shadow: var(--card-icon-shadow-hover);
+  }
+
+  a[data-card-variant="h3"] {
+    min-height: var(--card-min-height-h3);
   }
 }
 
