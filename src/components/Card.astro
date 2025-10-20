@@ -3,6 +3,7 @@ import { slugifyStr } from "@/utils/slugify";
 import type { CollectionEntry } from "astro:content";
 import { getPath } from "@/utils/getPath";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import IconNoteCard from "@/assets/icons/IconNoteCard.svg";
 
 export interface Props extends CollectionEntry<"blog"> {
   variant?: "h2" | "h3";
@@ -39,7 +40,7 @@ const headerProps = {
 <li class="my-0 h-full">
   <a
     href={getPath(id, filePath)}
-    class="group relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-6 py-7 transition-colors duration-200 ease-out hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+    class="group relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-[var(--radius-md)] border border-[color:var(--card-border)] bg-[color:var(--surface-raised)] px-6 py-7 transition-colors duration-200 ease-out hover:border-[color:var(--card-border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
     data-astro-prefetch="viewport"
   >
     <!-- Marker sizing comes from --card-marker-width/--card-marker-offset in src/styles/global.css -->
@@ -48,12 +49,17 @@ const headerProps = {
       class="pointer-events-none absolute top-6 bottom-6 left-0 w-[var(--card-marker-width)] -translate-x-[var(--card-marker-offset)] bg-[color:var(--card-marker)] transition-colors duration-200 ease-out [clip-path:polygon(0%_0,100%_50%,0%_100%)] group-hover:bg-[color:var(--card-marker-hover)] group-focus-visible:bg-[color:var(--card-marker-hover)]"
     ></span>
 
-    <div class="relative z-[1] space-y-4 ps-5">
-      <p
-        class="text-[0.68rem] font-semibold tracking-[0.28em] text-[color:var(--muted-text)] uppercase"
-      >
-        {formattedDate}
-      </p>
+    <div class="relative z-[1] space-y-5 ps-5">
+      <div class="flex items-center gap-3">
+        <span aria-hidden="true" class="card-icon">
+          <IconNoteCard class="h-[1.05rem] w-[1.05rem]" />
+        </span>
+        <p
+          class="text-[0.68rem] font-semibold tracking-[0.28em] text-[color:var(--muted-text)] uppercase"
+        >
+          {formattedDate}
+        </p>
+      </div>
       {
         variant === "h2" ? (
           <h2
@@ -87,7 +93,9 @@ const headerProps = {
       class="mt-auto inline-flex items-center gap-2 ps-4 text-[0.68rem] font-semibold tracking-[0.26em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)]"
     >
       Read
-      <IconArrowRight class="size-3 rtl:rotate-180" />
+      <IconArrowRight
+        class="h-[1.05rem] w-[1.05rem] transition-transform duration-200 ease-out group-hover:translate-x-1 group-focus-visible:translate-x-1 rtl:rotate-180"
+      />
     </span>
   </a>
 </li>

@@ -1,5 +1,6 @@
 ---
 import IconArchive from "@/assets/icons/IconArchive.svg";
+import IconGarden from "@/assets/icons/IconGarden.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconSearch from "@/assets/icons/IconSearch.svg";
@@ -126,6 +127,8 @@ if (SITE.showArchives) {
                     <span>{item.label}</span>
                     {item.label === "Archives" ? (
                       <IconArchive class="size-3.5" />
+                    ) : item.label === "Notes" && item.external ? (
+                      <IconGarden class="size-4" aria-hidden="true" />
                     ) : item.external ? (
                       <span aria-hidden="true">↗</span>
                     ) : null}

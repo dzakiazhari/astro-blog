@@ -20,6 +20,8 @@ html[data-theme="light"] {
   --dark: #231d16;
   --secondary: #5d8f63;
   --tertiary: #d3a567;
+  --accent: color-mix(in srgb, var(--secondary) 90%, white 10%);
+  --heading-accent: color-mix(in srgb, var(--secondary) 82%, var(--dark) 18%);
   --highlight: rgba(93, 143, 99, 0.22);
   --text-highlight: rgba(255, 214, 140, 0.45);
   --radius-xs: 2px;
@@ -46,6 +48,14 @@ html[data-theme="light"] {
     var(--surface-outline-strong) 84%,
     transparent
   );
+  --card-border: color-mix(in srgb, var(--surface-outline) 78%, transparent);
+  --card-border-strong: color-mix(
+    in srgb,
+    var(--surface-outline-strong) 88%,
+    transparent
+  );
+  --card-shadow: none;
+  --card-shadow-hover: none;
   --divider-soft: color-mix(in srgb, var(--surface-outline) 70%, transparent);
   --divider-strong: color-mix(
     in srgb,
@@ -96,6 +106,147 @@ html[data-theme="light"] {
     var(--secondary),
     color-mix(in srgb, var(--secondary) 48%, var(--tertiary))
   );
+  --pill-radius: var(--radius-lg);
+  --pill-gap: 0.55rem;
+  --pill-surface: color-mix(in srgb, var(--surface-raised) 92%, white 8%);
+  --pill-hover-surface: color-mix(
+    in srgb,
+    var(--secondary) 20%,
+    var(--pill-surface)
+  );
+  --pill-active-surface: color-mix(
+    in srgb,
+    var(--secondary) 30%,
+    var(--pill-surface)
+  );
+  --pill-ghost-surface: color-mix(
+    in srgb,
+    var(--pill-surface) 58%,
+    transparent
+  );
+  --pill-ghost-hover: color-mix(
+    in srgb,
+    var(--pill-hover-surface) 72%,
+    transparent
+  );
+  --pill-ghost-active: color-mix(
+    in srgb,
+    var(--pill-active-surface) 78%,
+    transparent
+  );
+  --pill-border: color-mix(in srgb, var(--surface-outline) 74%, transparent);
+  --pill-border-strong: color-mix(
+    in srgb,
+    var(--surface-outline-strong) 86%,
+    transparent
+  );
+  --pill-text: color-mix(in srgb, var(--muted-text) 76%, var(--body-text) 24%);
+  --pill-text-strong: color-mix(in srgb, var(--nav-text-strong) 88%, white 12%);
+  --pill-shadow: 0 18px 40px -28px rgba(38, 30, 22, 0.34);
+  --card-icon-surface: color-mix(in srgb, var(--surface-raised) 90%, white 10%);
+  --card-icon-border: color-mix(
+    in srgb,
+    var(--surface-outline) 82%,
+    transparent
+  );
+  --card-icon-shadow: 0 20px 44px -30px rgba(38, 30, 22, 0.28);
+  --card-icon-shadow-hover: 0 24px 56px -30px rgba(38, 30, 22, 0.34);
+  --card-icon-foreground: color-mix(
+    in srgb,
+    var(--secondary) 82%,
+    var(--darkgray) 18%
+  );
+  --code-card-surface: color-mix(in srgb, var(--surface-raised) 92%, white 8%);
+  --code-card-border: color-mix(in srgb, var(--border-strong) 86%, transparent);
+  --code-card-shadow: 0 24px 52px -30px rgba(40, 32, 24, 0.28);
+  --code-copy-offset: 1.25rem;
+  --code-copy-text: color-mix(in srgb, var(--nav-text-strong) 88%, white 12%);
+  --code-copy-bg: color-mix(
+    in srgb,
+    var(--pill-surface) 78%,
+    var(--secondary) 22%
+  );
+  --code-copy-border: color-mix(
+    in srgb,
+    var(--pill-border-strong) 72%,
+    var(--secondary) 28%
+  );
+  --code-copy-hover-bg: color-mix(
+    in srgb,
+    var(--pill-hover-surface) 72%,
+    var(--secondary) 28%
+  );
+  --code-copy-active-bg: color-mix(
+    in srgb,
+    var(--pill-active-surface) 64%,
+    var(--secondary) 36%
+  );
+  --code-copy-ring: color-mix(in srgb, var(--secondary) 68%, white 32%);
+  --code-copy-success: color-mix(in srgb, var(--secondary) 90%, white 10%);
+  --prose-heading-surface: color-mix(
+    in srgb,
+    var(--surface-raised) 90%,
+    white 10%
+  );
+  --prose-heading-border: color-mix(
+    in srgb,
+    var(--border-strong) 86%,
+    transparent
+  );
+  --prose-heading-accent: color-mix(
+    in srgb,
+    var(--secondary) 82%,
+    var(--darkgray) 18%
+  );
+  --prose-subheading-surface: color-mix(
+    in srgb,
+    var(--surface-subtle) 94%,
+    transparent
+  );
+  --prose-subheading-border: color-mix(
+    in srgb,
+    var(--border-soft) 90%,
+    transparent
+  );
+  --prose-subheading-accent: color-mix(
+    in srgb,
+    var(--tertiary) 68%,
+    var(--secondary) 32%
+  );
+  --prose-rule: color-mix(in srgb, var(--divider-soft) 92%, transparent);
+  --prose-blockquote-surface: color-mix(
+    in srgb,
+    var(--highlight) 34%,
+    transparent
+  );
+  --prose-blockquote-border: color-mix(
+    in srgb,
+    var(--secondary) 66%,
+    transparent
+  );
+  --prose-blockquote-text: color-mix(
+    in srgb,
+    var(--body-text) 88%,
+    var(--secondary) 12%
+  );
+  --prose-table-header: color-mix(in srgb, var(--surface-subtle) 96%, white 4%);
+  --prose-table-grid: color-mix(in srgb, var(--divider-soft) 90%, transparent);
+  --prose-table-row-alt: color-mix(
+    in srgb,
+    var(--surface-subtle) 88%,
+    transparent
+  );
+  --prose-caption: color-mix(
+    in srgb,
+    var(--muted-text) 82%,
+    var(--secondary) 18%
+  );
+  --prose-kbd-surface: color-mix(in srgb, var(--surface-raised) 92%, white 8%);
+  --prose-kbd-border: color-mix(in srgb, var(--border-soft) 88%, transparent);
+  --prose-kbd-shadow: 0 6px 18px -12px rgba(38, 30, 22, 0.28);
+  --prose-mark-bg: color-mix(in srgb, var(--text-highlight) 76%, transparent);
+  --prose-mark-text: color-mix(in srgb, var(--dark) 82%, var(--secondary) 18%);
+  --prose-code-border: color-mix(in srgb, var(--badge-border) 82%, transparent);
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
   --card-marker-width: 0.8rem;
   --card-marker-offset: 0.5rem;
@@ -128,6 +279,8 @@ html[data-theme="dark"] {
   --dark: #f8f3e8;
   --secondary: #7dc589;
   --tertiary: #e3b676;
+  --accent: color-mix(in srgb, var(--secondary) 88%, rgba(255, 255, 255, 0.18));
+  --heading-accent: color-mix(in srgb, var(--secondary) 84%, white 16%);
   --highlight: rgba(125, 197, 137, 0.22);
   --text-highlight: rgba(255, 188, 120, 0.35);
   --radius-xs: 2px;
@@ -170,6 +323,18 @@ html[data-theme="dark"] {
     var(--surface-outline-strong) 82%,
     transparent
   );
+  --card-border: color-mix(
+    in srgb,
+    var(--surface-outline) 86%,
+    rgba(255, 255, 255, 0.12)
+  );
+  --card-border-strong: color-mix(
+    in srgb,
+    var(--surface-outline-strong) 90%,
+    rgba(255, 255, 255, 0.16)
+  );
+  --card-shadow: none;
+  --card-shadow-hover: none;
   --divider-soft: color-mix(in srgb, var(--surface-outline) 66%, transparent);
   --divider-strong: color-mix(
     in srgb,
@@ -219,8 +384,8 @@ html[data-theme="dark"] {
   --nav-text: color-mix(in srgb, var(--body-text) 82%, var(--muted-text) 18%);
   --nav-text-strong: color-mix(
     in srgb,
-    var(--secondary) 70%,
-    var(--body-text) 30%
+    var(--secondary) 78%,
+    var(--body-text) 22%
   );
   --link-plain: color-mix(in srgb, var(--secondary) 66%, var(--body-text) 34%);
   --link-hover: color-mix(in srgb, var(--tertiary) 58%, var(--secondary) 42%);
@@ -237,6 +402,171 @@ html[data-theme="dark"] {
     color-mix(in srgb, var(--secondary) 78%, rgba(0, 0, 0, 0.25)),
     color-mix(in srgb, var(--secondary) 46%, var(--tertiary) 18%)
   );
+  --pill-radius: var(--radius-lg);
+  --pill-gap: 0.55rem;
+  --pill-surface: color-mix(
+    in srgb,
+    var(--nav-surface) 88%,
+    rgba(255, 255, 255, 0.08)
+  );
+  --pill-hover-surface: color-mix(
+    in srgb,
+    var(--secondary) 26%,
+    var(--pill-surface)
+  );
+  --pill-active-surface: color-mix(
+    in srgb,
+    var(--secondary) 36%,
+    var(--pill-surface)
+  );
+  --pill-ghost-surface: color-mix(
+    in srgb,
+    var(--pill-surface) 46%,
+    transparent
+  );
+  --pill-ghost-hover: color-mix(
+    in srgb,
+    var(--pill-hover-surface) 66%,
+    transparent
+  );
+  --pill-ghost-active: color-mix(
+    in srgb,
+    var(--pill-active-surface) 72%,
+    transparent
+  );
+  --pill-border: color-mix(in srgb, var(--surface-outline) 76%, transparent);
+  --pill-border-strong: color-mix(
+    in srgb,
+    var(--surface-outline-strong) 88%,
+    transparent
+  );
+  --pill-text: color-mix(in srgb, var(--muted-text) 72%, var(--body-text) 28%);
+  --pill-text-strong: color-mix(in srgb, var(--heading-accent) 86%, white 14%);
+  --pill-shadow: 0 22px 48px -32px rgba(0, 0, 0, 0.54);
+  --card-icon-surface: color-mix(
+    in srgb,
+    var(--nav-surface-strong) 88%,
+    rgba(255, 255, 255, 0.08)
+  );
+  --card-icon-border: color-mix(
+    in srgb,
+    var(--surface-outline) 82%,
+    transparent
+  );
+  --card-icon-shadow: 0 26px 54px -32px rgba(0, 0, 0, 0.62);
+  --card-icon-shadow-hover: 0 32px 64px -32px rgba(0, 0, 0, 0.68);
+  --card-icon-foreground: color-mix(in srgb, var(--secondary) 86%, white 14%);
+  --code-card-surface: color-mix(
+    in srgb,
+    var(--nav-surface-strong) 88%,
+    rgba(255, 255, 255, 0.05)
+  );
+  --code-card-border: color-mix(
+    in srgb,
+    var(--border-strong) 90%,
+    rgba(255, 255, 255, 0.12)
+  );
+  --code-card-shadow: 0 28px 64px -34px rgba(0, 0, 0, 0.74);
+  --code-copy-offset: 1.15rem;
+  --code-copy-text: color-mix(in srgb, var(--heading-accent) 84%, white 16%);
+  --code-copy-bg: color-mix(
+    in srgb,
+    var(--pill-surface) 70%,
+    rgba(115, 191, 146, 0.32)
+  );
+  --code-copy-border: color-mix(
+    in srgb,
+    var(--pill-border-strong) 82%,
+    rgba(115, 191, 146, 0.42)
+  );
+  --code-copy-hover-bg: color-mix(
+    in srgb,
+    var(--pill-hover-surface) 66%,
+    rgba(115, 191, 146, 0.42)
+  );
+  --code-copy-active-bg: color-mix(
+    in srgb,
+    var(--pill-active-surface) 60%,
+    rgba(115, 191, 146, 0.5)
+  );
+  --code-copy-ring: color-mix(in srgb, var(--secondary) 74%, white 26%);
+  --code-copy-success: color-mix(in srgb, var(--secondary) 92%, white 8%);
+  --prose-heading-surface: color-mix(
+    in srgb,
+    var(--surface-raised) 86%,
+    rgba(0, 0, 0, 0.36)
+  );
+  --prose-heading-border: color-mix(
+    in srgb,
+    var(--border-strong) 74%,
+    transparent
+  );
+  --prose-heading-accent: color-mix(
+    in srgb,
+    var(--secondary) 85%,
+    var(--light) 15%
+  );
+  --prose-subheading-surface: color-mix(
+    in srgb,
+    var(--surface-subtle) 78%,
+    rgba(0, 0, 0, 0.36)
+  );
+  --prose-subheading-border: color-mix(
+    in srgb,
+    var(--border-soft) 72%,
+    transparent
+  );
+  --prose-subheading-accent: color-mix(
+    in srgb,
+    var(--tertiary) 70%,
+    var(--secondary) 30%
+  );
+  --prose-rule: color-mix(in srgb, var(--divider-soft) 70%, transparent);
+  --prose-blockquote-surface: color-mix(
+    in srgb,
+    rgba(125, 197, 137, 0.32),
+    transparent
+  );
+  --prose-blockquote-border: color-mix(
+    in srgb,
+    var(--secondary) 72%,
+    transparent
+  );
+  --prose-blockquote-text: color-mix(
+    in srgb,
+    var(--body-text) 84%,
+    var(--secondary) 16%
+  );
+  --prose-table-header: color-mix(
+    in srgb,
+    var(--surface-raised) 82%,
+    rgba(0, 0, 0, 0.3)
+  );
+  --prose-table-grid: color-mix(in srgb, var(--divider-soft) 72%, transparent);
+  --prose-table-row-alt: color-mix(
+    in srgb,
+    var(--surface-subtle) 74%,
+    rgba(0, 0, 0, 0.3)
+  );
+  --prose-caption: color-mix(
+    in srgb,
+    var(--muted-text) 78%,
+    var(--secondary) 22%
+  );
+  --prose-kbd-surface: color-mix(
+    in srgb,
+    var(--surface-raised) 84%,
+    rgba(0, 0, 0, 0.4)
+  );
+  --prose-kbd-border: color-mix(in srgb, var(--border-soft) 68%, transparent);
+  --prose-kbd-shadow: 0 12px 30px -20px rgba(0, 0, 0, 0.66);
+  --prose-mark-bg: color-mix(in srgb, rgba(125, 197, 137, 0.32), transparent);
+  --prose-mark-text: color-mix(
+    in srgb,
+    var(--body-text) 88%,
+    var(--secondary) 12%
+  );
+  --prose-code-border: color-mix(in srgb, var(--badge-border) 70%, transparent);
   /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
   --card-marker-width: 1.1rem;
   --card-marker-offset: 0.45rem;
@@ -333,6 +663,130 @@ html[data-theme="dark"] {
 
   .grid-equal {
     grid-auto-rows: 1fr;
+  }
+}
+
+@layer components {
+  .pill {
+    --_pill-bg: var(--pill-surface);
+    --_pill-hover-bg: var(--pill-hover-surface);
+    --_pill-active-bg: var(--pill-active-surface);
+    --_pill-border: var(--pill-border);
+    --_pill-border-strong: var(--pill-border-strong);
+    --_pill-text: var(--pill-text);
+    --_pill-text-strong: var(--pill-text-strong);
+    --_pill-shadow: var(--pill-shadow);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--pill-gap);
+    padding-inline: var(--pill-padding-inline, 1rem);
+    padding-block: var(--pill-padding-block, 0.5rem);
+    border-radius: var(--pill-radius);
+    border: 1px solid var(--_pill-border);
+    background: var(--_pill-bg);
+    color: var(--_pill-text);
+    font-size: var(--pill-font-size, 0.7rem);
+    font-weight: 600;
+    letter-spacing: var(--pill-letter-spacing, 0.24em);
+    text-transform: uppercase;
+    line-height: 1;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease,
+      box-shadow 220ms ease,
+      transform 180ms ease;
+  }
+
+  .pill svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .pill:where(:hover, :focus-visible) {
+    color: var(--_pill-text-strong);
+    background-color: var(--_pill-hover-bg);
+    border-color: var(--_pill-border-strong);
+    box-shadow: var(--_pill-shadow);
+  }
+
+  .pill:focus-visible {
+    outline: none;
+    box-shadow:
+      var(--_pill-shadow),
+      0 0 0 2px color-mix(in srgb, var(--ring-accent) 88%, transparent);
+  }
+
+  .pill:active {
+    background-color: var(--_pill-active-bg);
+  }
+
+  .pill[aria-disabled="true"],
+  .pill[disabled] {
+    cursor: not-allowed;
+    opacity: 0.56;
+    box-shadow: none;
+  }
+
+  .pill[aria-disabled="true"]:where(:hover, :focus-visible),
+  .pill[disabled]:where(:hover, :focus-visible) {
+    color: var(--_pill-text);
+    background: var(--_pill-bg);
+    border-color: var(--_pill-border);
+    box-shadow: none;
+  }
+
+  .pill--standard {
+    --pill-padding-block: 0.48rem;
+    --pill-padding-inline: 1.05rem;
+  }
+
+  .pill--compact {
+    --pill-gap: 0.4rem;
+    --pill-padding-block: 0.38rem;
+    --pill-padding-inline: 0.85rem;
+    --pill-font-size: 0.64rem;
+    --pill-letter-spacing: 0.26em;
+  }
+
+  .pill--roomy {
+    --pill-gap: 0.6rem;
+    --pill-padding-block: 0.58rem;
+    --pill-padding-inline: 1.15rem;
+    --pill-font-size: 0.75rem;
+  }
+
+  .pill--ghost {
+    --_pill-bg: var(--pill-ghost-surface);
+    --_pill-hover-bg: var(--pill-ghost-hover);
+    --_pill-active-bg: var(--pill-ghost-active);
+  }
+
+  .card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--card-icon-border);
+    background: var(--card-icon-surface);
+    color: var(--card-icon-foreground);
+    box-shadow: var(--card-icon-shadow);
+    transition:
+      transform 180ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .card-icon svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .group:where(:hover, :focus-visible) .card-icon {
+    transform: translateY(-0.1rem);
+    box-shadow: var(--card-icon-shadow-hover);
   }
 }
 

@@ -7,6 +7,7 @@ import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
+import IconGarden from "@/assets/icons/IconGarden.svg";
 import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { SOCIALS } from "@/constants";
@@ -27,12 +28,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     class="site-shell space-y-12 pt-16 pb-20"
   >
     <section
-      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-6 py-12"
+      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-5 py-12 sm:px-6 md:py-14"
     >
-      <div
-        class="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] md:items-start"
-      >
-        <div class="space-y-5">
+      <div class="grid gap-10 md:grid-cols-2 md:items-start">
+        <div class="space-y-6 md:max-w-xl md:pe-6 lg:pe-10">
           <h1
             class="text-4xl font-semibold text-[color:var(--nav-text-strong)] sm:text-[2.75rem]"
           >
@@ -43,10 +42,9 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           >
             Explore stories, research notes, and the studio's experiments.
           </p>
-          <div class="flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-3 md:gap-4">
             <LinkButton href="/posts/" prefetch="viewport">
               Latest posts
-              <IconArrowRight class="size-4 rtl:-rotate-180" />
             </LinkButton>
             <LinkButton href="/about" prefetch="viewport">
               About the studio
@@ -54,7 +52,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5">
           <a
             href={SITE.notesUrl ?? "https://notes.dzakiazhari.com"}
             class="group relative flex min-h-[180px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-5 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
@@ -63,14 +61,21 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
             data-astro-prefetch="false"
           >
             <span
-              class="text-[0.68rem] font-semibold tracking-[0.3em] text-[color:var(--muted-text)] uppercase"
+              class="inline-flex items-center gap-2 text-[0.68rem] font-semibold tracking-[0.3em] text-[color:var(--muted-text)] uppercase"
             >
+              <IconGarden class="size-4" aria-hidden="true" />
               Notes garden
             </span>
             <span
               class="text-2xl leading-snug font-semibold text-[color:var(--nav-text-strong)]"
             >
-              View the evergreen notes ↗
+              Visit the evergreen notes
+            </span>
+            <span
+              class="mt-auto inline-flex items-center gap-2 text-[0.66rem] font-semibold tracking-[0.26em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
+            >
+              Explore notes
+              <IconGarden class="size-[0.95rem]" aria-hidden="true" />
             </span>
           </a>
 
