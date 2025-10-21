@@ -173,6 +173,9 @@ html[data-theme="light"] {
   --card-heading-h2: var(--type-heading-lg);
   --card-heading-h3: var(--type-heading-md);
   --card-heading-h3-min-height: calc(var(--card-heading-h3) * 1.4 * 2);
+  --card-bar-heading-min-height: calc(
+    var(--type-heading-sm) * var(--type-heading-sm-leading) * 2
+  );
   --card-body-size: var(--type-body-small);
   --card-body-leading: var(--type-body-small-leading);
   --card-footer-size: var(--type-overline-tight-size);
@@ -488,6 +491,9 @@ html[data-theme="dark"] {
   --card-heading-h2: var(--type-heading-lg);
   --card-heading-h3: var(--type-heading-md);
   --card-heading-h3-min-height: calc(var(--card-heading-h3) * 1.4 * 2);
+  --card-bar-heading-min-height: calc(
+    var(--type-heading-sm) * var(--type-heading-sm-leading) * 2
+  );
   --card-body-size: var(--type-body-small);
   --card-body-leading: var(--type-body-small-leading);
   --card-footer-size: var(--type-overline-tight-size);
@@ -915,6 +921,15 @@ html[data-theme="dark"] {
 
   a[data-card-variant="h3"] h3 {
     min-height: var(--card-heading-h3-min-height);
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  a[data-card-variant="bar"] h3 {
+    min-height: var(--card-bar-heading-min-height);
     display: -webkit-box;
     line-clamp: 2;
     -webkit-line-clamp: 2;
