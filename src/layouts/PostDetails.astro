@@ -80,10 +80,22 @@ const markdownUrl = `${getPath(post.id, post.filePath)}/markdown`;
 const trimmedMarkdown = rawMarkdown.trim();
 const showMarkdownActions = trimmedMarkdown.length > 0;
 const showControlsRow = SITE.showBackButton || showMarkdownActions;
-const markdownTriggerClass =
-  "inline-flex items-center gap-2 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-3 py-2 text-[0.64rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)]";
-const markdownMenuItemClass =
-  "flex w-full items-center gap-2 px-3 py-2 text-left text-[0.64rem] font-semibold uppercase tracking-[0.24em] text-[color:var(--muted-text)] transition-colors duration-150 hover:bg-[color:var(--control-hover)] hover:text-[color:var(--nav-text-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)]";
+const markdownTriggerClass = [
+  "inline-flex items-center gap-2",
+  "rounded-[var(--radius-xs)] border border-[var(--border-soft)]",
+  "bg-transparent px-3 py-2",
+  "font-semibold uppercase type-overline-tight",
+  "text-[color:var(--muted-text)] transition-colors duration-150",
+  "hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)]",
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)]",
+].join(" ");
+const markdownMenuItemClass = [
+  "flex w-full items-center gap-2 px-3 py-2 text-left",
+  "font-semibold uppercase type-overline-tight",
+  "text-[color:var(--muted-text)] transition-colors duration-150",
+  "hover:bg-[color:var(--control-hover)] hover:text-[color:var(--nav-text-strong)]",
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)]",
+].join(" ");
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -128,7 +140,7 @@ const nextPost =
       <div class="flex flex-wrap items-center gap-3 sm:gap-4">
         <h1
           transition:name={slugifyStr(title)}
-          class="min-w-0 flex-1 text-2xl font-bold text-accent sm:text-3xl"
+          class="type-heading-xl min-w-0 flex-1 font-bold text-balance text-accent"
         >
           {title}
         </h1>
@@ -249,7 +261,7 @@ const nextPost =
             <IconChevronLeft class="inline-block flex-none rtl:rotate-180" />
             <div>
               <span>Previous Post</span>
-              <div class="text-sm text-accent/85">{prevPost.title}</div>
+              <div class="type-body-small text-accent/85">{prevPost.title}</div>
             </div>
           </a>
         )
@@ -263,7 +275,7 @@ const nextPost =
           >
             <div>
               <span>Next Post</span>
-              <div class="text-sm text-accent/85">{nextPost.title}</div>
+              <div class="type-body-small text-accent/85">{nextPost.title}</div>
             </div>
             <IconChevronRight class="inline-block flex-none rtl:rotate-180" />
           </a>

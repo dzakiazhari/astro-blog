@@ -5,9 +5,9 @@
     @apply prose max-w-none;
     font-family: var(--font-sans);
     color: var(--body-text);
-    font-size: clamp(1.14rem, 1.05rem + 0.28vw, 1.26rem);
-    line-height: 1.72;
-    letter-spacing: -0.006em;
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-leading);
+    letter-spacing: var(--type-body-letter);
 
     h1,
     h2,
@@ -21,7 +21,7 @@
     }
 
     h1 {
-      @apply text-[2.35rem] sm:text-[2.85rem] lg:text-[3.1rem];
+      font-size: var(--type-heading-xl);
       letter-spacing: -0.02em;
       text-wrap: balance;
       position: relative;
@@ -53,12 +53,12 @@
     }
 
     h2 {
-      @apply text-[1.68rem] sm:text-[1.98rem] lg:text-[2.25rem];
+      font-size: var(--type-heading-lg);
       letter-spacing: -0.014em;
     }
 
     h3 {
-      @apply text-[1.36rem] sm:text-[1.58rem] lg:text-[1.76rem];
+      font-size: var(--type-heading-md);
       letter-spacing: -0.01em;
     }
 
@@ -94,8 +94,8 @@
       border: 0;
       background: none;
       box-shadow: none;
-      font-size: clamp(1.06rem, 1.01rem + 0.24vw, 1.2rem);
-      letter-spacing: 0.22em;
+      font-size: var(--type-heading-md);
+      letter-spacing: var(--type-overline-tight-letter);
       text-transform: uppercase;
       color: color-mix(in srgb, var(--muted-text) 74%, var(--secondary) 26%);
     }
@@ -105,9 +105,11 @@
     }
 
     h4 {
-      @apply mt-8 text-[0.76rem] tracking-[0.28em] uppercase;
+      @apply mt-8 uppercase;
       color: color-mix(in srgb, var(--muted-text) 78%, var(--secondary) 22%);
-      letter-spacing: 0.28em;
+      font-size: var(--type-overline-wide-size);
+      letter-spacing: var(--type-overline-wide-letter);
+      line-height: var(--type-overline-leading);
     }
 
     p,
@@ -121,7 +123,7 @@
     }
 
     p {
-      line-height: 1.72;
+      line-height: var(--type-body-leading);
       text-wrap: pretty;
       hyphens: auto;
       margin-block: clamp(1.45rem, 1.25rem + 0.4vw, 1.85rem);

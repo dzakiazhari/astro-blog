@@ -75,7 +75,7 @@ if (SITE.showArchives) {
         <div class="max-w-[42ch] space-y-1">
           <a
             href="/"
-            class="group inline-flex items-center gap-2 text-[1.24rem] font-semibold tracking-[0.18em] text-[color:var(--heading-accent)] uppercase transition-colors duration-200 hover:text-[color:var(--link-hover)] focus-visible:text-[color:var(--link-hover)]"
+            class="group type-heading-sm inline-flex items-center gap-2 font-semibold tracking-[var(--type-overline-letter)] text-[color:var(--heading-accent)] uppercase transition-colors duration-200 hover:text-[color:var(--link-hover)] focus-visible:text-[color:var(--link-hover)]"
             data-astro-prefetch="viewport"
           >
             <span class="leading-none">{SITE.title}</span>
@@ -87,7 +87,7 @@ if (SITE.showArchives) {
 
         <button
           id="menu-btn"
-          class="inline-flex items-center gap-1.5 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2 py-0.75 text-[0.58rem] font-semibold tracking-[0.2em] text-[color:var(--muted-text)] uppercase transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none md:hidden"
+          class="type-overline-compact inline-flex items-center gap-1.5 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2 py-0.75 font-semibold text-[color:var(--muted-text)] uppercase transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none md:hidden"
           aria-label="Open Menu"
           aria-expanded="false"
           aria-controls="menu-items"
@@ -102,8 +102,8 @@ if (SITE.showArchives) {
         <div
           id="menu-items"
           class:list={[
-            "grid gap-2 border-t border-[var(--divider-soft)] pt-1.5 text-[0.6rem] font-semibold tracking-[0.2em] uppercase",
-            "md:flex md:items-center md:justify-between md:border-0 md:pt-0 md:text-[0.58rem]",
+            "type-overline-tight grid gap-2 border-t border-[var(--divider-soft)] pt-1.5 font-semibold uppercase",
+            "md:flex md:items-center md:justify-between md:border-0 md:pt-0",
             "hidden md:flex",
           ]}
         >
@@ -154,7 +154,7 @@ if (SITE.showArchives) {
               ]}
               data-astro-prefetch="viewport"
             >
-              <span class="text-[0.58rem] tracking-[0.18em] uppercase"
+              <span class="type-overline-compact font-semibold uppercase"
                 >Search</span
               >
               <IconSearch class="size-[1rem]" />
