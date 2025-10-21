@@ -122,3 +122,20 @@ Each phase deepens focus: start with measurement, then normalize layout primitiv
   vertical snap when slots are empty.【F:src/styles/global.css†L934-L970】【F:src/components/Pagination.astro†L1-L71】【F:src/components/Footer.astro†L1-L38】
 - Normalised hero, listing, and search surfaces to the shared `--shell-content-min-height` token so SPA transitions animate
   between similarly sized containers.【F:src/styles/global.css†L320-L334】【F:src/layouts/Main.astro†L41-L66】【F:src/pages/index.astro†L27-L141】【F:src/pages/search.astro†L1-L106】
+
+## Phase 3 Progress Notes
+
+- Reintroduced view transitions as accent "pills" on cards and post titles, guarded by a reduced-motion media query, so only
+  lightweight elements animate between routes while the main typography stays static.【F:src/components/Card.astro†L36-L125】【F:src/layouts/PostDetails.astro†L1-L259】【F:src/styles/global.css†L904-L985】
+- Replaced the JavaScript-only hamburger toggle with a `<details>` disclosure that renders in its final state on the server and
+  persists the open/closed preference through a dataset-aware nav state helper, eliminating hydration flashes across SPA swaps.【F:src/components/Header.astro†L1-L211】【F:public/scripts/nav-state.js†L1-L64】【F:src/styles/global.css†L987-L1044】
+- Deferred scroll helpers and Pagefind bootstrapping behind idle time or explicit user intent, with shell-level placeholders to
+  reserve space so late hydration no longer nudges the layout.【F:src/layouts/Layout.astro†L1-L203】【F:public/scripts/enhancement-entry.js†L1-L88】【F:src/pages/search.astro†L1-L230】
+- Added a Playwright-based regression suite that drives the primary navigation loop and asserts each SPA transition keeps CLS
+  under 0.05, giving the team an automated guardrail for future iterations.【F:tests/visual/layout-shift.spec.ts†L1-L63】【F:playwright.config.ts†L1-L16】
+
+## Phase 3 Exit Criteria
+
+- **Navigation state persists between routes.** The inline dataset bootstrap in `Layout.astro` seeds the disclosure state before hydration, while `public/scripts/nav-state.js` restores and stores the value after every `astro:page-load`, preventing header flashes during SPA swaps.【F:src/layouts/Layout.astro†L86-L134】【F:public/scripts/nav-state.js†L1-L64】
+- **Deferred enhancements respect reserved placeholders.** The idle-aware enhancement entry point waits for interaction before loading scroll helpers, and the search route guards Pagefind bootstrapping until the shell enters the viewport or the user focuses the container, so placeholders remain stable.【F:public/scripts/enhancement-entry.js†L1-L88】【F:src/pages/search.astro†L38-L196】
+- **CLS budget is automated.** The Playwright suite traverses the primary navigation loop, observes layout-shift entries, and fails when CLS exceeds the 0.05 threshold to enforce the new guardrail.【F:tests/visual/layout-shift.spec.ts†L1-L63】

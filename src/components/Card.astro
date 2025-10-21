@@ -35,11 +35,8 @@ const toIsoDots = (value: string | number | Date) => {
 const formattedDate = toIsoDots(pubDatetime);
 const isoDate = new Date(pubDatetime).toISOString();
 
-const headerProps = layoutAuditMode
-  ? {}
-  : {
-      style: { viewTransitionName: slugifyStr(title) },
-    };
+const transitionKey = layoutAuditMode ? null : slugifyStr(title);
+const transitionName = transitionKey ? `post-pill-${transitionKey}` : null;
 ---
 
 {
@@ -58,8 +55,14 @@ const headerProps = layoutAuditMode
           >
             {formattedDate}
           </time>
+          {transitionName && (
+            <span
+              transition:name={transitionName}
+              class="card-transition-pill"
+              aria-hidden="true"
+            />
+          )}
           <h3
-            {...headerProps}
             class="type-heading-sm font-semibold text-balance transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)]"
           >
             {title}
@@ -101,19 +104,35 @@ const headerProps = layoutAuditMode
             </p>
           </div>
           {variant === "h2" ? (
-            <h2
-              {...headerProps}
-              class="leading-tight font-semibold text-balance text-[color:var(--body-text)] text-[var(--card-heading-h2)] transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)]"
-            >
-              {title}
-            </h2>
+            <>
+              {transitionName && (
+                <span
+                  transition:name={transitionName}
+                  class="card-transition-pill"
+                  aria-hidden="true"
+                />
+              )}
+              <h2
+                class="leading-tight font-semibold text-balance text-[color:var(--body-text)] text-[var(--card-heading-h2)] transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)]"
+              >
+                {title}
+              </h2>
+            </>
           ) : (
-            <h3
-              {...headerProps}
-              class="leading-snug font-semibold text-balance text-[color:var(--body-text)] text-[var(--card-heading-h3)] transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)]"
-            >
-              {title}
-            </h3>
+            <>
+              {transitionName && (
+                <span
+                  transition:name={transitionName}
+                  class="card-transition-pill"
+                  aria-hidden="true"
+                />
+              )}
+              <h3
+                class="leading-snug font-semibold text-balance text-[color:var(--body-text)] text-[var(--card-heading-h3)] transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)] group-focus-visible:text-[color:var(--nav-text-strong)]"
+              >
+                {title}
+              </h3>
+            </>
           )}
           {showDescription && (
             <p

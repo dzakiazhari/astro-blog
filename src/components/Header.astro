@@ -71,40 +71,47 @@ if (SITE.showArchives) {
   class="border-b border-[var(--header-divider)] bg-[var(--header-surface)]"
 >
   <Shell as="div" class="flex flex-col gap-3 py-3.5">
-      <div class="flex flex-wrap items-center justify-between gap-1.5">
-        <div class="max-w-[42ch] space-y-1">
-          <a
-            href="/"
-            class="group type-heading-sm inline-flex items-center gap-2 font-semibold tracking-[var(--type-overline-letter)] text-[color:var(--heading-accent)] uppercase transition-colors duration-200 hover:text-[color:var(--link-hover)] focus-visible:text-[color:var(--link-hover)]"
-            data-astro-prefetch="viewport"
-          >
-            <span class="leading-none">{SITE.title}</span>
-            <LogoUnfold
-              class="h-[0.95em] w-auto text-[color:var(--heading-accent)] transition-transform duration-300 group-hover:-translate-y-0.5"
-            />
-          </a>
-        </div>
-
-        <button
-          id="menu-btn"
-          class="type-overline-compact inline-flex items-center gap-1.5 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2 py-0.75 font-semibold text-[color:var(--muted-text)] uppercase transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none md:hidden"
-          aria-label="Open Menu"
-          aria-expanded="false"
-          aria-controls="menu-items"
+    <div class="flex flex-wrap items-center justify-between gap-1.5">
+      <div class="max-w-[42ch] space-y-1">
+        <a
+          href="/"
+          class="group type-heading-sm inline-flex items-center gap-2 font-semibold tracking-[var(--type-overline-letter)] text-[color:var(--heading-accent)] uppercase transition-colors duration-200 hover:text-[color:var(--link-hover)] focus-visible:text-[color:var(--link-hover)]"
+          data-astro-prefetch="viewport"
         >
-          Menu
-          <IconMenuDeep id="menu-icon" class="size-4" />
-          <IconX id="close-icon" class="hidden size-4" />
-        </button>
+          <span class="leading-none">{SITE.title}</span>
+          <LogoUnfold
+            class="h-[0.95em] w-auto text-[color:var(--heading-accent)] transition-transform duration-300 group-hover:-translate-y-0.5"
+          />
+        </a>
       </div>
 
-      <nav aria-label="Primary">
-        <div
-          id="menu-items"
+      <details
+        data-nav-disclosure
+        open
+        class:list={[
+          "nav-disclosure w-full", // Mobile: take full width so the panel spans edge-to-edge
+          "md:w-auto md:flex md:items-center md:gap-3",
+        ]}
+      >
+        <summary
+          class="nav-summary type-overline-compact inline-flex items-center gap-1.5 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2 py-0.75 font-semibold text-[color:var(--muted-text)] uppercase transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none md:hidden"
+        >
+          <span>Menu</span>
+          <IconMenuDeep
+            class="nav-summary__icon nav-summary__icon--menu size-4"
+            aria-hidden="true"
+          />
+          <IconX
+            class="nav-summary__icon nav-summary__icon--close size-4"
+            aria-hidden="true"
+          />
+        </summary>
+
+        <nav
+          aria-label="Primary"
           class:list={[
-            "type-overline-tight grid gap-2 border-t border-[var(--divider-soft)] pt-1.5 font-semibold uppercase",
+            "nav-panel type-overline-tight grid gap-2 border-t border-[var(--divider-soft)] pt-1.5 font-semibold uppercase",
             "md:flex md:items-center md:justify-between md:border-0 md:pt-0",
-            "hidden md:flex",
           ]}
         >
           <ul
@@ -178,50 +185,8 @@ if (SITE.showArchives) {
               )
             }
           </div>
-        </div>
-      </nav>
+        </nav>
+      </details>
+    </div>
   </Shell>
 </header>
-
-<script is:inline>
-  (function () {
-    const attachToggle = () => {
-      const menuBtn = document.querySelector("#menu-btn");
-      const menuItems = document.querySelector("#menu-items");
-      const menuIcon = document.querySelector("#menu-icon");
-      const closeIcon = document.querySelector("#close-icon");
-
-      if (
-        !(menuBtn instanceof HTMLElement) ||
-        !(menuItems instanceof HTMLElement) ||
-        !(menuIcon instanceof SVGElement) ||
-        !(closeIcon instanceof SVGElement)
-      ) {
-        return;
-      }
-
-      if (menuBtn.dataset.navBound === "true") {
-        return;
-      }
-
-      const toggle = () => {
-        const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
-
-        menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
-        menuBtn.setAttribute(
-          "aria-label",
-          openMenu ? "Open Menu" : "Close Menu"
-        );
-
-        menuItems.classList.toggle("hidden");
-        menuIcon.classList.toggle("hidden");
-        closeIcon.classList.toggle("hidden");
-      };
-
-      menuBtn.addEventListener("click", toggle);
-      menuBtn.dataset.navBound = "true";
-    };
-
-    attachToggle();
-  })();
-</script>

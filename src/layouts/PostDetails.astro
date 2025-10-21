@@ -78,6 +78,9 @@ const ogImage = ogImageUrl
 
 const pageIdentifier = Astro.url.pathname;
 const markdownUrl = `${getPath(post.id, post.filePath)}/markdown`;
+const layoutAuditMode = import.meta.env.PUBLIC_LAYOUT_AUDIT_MODE === "true";
+const transitionKey = layoutAuditMode ? null : slugifyStr(title);
+const transitionName = transitionKey ? `post-pill-${transitionKey}` : null;
 const trimmedMarkdown = rawMarkdown.trim();
 const showMarkdownActions = trimmedMarkdown.length > 0;
 const showControlsRow = SITE.showBackButton || showMarkdownActions;
@@ -140,10 +143,14 @@ const nextPost =
   >
     <div class="mb-6 flex flex-col gap-3 sm:mb-8">
       <div class="flex flex-wrap items-center gap-3 sm:gap-4">
-        <h1
-          transition:name={slugifyStr(title)}
-          class="type-heading-xl min-w-0 flex-1 font-bold text-balance text-accent"
-        >
+        {transitionName && (
+          <span
+            transition:name={transitionName}
+            class="post-transition-pill"
+            aria-hidden="true"
+          />
+        )}
+        <h1 class="type-heading-xl min-w-0 flex-1 font-bold text-balance text-accent">
           {title}
         </h1>
         {

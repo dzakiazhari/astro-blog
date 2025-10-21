@@ -68,4 +68,9 @@ Pull the array in DevTools (`window.__layoutAudit.marks`) or export it after an 
 
 - Populate the trace and capture tables with real numbers and links once Lighthouse audits are executed.
 - Feed the collected deltas into Phase 2 structural work (unifying shell wrappers, reserving breadcrumb/pagination space).
+
+## Phase 3 Automation Snapshot
+
+- Added a Playwright scenario that traverses home → posts → article → tags → archives → home and fails when CLS exceeds 0.05, so
+  future navigation or enhancement tweaks surface regressions immediately in CI.【F:tests/visual/layout-shift.spec.ts†L1-L63】【F:playwright.config.ts†L1-L16】
 - Extend the instrumentation if new scripts appear during refactors so post-swap mutations remain observable.

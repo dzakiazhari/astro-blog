@@ -12,81 +12,206 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
 <Layout title={`Search | ${SITE.title}`}>
   <Header />
   <Main pageTitle="Search" pageDesc="Search any article ...">
-    <div id="pagefind-search" transition:persist data-backurl={backUrl}></div>
+    <div id="pagefind-shell" class="pagefind-shell" transition:persist>
+      <div
+        class="pagefind-placeholder"
+        data-pagefind-placeholder
+        aria-hidden="true"
+      >
+        <div class="pagefind-placeholder__input" />
+        <div class="pagefind-placeholder__list">
+          <div class="pagefind-placeholder__item" />
+          <div class="pagefind-placeholder__item" />
+          <div class="pagefind-placeholder__item" />
+        </div>
+      </div>
+      <div
+        id="pagefind-search"
+        data-backurl={backUrl}
+        data-pagefind-ready="false"
+      ></div>
+    </div>
   </Main>
   <Footer />
 </Layout>
 
-<script>
-  function initSearch() {
-    const pageFindSearch: HTMLElement | null =
-      document.querySelector("#pagefind-search");
+<script lang="ts">
+  (() => {
+    const SHELL_SELECTOR = "#pagefind-shell";
+    const CONTAINER_SELECTOR = "#pagefind-search";
+    let bootstrapped = false;
+    let observer: IntersectionObserver | null = null;
 
-    if (!pageFindSearch) return;
+    const scheduleIdle: (
+      callback: IdleRequestCallback | (() => void)
+    ) => void =
+      window.requestIdleCallback
+        ? callback => window.requestIdleCallback(callback, { timeout: 500 })
+        : callback => window.setTimeout(callback, 80);
 
-    const params = new URLSearchParams(window.location.search);
+    const hidePlaceholder = (container: HTMLElement) => {
+      const shell = container.closest<HTMLElement>(SHELL_SELECTOR);
+      const placeholder = shell?.querySelector<HTMLElement>(
+        "[data-pagefind-placeholder]"
+      );
 
-    const onIdle = window.requestIdleCallback || (cb => setTimeout(cb, 1));
+      placeholder?.setAttribute("hidden", "");
+    };
 
-    onIdle(async () => {
-      // @ts-expect-error — Missing types for @pagefind/default-ui package.
-      const { PagefindUI } = await import("@pagefind/default-ui");
+    const showPlaceholder = (container: HTMLElement) => {
+      const shell = container.closest<HTMLElement>(SHELL_SELECTOR);
+      const placeholder = shell?.querySelector<HTMLElement>(
+        "[data-pagefind-placeholder]"
+      );
 
-      // Display warning in dev mode
-      if (import.meta.env.DEV) {
-        pageFindSearch.innerHTML = `
-            <div class="bg-muted/75 rounded p-4 space-y-4 mb-4">
-              <p><strong>DEV mode Warning! </strong>You need to build the project at least once to see the search results during development.</p>
-              <code class="block bg-black text-white px-2 py-1 rounded">pnpm run build</code>
-            </div>
-          `;
+      placeholder?.removeAttribute("hidden");
+    };
+
+    const bootstrapSearch = () => {
+      if (bootstrapped) {
+        return;
       }
 
-      // Init pagefind ui
-      const search = new PagefindUI({
-        element: "#pagefind-search",
-        showSubResults: true,
-        showImages: false,
-        processTerm: function (term: string) {
-          params.set("q", term); // Update the `q` parameter in the URL
-          history.replaceState(history.state, "", "?" + params.toString()); // Push the new URL without reloading
-
-          const backUrl = pageFindSearch?.dataset?.backurl;
-          sessionStorage.setItem("backUrl", backUrl + "?" + params.toString());
-
-          return term;
-        },
-      });
-
-      // If search param exists (eg: search?q=astro), trigger search
-      const query = params.get("q");
-      if (query) {
-        search.triggerSearch(query);
+      const container = document.querySelector<HTMLElement>(CONTAINER_SELECTOR);
+      if (!container) {
+        return;
       }
 
-      // Reset search param if search input is cleared
-      const searchInput = document.querySelector(".pagefind-ui__search-input");
-      const clearButton = document.querySelector(".pagefind-ui__search-clear");
-      searchInput?.addEventListener("input", resetSearchParam);
-      clearButton?.addEventListener("click", resetSearchParam);
+      bootstrapped = true;
+      container.dataset.pagefindReady = "loading";
+      hidePlaceholder(container);
 
-      function resetSearchParam(e: Event) {
-        if ((e.target as HTMLInputElement)?.value.trim() === "") {
-          history.replaceState(history.state, "", window.location.pathname);
+      const params = new URLSearchParams(window.location.search);
+
+      scheduleIdle(async () => {
+        // @ts-expect-error — Missing types for @pagefind/default-ui package.
+        const { PagefindUI } = await import("@pagefind/default-ui");
+
+        if (import.meta.env.DEV) {
+          container.innerHTML = `
+              <div class="pagefind-dev-warning">
+                <p><strong>DEV mode warning:</strong> run <code>pnpm run build</code> to hydrate Pagefind results locally.</p>
+              </div>
+            `;
         }
+
+        const search = new PagefindUI({
+          element: CONTAINER_SELECTOR,
+          showSubResults: true,
+          showImages: false,
+          processTerm: function (term: string) {
+            params.set("q", term);
+            history.replaceState(history.state, "", "?" + params.toString());
+
+            const backUrl = container.dataset.backurl;
+            if (backUrl) {
+              sessionStorage.setItem(
+                "backUrl",
+                `${backUrl}?${params.toString()}`
+              );
+            }
+
+            return term;
+          },
+        });
+
+        const query = params.get("q");
+        if (query) {
+          search.triggerSearch(query);
+        }
+
+        const resetSearchParam = (event: Event) => {
+          const target = event.target as HTMLInputElement | null;
+          if (!target || target.value.trim() !== "") {
+            return;
+          }
+
+          history.replaceState(history.state, "", window.location.pathname);
+        };
+
+        const searchInput = document.querySelector(
+          ".pagefind-ui__search-input"
+        );
+        const clearButton = document.querySelector(
+          ".pagefind-ui__search-clear"
+        );
+        searchInput?.addEventListener("input", resetSearchParam);
+        clearButton?.addEventListener("click", resetSearchParam);
+
+        container.dataset.pagefindReady = "true";
+      });
+    };
+
+    const disconnectObserver = () => {
+      observer?.disconnect();
+      observer = null;
+    };
+
+    const queueBootstrap = () => {
+      const container = document.querySelector<HTMLElement>(CONTAINER_SELECTOR);
+      if (!container) {
+        return;
       }
+
+      if (bootstrapped) {
+        hidePlaceholder(container);
+        container.dataset.pagefindReady = "true";
+        return;
+      }
+
+      showPlaceholder(container);
+      container.dataset.pagefindReady = "false";
+
+      const handleKeydown = (event: KeyboardEvent) => {
+        if (event.key === "Tab") {
+          trigger();
+        }
+      };
+
+      const trigger = () => {
+        disconnectObserver();
+        container.removeEventListener("focusin", trigger);
+        container.removeEventListener("pointerdown", trigger);
+        container.removeEventListener("keydown", handleKeydown);
+        bootstrapSearch();
+      };
+
+      disconnectObserver();
+      observer = new IntersectionObserver(
+        entries => {
+          if (entries.some(entry => entry.isIntersecting)) {
+            trigger();
+          }
+        },
+        { rootMargin: "0px", threshold: 0.25 }
+      );
+
+      observer.observe(container);
+
+      container.addEventListener("focusin", trigger, { once: true });
+      container.addEventListener("pointerdown", trigger, { once: true });
+
+      container.addEventListener("keydown", handleKeydown);
+
+      if (new URLSearchParams(window.location.search).has("q")) {
+        trigger();
+      }
+    };
+
+    document.addEventListener("astro:after-swap", queueBootstrap);
+    document.addEventListener("astro:page-load", () => {
+      bootstrapped = false;
+      queueBootstrap();
     });
-  }
 
-  document.addEventListener("astro:after-swap", () => {
-    const pagefindSearch = document.querySelector("#pagefind-search");
-
-    // if pagefind search form already exists, don't initialize search component
-    if (pagefindSearch && pagefindSearch.querySelector("form")) return;
-
-    initSearch();
-  });
-  initSearch();
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", queueBootstrap, {
+        once: true,
+      });
+    } else {
+      queueBootstrap();
+    }
+  })();
 </script>
 
 <style is:global>
@@ -137,5 +262,44 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
     .pagefind-ui__result-nested .pagefind-ui__result-link:before {
       font-family: system-ui;
     }
+  }
+
+  .pagefind-shell {
+    display: grid;
+    gap: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    min-height: var(--shell-content-min-height);
+  }
+
+  [data-pagefind-placeholder] {
+    display: grid;
+    gap: clamp(0.9rem, 0.75rem + 0.6vw, 1.1rem);
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    border-radius: var(--radius-md);
+    border: 1px dashed color-mix(in srgb, var(--border-soft) 80%, transparent);
+    background: color-mix(in srgb, var(--surface-raised) 84%, transparent);
+  }
+
+  .pagefind-placeholder__input {
+    height: 3rem;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--surface-outline) 22%, transparent);
+  }
+
+  .pagefind-placeholder__list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .pagefind-placeholder__item {
+    height: clamp(2.8rem, 2.6rem + 0.6vw, 3rem);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--surface-outline) 18%, transparent);
+  }
+
+  .pagefind-dev-warning {
+    border-radius: var(--radius-sm);
+    border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    padding: clamp(1rem, 0.9rem + 0.5vw, 1.35rem);
   }
 </style>
