@@ -11,6 +11,7 @@ import EditPost from "@/components/EditPost.astro";
 import BackButton from "@/components/BackButton.astro";
 import BackToTopButton from "@/components/BackToTopButton.astro";
 import Comments from "@/components/Comments.astro";
+import Shell from "@/components/Shell.astro";
 import { getPath } from "@/utils/getPath";
 import { slugifyStr } from "@/utils/slugify";
 import IconClipboard from "@/assets/icons/IconClipboard.svg";
@@ -131,9 +132,10 @@ const nextPost =
 
 <Layout {...layoutProps}>
   <Header />
-  <main
+  <Shell
+    as="main"
     id="main-content"
-    class="mx-auto w-full max-w-app px-4 pt-12 pb-12 sm:pt-16"
+    class="pt-12 pb-12 sm:pt-16"
     data-pagefind-body
   >
     <div class="mb-6 flex flex-col gap-3 sm:mb-8">
@@ -227,9 +229,15 @@ const nextPost =
         />
       )
     }
-    <article id="article" class="app-prose mx-auto mt-8 max-w-app">
+    <Shell as="article" id="article" class="app-prose mt-8" padding="tight">
       <Content />
-    </article>
+
+      {Astro.props.post.data.canonicalURL && (
+        <p class="type-overline-tight mt-6 text-[color:var(--muted-text)] uppercase">
+          Originally published at {Astro.props.post.data.canonicalURL}
+        </p>
+      )}
+    </Shell>
 
     <hr class="my-8 border-dashed" />
 
@@ -282,7 +290,7 @@ const nextPost =
         )
       }
     </div>
-  </main>
+  </Shell>
   <Footer />
 </Layout>
 

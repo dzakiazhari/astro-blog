@@ -1,4 +1,6 @@
 ---
+import Shell from "./Shell.astro";
+
 export interface Props {
   noPadding?: boolean;
   ariaHidden?: boolean;
@@ -7,10 +9,10 @@ export interface Props {
 const { noPadding = false, ariaHidden = true } = Astro.props;
 ---
 
-<div class:list={["site-shell", { "px-0": noPadding }]}>
+<Shell padding={noPadding ? "none" : "tight"}>
   <div
     class="h-px w-full bg-gradient-to-r from-transparent via-[color:var(--divider-soft)] to-transparent"
     aria-hidden={ariaHidden}
   >
   </div>
-</div>
+</Shell>

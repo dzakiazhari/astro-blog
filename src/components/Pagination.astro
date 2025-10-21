@@ -4,20 +4,19 @@ import type { CollectionEntry } from "astro:content";
 import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import LinkButton from "./LinkButton.astro";
+import Shell from "./Shell.astro";
 
 export interface Props {
   page: Page<CollectionEntry<"blog">>;
 }
 
 const { page } = Astro.props;
+const hasPagination = page.lastPage > 1;
 ---
 
-{
-  page.lastPage > 1 && (
-    <nav
-      class="site-shell mt-3 mb-5 flex justify-center"
-      aria-label="Pagination"
-    >
+<Shell as="div" data-shell-slot="pagination" padding="tight">
+  {hasPagination ? (
+    <nav aria-label="Pagination" class="flex justify-center">
       <div class="flex items-center gap-2 text-[color:var(--muted-text)] uppercase">
         <LinkButton
           disabled={!page.url.prev}
@@ -44,5 +43,7 @@ const { page } = Astro.props;
         </LinkButton>
       </div>
     </nav>
-  )
-}
+  ) : (
+    <div aria-hidden="true" class="pagination-placeholder"></div>
+  )}
+</Shell>

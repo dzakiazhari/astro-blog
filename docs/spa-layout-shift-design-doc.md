@@ -112,4 +112,13 @@ Each phase deepens focus: start with measurement, then normalize layout primitiv
    - *Scope transitions intentionally:* Reintroduce view transitions only for small, matched elements (e.g., post thumbnail → hero image) and guard them behind reduced-motion queries. Add regression tests that diff snapshots pre/post navigation.【F:src/components/Card.astro†L36-L127】【F:src/layouts/PostDetails.astro†L141-L145】
    - *Hydration-safe navigation:* Rewrite header and mobile menu to render in their final state server-side, using CSS-only disclosure where possible. Persist open state via data attributes so SPA swaps respect the stored preference.【F:src/components/Header.astro†L69-L200】
    - *Defer optional scripts:* Gate reading-progress, back-to-top, TOC collapse, and Pagefind initialization behind `requestIdleCallback` or user interaction. Ensure they provide reserved space placeholders to avoid reflow.【F:src/layouts/PostDetails.astro†L100-L200】【F:public/toggle-theme.js†L1-L78】【F:src/pages/search.astro†L21-L127】
-   - *Regression monitoring:* Automate a Playwright visual regression suite that walks key routes, checking for layout shift budgets under 0.05 and recording before/after diffs per release.
+ - *Regression monitoring:* Automate a Playwright visual regression suite that walks key routes, checking for layout shift budgets under 0.05 and recording before/after diffs per release.
+
+## Phase 2 Progress Notes
+
+- Implemented a shared `Shell.astro` wrapper so listings, posts, and standalone pages inherit the same horizontal gutters and
+  min-height budget, replacing ad-hoc `site-shell`/`max-w-app` classes.【F:src/components/Shell.astro†L1-L40】【F:src/layouts/Main.astro†L1-L71】【F:src/layouts/PostDetails.astro†L1-L247】
+- Reserved layout slots for breadcrumbs, pagination, and footers using `data-shell-slot` hooks plus shell tokens to prevent
+  vertical snap when slots are empty.【F:src/styles/global.css†L934-L970】【F:src/components/Pagination.astro†L1-L71】【F:src/components/Footer.astro†L1-L38】
+- Normalised hero, listing, and search surfaces to the shared `--shell-content-min-height` token so SPA transitions animate
+  between similarly sized containers.【F:src/styles/global.css†L320-L334】【F:src/layouts/Main.astro†L41-L66】【F:src/pages/index.astro†L27-L141】【F:src/pages/search.astro†L1-L106】

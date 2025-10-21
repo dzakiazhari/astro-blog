@@ -1,0 +1,40 @@
+---
+import type { astroHTML } from "astro/types";
+
+type TagName = keyof astroHTML.JSX.IntrinsicElements;
+
+type PaddingOption = "default" | "tight" | "none";
+
+type BaseAttributes = astroHTML.JSX.HTMLAttributes<HTMLElement>;
+
+interface Props extends BaseAttributes {
+  as?: TagName;
+  padding?: PaddingOption;
+}
+
+const {
+  as = "div",
+  padding = "default",
+  class: className,
+  ...attrs
+} = Astro.props as Props;
+
+const Tag = as satisfies TagName;
+
+const paddingClass = (() => {
+  if (padding === "tight") {
+    return "layout-shell--tight";
+  }
+
+  if (padding === "none") {
+    return "layout-shell--flush";
+  }
+
+  return null;
+})();
+
+const classList = ["layout-shell", paddingClass, className];
+---
+<Tag {...attrs} class:list={classList.filter(Boolean)}>
+  <slot />
+</Tag>

@@ -102,6 +102,8 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
     --pagefind-ui-image-border-radius: 8px;
     --pagefind-ui-image-box-ratio: 3 / 2;
 
+    min-height: var(--shell-content-min-height);
+
     form::before {
       background-color: var(--foreground);
     }

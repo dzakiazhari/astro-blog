@@ -7,6 +7,7 @@ import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconX from "@/assets/icons/IconX.svg";
 import LogoUnfold from "@/assets/icons/logo-unfold.svg";
+import Shell from "./Shell.astro";
 import { SITE } from "@/config";
 
 const { pathname } = Astro.url;
@@ -69,8 +70,7 @@ if (SITE.showArchives) {
 <header
   class="border-b border-[var(--header-divider)] bg-[var(--header-surface)]"
 >
-  <div class="site-shell">
-    <div class="flex flex-col gap-3 py-3.5">
+  <Shell as="div" class="flex flex-col gap-3 py-3.5">
       <div class="flex flex-wrap items-center justify-between gap-1.5">
         <div class="max-w-[42ch] space-y-1">
           <a
@@ -180,8 +180,7 @@ if (SITE.showArchives) {
           </div>
         </div>
       </nav>
-    </div>
-  </div>
+  </Shell>
 </header>
 
 <script is:inline>

@@ -300,6 +300,16 @@ html[data-theme="light"] {
     rgba(0, 0, 0, 0.12)
   );
   --layout-max-width: min(1040px, calc(100vw - 32px));
+  --shell-gutter: clamp(2.5rem, 6vw, 4rem);
+  --shell-padding-inline: clamp(1rem, 3vw, 1.5rem);
+  --shell-padding-inline-tight: clamp(0.75rem, 2.5vw, 1.25rem);
+  --shell-breadcrumb-height: clamp(2.75rem, 6vw, 3.75rem);
+  --shell-breadcrumb-padding-block: clamp(0.75rem, 2vw, 1rem);
+  --shell-pagination-height: clamp(3.5rem, 6vw, 4.5rem);
+  --shell-pagination-padding-block: clamp(1.5rem, 4vw, 2.5rem);
+  --shell-pagination-control-height: 2.75rem;
+  --shell-footer-padding-block: clamp(2.5rem, 6vw, 3.5rem);
+  --shell-content-min-height: clamp(24rem, 68vh, 36rem);
 }
 
 html[data-theme="dark"] {
@@ -938,16 +948,37 @@ html[data-theme="dark"] {
   }
 }
 
-@utility max-w-app {
-  max-width: min(
-    var(--layout-max-width),
-    calc(100vw - clamp(2rem, 5vw, 3.4rem))
-  );
+@utility layout-shell {
+  width: min(var(--layout-max-width), calc(100% - var(--shell-gutter)));
+  margin-inline: auto;
+  padding-inline: var(--shell-padding-inline);
 }
 
-@utility site-shell {
-  width: min(var(--layout-max-width), calc(100% - clamp(2.25rem, 6vw, 4rem)));
-  @apply mx-auto px-3 sm:px-4;
+@utility layout-shell--tight {
+  padding-inline: var(--shell-padding-inline-tight);
+}
+
+@utility layout-shell--flush {
+  padding-inline: 0;
+}
+
+[data-shell-slot="breadcrumb"] {
+  min-height: var(--shell-breadcrumb-height);
+  padding-block: var(--shell-breadcrumb-padding-block);
+}
+
+[data-shell-slot="pagination"] {
+  min-height: var(--shell-pagination-height);
+  padding-block: var(--shell-pagination-padding-block);
+}
+
+[data-shell-slot="pagination"] .pagination-placeholder {
+  height: var(--shell-pagination-control-height);
+  width: 100%;
+}
+
+[data-shell-slot="footer"] {
+  padding-block: var(--shell-footer-padding-block);
 }
 
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */

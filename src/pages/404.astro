@@ -3,15 +3,17 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import LinkButton from "@/components/LinkButton.astro";
+import Shell from "@/components/Shell.astro";
 import { SITE } from "@/config";
 ---
 
 <Layout title={`404 Not Found | ${SITE.title}`}>
   <Header />
 
-  <main
+  <Shell
+    as="main"
     id="main-content"
-    class="mx-auto flex max-w-app flex-1 items-center justify-center"
+    class="flex flex-1 items-center justify-center"
   >
     <div class="mb-14 flex flex-col items-center justify-center">
       <h1 class="text-9xl font-bold text-accent">404</h1>
@@ -28,7 +30,7 @@ import { SITE } from "@/config";
         Go back home
       </LinkButton>
     </div>
-  </main>
+  </Shell>
 
   <Footer />
 </Layout>
