@@ -282,19 +282,82 @@ html[data-theme="light"] {
   --prose-mark-bg: color-mix(in srgb, var(--text-highlight) 76%, transparent);
   --prose-mark-text: color-mix(in srgb, var(--dark) 82%, var(--secondary) 18%);
   --prose-code-border: color-mix(in srgb, var(--badge-border) 82%, transparent);
-  /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
-  --card-marker-width: 0.6rem;
-  --card-marker-offset: 0.34rem;
-  --card-marker: color-mix(in srgb, var(--secondary) 70%, rgba(0, 0, 0, 0.08));
-  --card-marker-hover: color-mix(
+  /* Notes card marker styling */
+  --card-marker-width: clamp(3.82rem, 3.14rem + 1.32vw, 5.18rem);
+  --card-marker-gutter: clamp(1.46rem, 1.18rem + 0.56vw, 2.08rem);
+  --card-marker-inset: max(0px, calc(var(--card-padding-block) - 1rem));
+  --card-marker-translate: -10%;
+  --card-marker-surface: color-mix(
     in srgb,
-    var(--secondary) 60%,
-    rgba(255, 255, 255, 0.4)
+    var(--surface-raised) 98%,
+    white 2%
   );
-  --card-marker-muted: color-mix(
+  --card-marker-scoop-diameter: clamp(9.4rem, 8.2rem + 3.1vw, 12.1rem);
+  --card-marker-scoop-offset: clamp(2.7rem, 2.06rem + 0.88vw, 3.66rem);
+  --card-marker-scoop-highlight-color: color-mix(
     in srgb,
-    var(--tertiary) 38%,
-    rgba(0, 0, 0, 0.12)
+    var(--card-marker-highlight) 82%,
+    rgba(255, 255, 255, 0.42) 18%
+  );
+  --card-marker-scoop-ambient: color-mix(
+    in srgb,
+    var(--surface-raised) 62%,
+    rgba(0, 0, 0, 0.26) 38%
+  );
+  --card-marker-scoop-ambient-strong: color-mix(
+    in srgb,
+    var(--surface-raised) 48%,
+    rgba(0, 0, 0, 0.34) 52%
+  );
+  --card-marker-scoop-shadow:
+    inset 26px 0 32px -18px color-mix(in srgb, var(--accent) 24%, transparent),
+    inset 0 0 0 1px
+      color-mix(in srgb, var(--card-marker-highlight) 70%, transparent),
+    -18px 0 22px -12px var(--card-marker-scoop-ambient);
+  --card-marker-highlight: color-mix(
+    in srgb,
+    var(--surface-raised) 86%,
+    white 14%
+  );
+  --card-marker-bar-width: clamp(2.68rem, 2.32rem + 0.86vw, 3.38rem);
+  --card-marker-bar-gutter: clamp(1.34rem, 1.18rem + 0.34vw, 1.76rem);
+  --card-marker-bar-inset: clamp(0.24rem, 0.2rem + 0.16vw, 0.44rem);
+  --card-marker-bar-translate: -20%;
+  --card-marker-bar-diameter: clamp(3.8rem, 3.46rem + 0.96vw, 5rem);
+  --card-marker-bar-offset: clamp(0.28rem, 0.22rem + 0.18vw, 0.46rem);
+  --card-marker-bar-scoop-shadow:
+    inset 18px 0 24px -16px color-mix(in srgb, var(--accent) 26%, transparent),
+    inset 0 0 0 1px
+      color-mix(in srgb, var(--card-marker-highlight) 64%, transparent),
+    -10px 0 16px -9px var(--card-marker-scoop-ambient);
+  --card-marker-gradient: linear-gradient(
+    132deg,
+    color-mix(in srgb, var(--accent) 90%, white 8%) 0%,
+    color-mix(in srgb, var(--accent) 84%, rgba(0, 0, 0, 0.08)) 46%,
+    color-mix(in srgb, var(--accent) 64%, rgba(0, 0, 0, 0.14)) 100%
+  );
+  --card-marker-glint: radial-gradient(
+    138% 186% at 78% 18%,
+    color-mix(in srgb, white 78%, transparent) 0%,
+    color-mix(in srgb, white 40%, transparent) 30%,
+    transparent 74%
+  );
+  --card-marker-glow: radial-gradient(
+    168% 220% at 88% 86%,
+    color-mix(in srgb, var(--card-marker-highlight) 86%, transparent) 0%,
+    transparent 82%
+  );
+  --card-marker-rim-highlight: linear-gradient(
+    86deg,
+    color-mix(in srgb, var(--card-marker-highlight) 74%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 42%, transparent) 48%,
+    transparent 88%
+  );
+  --card-marker-shadow: drop-shadow(
+    -16px 0 26px color-mix(in srgb, var(--accent) 22%, transparent)
+  );
+  --card-marker-shadow-hover: drop-shadow(
+    -20px 0 34px color-mix(in srgb, var(--accent) 34%, transparent)
   );
   --layout-max-width: min(1040px, calc(100vw - 32px));
 }
@@ -617,19 +680,81 @@ html[data-theme="dark"] {
     var(--secondary) 12%
   );
   --prose-code-border: color-mix(in srgb, var(--badge-border) 70%, transparent);
-  /* Notes card marker sizing — adjust width/offset to tweak the triangle footprint */
-  --card-marker-width: 0.6rem;
-  --card-marker-offset: 0.34rem;
-  --card-marker: color-mix(in srgb, var(--secondary) 60%, rgba(0, 0, 0, 0.32));
-  --card-marker-hover: color-mix(
+  --card-marker-width: clamp(3.82rem, 3.14rem + 1.32vw, 5.18rem);
+  --card-marker-gutter: clamp(1.46rem, 1.18rem + 0.56vw, 2.08rem);
+  --card-marker-inset: max(0px, calc(var(--card-padding-block) - 1rem));
+  --card-marker-translate: -10%;
+  --card-marker-surface: color-mix(
     in srgb,
-    var(--secondary) 54%,
-    rgba(255, 255, 255, 0.45)
+    var(--surface-raised) 96%,
+    rgba(0, 0, 0, 0.06) 4%
   );
-  --card-marker-muted: color-mix(
+  --card-marker-scoop-diameter: clamp(9.4rem, 8.2rem + 3.1vw, 12.1rem);
+  --card-marker-scoop-offset: clamp(2.7rem, 2.06rem + 0.88vw, 3.66rem);
+  --card-marker-scoop-highlight-color: color-mix(
     in srgb,
-    var(--tertiary) 34%,
-    rgba(0, 0, 0, 0.38)
+    var(--card-marker-highlight) 86%,
+    rgba(255, 255, 255, 0.24) 14%
+  );
+  --card-marker-scoop-ambient: color-mix(
+    in srgb,
+    var(--surface-raised) 42%,
+    rgba(0, 0, 0, 0.68) 58%
+  );
+  --card-marker-scoop-ambient-strong: color-mix(
+    in srgb,
+    var(--surface-raised) 36%,
+    rgba(0, 0, 0, 0.74) 64%
+  );
+  --card-marker-scoop-shadow:
+    inset 26px 0 36px -18px color-mix(in srgb, var(--accent) 26%, transparent),
+    inset 0 0 0 1px
+      color-mix(in srgb, var(--card-marker-highlight) 66%, transparent),
+    -18px 0 26px -12px var(--card-marker-scoop-ambient);
+  --card-marker-highlight: color-mix(
+    in srgb,
+    var(--surface-raised) 84%,
+    rgba(255, 255, 255, 0.22) 16%
+  );
+  --card-marker-bar-width: clamp(2.68rem, 2.32rem + 0.86vw, 3.38rem);
+  --card-marker-bar-gutter: clamp(1.34rem, 1.18rem + 0.34vw, 1.76rem);
+  --card-marker-bar-inset: clamp(0.24rem, 0.2rem + 0.16vw, 0.44rem);
+  --card-marker-bar-translate: -20%;
+  --card-marker-bar-diameter: clamp(3.8rem, 3.46rem + 0.96vw, 5rem);
+  --card-marker-bar-offset: clamp(0.28rem, 0.22rem + 0.18vw, 0.46rem);
+  --card-marker-bar-scoop-shadow:
+    inset 18px 0 26px -16px color-mix(in srgb, var(--accent) 30%, transparent),
+    inset 0 0 0 1px
+      color-mix(in srgb, var(--card-marker-highlight) 62%, transparent),
+    -10px 0 18px -9px var(--card-marker-scoop-ambient);
+  --card-marker-gradient: linear-gradient(
+    134deg,
+    color-mix(in srgb, var(--accent) 92%, rgba(255, 255, 255, 0.12)) 0%,
+    color-mix(in srgb, var(--accent) 86%, rgba(0, 0, 0, 0.16)) 48%,
+    color-mix(in srgb, var(--accent) 62%, rgba(0, 0, 0, 0.36)) 100%
+  );
+  --card-marker-glint: radial-gradient(
+    144% 188% at 80% 20%,
+    color-mix(in srgb, rgba(255, 255, 255, 0.86) 86%, transparent) 0%,
+    color-mix(in srgb, rgba(255, 255, 255, 0.52) 58%, transparent) 28%,
+    transparent 76%
+  );
+  --card-marker-glow: radial-gradient(
+    172% 224% at 90% 84%,
+    color-mix(in srgb, var(--card-marker-highlight) 88%, transparent) 0%,
+    transparent 82%
+  );
+  --card-marker-rim-highlight: linear-gradient(
+    86deg,
+    color-mix(in srgb, rgba(255, 255, 255, 0.7) 76%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 48%, transparent) 50%,
+    transparent 88%
+  );
+  --card-marker-shadow: drop-shadow(
+    -16px 0 28px color-mix(in srgb, var(--accent) 24%, transparent)
+  );
+  --card-marker-shadow-hover: drop-shadow(
+    -20px 0 36px color-mix(in srgb, var(--accent) 36%, transparent)
   );
   --layout-max-width: min(1040px, calc(100vw - 32px));
 }
@@ -881,6 +1006,116 @@ html[data-theme="dark"] {
     --_pill-bg: var(--pill-ghost-surface);
     --_pill-hover-bg: var(--pill-ghost-hover);
     --_pill-active-bg: var(--pill-ghost-active);
+  }
+
+  .card-marker {
+    display: block;
+    top: var(--card-marker-inset);
+    bottom: var(--card-marker-inset);
+    background: var(--card-marker-gradient);
+    filter: var(--card-marker-shadow, none);
+    border-top-right-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+    overflow: visible;
+    transform: translateX(var(--card-marker-translate, -12%));
+    transition:
+      opacity 200ms ease-out,
+      filter 220ms ease,
+      transform 220ms ease;
+  }
+
+  .card-marker::before,
+  .card-marker::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card-marker::before {
+    background: var(--card-marker-glint), var(--card-marker-rim-highlight);
+    mix-blend-mode: soft-light;
+    opacity: 0.9;
+  }
+
+  .card-marker::after {
+    background: var(--card-marker-glow);
+    mix-blend-mode: soft-light;
+    opacity: 0.75;
+  }
+
+  .card-marker__scoop {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: calc(100% - var(--card-marker-scoop-offset));
+    width: var(--card-marker-scoop-diameter);
+    aspect-ratio: 1 / 1;
+    translate: -50% -50%;
+    border-radius: 999px;
+    background: var(--card-marker-surface);
+    box-shadow: var(--card-marker-scoop-shadow);
+    pointer-events: none;
+  }
+
+  .card-marker__scoop::before,
+  .card-marker__scoop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .card-marker__scoop::before {
+    background: radial-gradient(
+      108% 148% at 32% 52%,
+      var(--card-marker-scoop-ambient-strong) 0%,
+      color-mix(in srgb, var(--card-marker-scoop-ambient) 82%, transparent) 42%,
+      transparent 72%
+    );
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+  }
+
+  .card-marker__scoop::after {
+    background: radial-gradient(
+      96% 132% at 36% 52%,
+      var(--card-marker-scoop-highlight-color) 0%,
+      color-mix(
+          in srgb,
+          var(--card-marker-scoop-highlight-color) 26%,
+          transparent
+        )
+        48%,
+      transparent 78%
+    );
+    opacity: 0.6;
+    mix-blend-mode: soft-light;
+  }
+
+  [data-card-variant="bar"] {
+    --card-marker-width: var(--card-marker-bar-width);
+    --card-marker-gutter: var(--card-marker-bar-gutter);
+    --card-marker-inset: var(--card-marker-bar-inset);
+    --card-marker-translate: var(--card-marker-bar-translate);
+    --card-marker-scoop-diameter: var(--card-marker-bar-diameter);
+    --card-marker-scoop-offset: var(--card-marker-bar-offset);
+    --card-marker-scoop-shadow: var(--card-marker-bar-scoop-shadow);
+  }
+
+  [data-card-variant="bar"] .card-marker__scoop::before {
+    opacity: 0.34;
+  }
+
+  [data-card-variant="bar"] .card-marker__scoop::after {
+    opacity: 0.52;
+  }
+
+  .group:where(:hover, :focus-visible) .card-marker {
+    filter: var(--card-marker-shadow-hover, none);
+    transform: translateX(calc(var(--card-marker-translate, -12%) - 2%));
   }
 
   .card-icon {
