@@ -12,6 +12,10 @@ import expressiveCode, {
 } from "astro-expressive-code";
 import { SITE } from "./src/config";
 
+const layoutAuditMode =
+  process.env.LAYOUT_AUDIT_MODE === "true" ||
+  process.env.PUBLIC_LAYOUT_AUDIT_MODE === "true";
+
 const expressiveCodeOptions: AstroExpressiveCodeOptions = {
   themes: ["github-dark", "github-light"],
   useDarkModeMediaQuery: false,
@@ -112,9 +116,14 @@ export default defineConfig({
         context: "client",
         optional: true,
       }),
+      PUBLIC_LAYOUT_AUDIT_MODE: envField.boolean({
+        access: "public",
+        context: "client",
+        optional: true,
+      }),
     },
   },
-  prefetch: true,
+  prefetch: !layoutAuditMode,
   experimental: {
     preserveScriptOrder: true,
   },

@@ -31,6 +31,7 @@ const {
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.url);
+const layoutAuditMode = import.meta.env.PUBLIC_LAYOUT_AUDIT_MODE === "true";
 const siteLanguage = (() => {
   const value = (SITE.lang ?? "en").trim();
 
@@ -135,13 +136,37 @@ const structuredData = {
       )
     }
 
-    <ClientRouter />
+    {
+      layoutAuditMode && (
+        <script is:inline>
+          document.documentElement.dataset.layoutAuditMode = "true";
+        </script>
+      )
+    }
 
-    <script type="module" is:inline>
-      import { init as initPrefetch } from "astro:prefetch";
+    <ClientRouter fallback={layoutAuditMode ? "none" : "animate"} />
 
-      initPrefetch({ defaultStrategy: "hover" });
-    </script>
+    {
+      !layoutAuditMode && (
+        <script type="module" is:inline>
+          import { init as initPrefetch } from "astro:prefetch";
+
+          initPrefetch({ defaultStrategy: "hover" });
+        </script>
+      )
+    }
+    {layoutAuditMode && (
+      <>
+        <style is:inline>
+          ::view-transition-group(*) { animation-duration: 0.01ms !important; }
+          ::view-transition-old(*),
+          ::view-transition-new(*) {
+            animation: none !important;
+          }
+        </style>
+        <script src="/scripts/layout-audit-marks.js" defer />
+      </>
+    )}
     <script is:inline src="/toggle-theme.js"></script>
     {
       enableScrollEnhancements && (

@@ -5,6 +5,10 @@
     navHandler: null,
   });
 
+  const mark = label => {
+    window.__layoutAudit?.mark?.(label);
+  };
+
   const scheduleIdle = callback => {
     if ("requestIdleCallback" in window) {
       window.requestIdleCallback(callback, { timeout: 300 });
@@ -127,8 +131,13 @@
   };
 
   const queueEnhancements = () => {
+    mark("post-enhancements:queue");
     scheduleIdle(() => {
+      mark("post-enhancements:idle:start");
       window.requestAnimationFrame(enhance);
+      window.requestAnimationFrame(() => {
+        mark("post-enhancements:idle:post-frame");
+      });
     });
   };
 
@@ -148,12 +157,16 @@
     }
 
     state.navHandler = () => {
+      mark("post-enhancements:astro:page-load:start");
       queueEnhancements();
+      mark("post-enhancements:astro:page-load:end");
     };
 
     document.addEventListener("astro:page-load", state.navHandler);
     document.addEventListener("astro:after-swap", () => {
+      mark("post-enhancements:astro:after-swap:start");
       window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+      mark("post-enhancements:astro:after-swap:end");
     });
   }
 })();

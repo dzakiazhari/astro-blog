@@ -20,6 +20,8 @@ const {
 
 const { title, description, pubDatetime } = data;
 
+const layoutAuditMode = import.meta.env.PUBLIC_LAYOUT_AUDIT_MODE === "true";
+
 const toIsoDots = (value: string | number | Date) => {
   const date = new Date(value);
 
@@ -33,9 +35,11 @@ const toIsoDots = (value: string | number | Date) => {
 const formattedDate = toIsoDots(pubDatetime);
 const isoDate = new Date(pubDatetime).toISOString();
 
-const headerProps = {
-  style: { viewTransitionName: slugifyStr(title) },
-};
+const headerProps = layoutAuditMode
+  ? {}
+  : {
+      style: { viewTransitionName: slugifyStr(title) },
+    };
 ---
 
 {

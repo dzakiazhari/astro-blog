@@ -1,3 +1,7 @@
+const mark = label => {
+  window.__layoutAudit?.mark?.(label);
+};
+
 const primaryColorScheme = "light"; // "light" | "dark"
 
 const scheduleIdle =
@@ -50,6 +54,7 @@ const scheduleThemeColorUpdate = () => {
   themeColorScheduled = true;
 
   scheduleIdle(() => {
+    mark("toggle-theme:update-meta");
     themeColorScheduled = false;
     updateMetaTheme();
   });
@@ -73,6 +78,7 @@ function setPreference() {
 }
 
 const bindToggle = () => {
+  mark("toggle-theme:bind-toggle:start");
   if (state.buttonBound) return;
 
   const toggleButton = document.querySelector("#theme-btn");
@@ -89,12 +95,16 @@ const bindToggle = () => {
   }
 
   state.buttonBound = true;
+  mark("toggle-theme:bind-toggle:end");
 };
 
 const queueBootstrap = () => {
+  mark("toggle-theme:queue-bootstrap");
   scheduleIdle(() => {
+    mark("toggle-theme:bootstrap:start");
     bindToggle();
     scheduleThemeColorUpdate();
+    mark("toggle-theme:bootstrap:end");
   });
 };
 
@@ -123,17 +133,21 @@ if (!state.mediaListenerBound) {
 reflectPreference();
 
 const rebind = () => {
+  mark("toggle-theme:astro:after-swap:start");
   themeValue = getPreferTheme();
   state.buttonBound = false;
   queueBootstrap();
+  mark("toggle-theme:astro:after-swap:end");
 };
 
 document.addEventListener("astro:after-swap", rebind);
 document.addEventListener("astro:page-load", () => {
+  mark("toggle-theme:astro:page-load:start");
   themeValue = getPreferTheme();
   reflectPreference();
   state.buttonBound = false;
   queueBootstrap();
+  mark("toggle-theme:astro:page-load:end");
 });
 
 // Set theme-color value before page transition
