@@ -27,7 +27,9 @@ const backUrl = SITE.showBackButton ? Astro.url.pathname : "/";
   >
     {
       "titleTransition" in props ? (
-        <h1 class="text-[1.48rem] font-semibold tracking-[0.2em] text-[color:var(--nav-text-strong)] uppercase sm:text-[1.7rem]">
+        <h1
+          class="text-[length:var(--type-heading-md)] font-semibold leading-[1.15] tracking-[0.2em] text-[color:var(--nav-text-strong)] uppercase"
+        >
           {props.pageTitle[0]}
           <span
             transition:name={props.titleTransition}
@@ -37,14 +39,18 @@ const backUrl = SITE.showBackButton ? Astro.url.pathname : "/";
           </span>
         </h1>
       ) : (
-        <h1 class="text-[1.48rem] font-semibold tracking-[0.2em] text-[color:var(--nav-text-strong)] uppercase sm:text-[1.7rem]">
+        <h1
+          class="text-[length:var(--type-heading-md)] font-semibold leading-[1.15] tracking-[0.2em] text-[color:var(--nav-text-strong)] uppercase"
+        >
           {props.pageTitle}
         </h1>
       )
     }
     {
       props.pageDesc && (
-        <p class="mt-2 max-w-2xl text-[0.9rem] leading-relaxed text-[color:var(--muted-text)] sm:text-[0.98rem]">
+        <p
+          class="mt-2 max-w-2xl text-[length:var(--type-body-size)] leading-[var(--type-body-leading)] text-[color:var(--muted-text)]"
+        >
           {props.pageDesc}
         </p>
       )
