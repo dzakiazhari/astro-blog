@@ -39,10 +39,10 @@ const posts = await getCollection("blog", ({ data }) => !data.draft);
           return (
             <section class="mt-12">
               <header class="flex items-center gap-3">
-                <span class="rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-3 py-1 text-[0.68rem] font-semibold tracking-[0.3em] text-[color:var(--muted-text)] uppercase">
+                <span class="type-overline-wide rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] px-3 py-1 font-semibold text-[color:var(--muted-text)] uppercase">
                   {year}
                 </span>
-                <sup class="text-sm text-[color:var(--muted-text)]">
+                <sup class="type-caption text-[color:var(--muted-text)]">
                   {sortedYear.length}
                 </sup>
               </header>
@@ -52,13 +52,13 @@ const posts = await getCollection("blog", ({ data }) => !data.draft);
                     <span class="absolute start-[-2.65rem] top-1.5 inline-block size-2 border border-[color:var(--border-strong)] bg-[color:var(--nav-text-strong)]" />
                     <a
                       href={getPath(id, filePath)}
-                      class="block text-base font-semibold text-[color:var(--body-text)] transition-colors duration-150 hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
+                      class="type-heading-sm block font-semibold text-[color:var(--body-text)] transition-colors duration-150 hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
                       data-astro-prefetch="viewport"
                     >
                       {data.title}
                     </a>
                     <Datetime
-                      class="mt-2 text-xs text-[color:var(--muted-text)]"
+                      class="type-overline-tight mt-2 text-[color:var(--muted-text)]"
                       pubDatetime={data.pubDatetime}
                       modDatetime={data.modDatetime}
                       timezone={data.timezone}
@@ -66,7 +66,7 @@ const posts = await getCollection("blog", ({ data }) => !data.draft);
                   </li>
                 ))}
                 {hasMore && (
-                  <li class="relative ps-2 text-sm tracking-[0.28em] text-[color:var(--muted-text)] uppercase">
+                  <li class="type-overline-wide relative ps-2 font-semibold text-[color:var(--muted-text)] uppercase">
                     …
                   </li>
                 )}

@@ -67,7 +67,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
             data-astro-prefetch="false"
           >
             <span
-              class="inline-flex items-center gap-[0.75rem] text-[0.6rem] font-semibold tracking-[0.22em] text-[color:var(--muted-text)] uppercase"
+              class="type-overline-tight inline-flex items-center gap-[0.75rem] font-semibold text-[color:var(--muted-text)] uppercase"
             >
               <IconGarden class="size-[1rem]" aria-hidden="true" />
               Notes garden
@@ -78,7 +78,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
               Visit the evergreen notes
             </span>
             <span
-              class="mt-auto inline-flex items-center gap-[0.75rem] text-[0.58rem] font-semibold tracking-[0.2em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
+              class="type-overline-compact mt-auto inline-flex items-center gap-[0.75rem] font-semibold text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
             >
               Explore notes
               <IconGarden class="size-[0.95rem]" aria-hidden="true" />
@@ -93,7 +93,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
             title="RSS Feed"
           >
             <span
-              class="text-[0.6rem] font-semibold tracking-[0.22em] text-[color:var(--muted-text)] uppercase"
+              class="type-overline-tight font-semibold text-[color:var(--muted-text)] uppercase"
             >
               Stay updated
             </span>
@@ -103,7 +103,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
               Subscribe via RSS
             </span>
             <span
-              class="mt-auto inline-flex items-center gap-[0.75rem] text-[0.58rem] font-semibold tracking-[0.2em] text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
+              class="type-overline-compact mt-auto inline-flex items-center gap-[0.75rem] font-semibold text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
             >
               Feed
               <IconRss width={16} height={16} class="rtl:-rotate-90" />
@@ -115,7 +115,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       {
         SOCIALS.length > 0 && (
           <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-[var(--divider-soft)] pt-2.5">
-            <span class="text-[0.58rem] tracking-[0.22em] text-[color:var(--muted-text)] uppercase">
+            <span class="type-overline-compact font-semibold text-[color:var(--muted-text)] uppercase">
               Connect
             </span>
             <Socials />
@@ -128,7 +128,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       {
         featuredPosts.length > 0 && (
           <div class="space-y-3 md:col-span-6 md:pe-3">
-            <h2 class="text-[0.66rem] font-semibold tracking-[0.22em] text-[color:var(--muted-text)] uppercase">
+            <h2 class="type-overline font-semibold text-[color:var(--muted-text)] uppercase">
               Featured
             </h2>
             <ul class="flex flex-col gap-2.5">
@@ -143,7 +143,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       {
         recentPosts.length > 0 && (
           <div class="space-y-3 md:col-span-6 md:ps-3">
-            <h2 class="text-[0.66rem] font-semibold tracking-[0.22em] text-[color:var(--muted-text)] uppercase">
+            <h2 class="type-overline font-semibold text-[color:var(--muted-text)] uppercase">
               Recent Posts
             </h2>
             <ul class="flex flex-col gap-2.5">

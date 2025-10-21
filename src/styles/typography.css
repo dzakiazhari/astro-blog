@@ -95,7 +95,7 @@
       background: none;
       box-shadow: none;
       font-size: var(--type-heading-md);
-      letter-spacing: 0.18em;
+      letter-spacing: var(--type-overline-tight-letter);
       text-transform: uppercase;
       color: color-mix(in srgb, var(--muted-text) 74%, var(--secondary) 26%);
     }
@@ -105,9 +105,11 @@
     }
 
     h4 {
-      @apply mt-8 text-[0.76rem] tracking-[0.28em] uppercase;
+      @apply mt-8 uppercase;
       color: color-mix(in srgb, var(--muted-text) 78%, var(--secondary) 22%);
-      letter-spacing: 0.28em;
+      font-size: var(--type-overline-wide-size);
+      letter-spacing: var(--type-overline-wide-letter);
+      line-height: var(--type-overline-leading);
     }
 
     p,
