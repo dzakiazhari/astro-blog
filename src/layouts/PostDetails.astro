@@ -137,16 +137,18 @@ const nextPost =
     data-pagefind-body
   >
     <div class="mb-6 flex flex-col gap-3 sm:mb-8">
-      <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+      <div
+        class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+      >
         <h1
           transition:name={slugifyStr(title)}
-          class="type-heading-xl min-w-0 flex-1 font-bold text-balance text-accent"
+          class="type-heading-xl w-full min-w-0 font-bold text-balance text-accent sm:flex-1"
         >
           {title}
         </h1>
         {
           showControlsRow && (
-            <div class="ms-auto flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+            <div class="flex flex-wrap items-center justify-start gap-2 sm:ms-auto sm:justify-end sm:gap-3">
               <BackButton />
               {showMarkdownActions && (
                 <div data-post-markdown-actions class="relative inline-flex">
