@@ -12,18 +12,10 @@
   },
   "include": [
     ".astro/types.d.ts",
+    "src/env.d.ts",
     "types/node-shim.d.ts",
-    "src/config.ts",
-    "src/utils/getPath.ts",
-    "src/utils/getPath.test.ts",
-    "src/utils/postFilter.ts",
-    "src/utils/postFilter.test.ts",
-    "src/utils/normalizePostDate.ts",
-    "src/utils/normalizePostDate.test.ts",
-    "src/utils/getSortedPosts.ts",
-    "src/utils/getSortedPosts.test.ts",
-    "src/utils/loadGoogleFont.ts",
-    "src/utils/loadGoogleFont.test.ts"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "exclude": []
 }

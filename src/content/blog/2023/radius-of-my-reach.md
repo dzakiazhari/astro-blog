@@ -10,7 +10,6 @@ tags:
   - blog
 ---
 
-## Table of Contents
 
 ## Radius 85 cm
 

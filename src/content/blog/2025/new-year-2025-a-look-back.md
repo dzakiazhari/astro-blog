@@ -10,7 +10,6 @@ tags:
   - blog
 ---
 
-## Table of Contents
 
 ## Starting a New
 

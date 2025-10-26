@@ -17,9 +17,9 @@ content:
     label: Blog Posts
     description: "Long-form stories that surface on dzakiazhari.com. Paths and metadata map directly to src/content.config.ts."
     type: collection
-    # Keep this path aligned with BLOG_PATH in src/utils/blogPath.ts and getPath() expectations
-    path: src/data/blog
-    # Nested directories are slugified by src/utils/getPath.ts, so the CMS only needs the final segment here
+    # Keep this path aligned with the Astro content collection defined in src/content.config.ts
+    path: src/content/blog
+    # Blog posts live in year-based folders; the CMS only needs the final slug segment here
     # Pages CMS uses moustache-style templating for field values.
     filename: "{{fields.year}}/{{fields.slug}}.md"
     exclude:
@@ -43,7 +43,7 @@ content:
       - name: year
         label: Year folder
         type: select
-        description: "Creates the folder segment under src/data/blog/{year}."
+        description: "Creates the folder segment under src/content/blog/{year}."
         default: "2025"
         options:
           placeholder: "Choose a year"
@@ -153,12 +153,6 @@ content:
         pattern:
           regex: "^(https?:\\/\\/)([^\s]+)$"
           message: "Use an absolute URL starting with http:// or https://"
-
-      - name: hideEditPost
-        label: Hide "Suggest Changes"
-        type: boolean
-        default: false
-        description: "Toggle if a post should hide the GitHub edit link."
 
       - name: timezone
         label: Timezone

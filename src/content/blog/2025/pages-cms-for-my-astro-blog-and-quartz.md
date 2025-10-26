@@ -13,7 +13,6 @@ canonicalURL: https://dzakiazhari.com/posts/2025/pages-cms-for-my-astro-blog-and
 timezone: Asia/Tokyo
 ---
 
-## Table of Contents
 
 ## 1. Get the repos ready
 
@@ -69,7 +68,7 @@ content:
 
 The tree view highlights the draft state so I can spot unpublished work instantly. Using `{{fields.year}}` and `{{fields.slug}}` keeps the saved path aligned with `src/utils/getPath.ts` without relying on implicit collection values.
 
-## 4. Mirror the Astro front matter schema (docs-aligned)
+## 4. Mirror the Astro front matter schema
 
 Every field in the CMS corresponds to a field in `src/content.config.ts`. After re-reading the Pages CMS guides I grouped inputs by intent, added helper descriptions, and tightened validation so the editor blocks malformed front matter before it hits git.
 

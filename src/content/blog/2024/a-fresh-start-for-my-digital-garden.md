@@ -10,7 +10,6 @@ tags:
   - dev
 ---
 
-## Table of Contents
 
 ## Introduction
 
