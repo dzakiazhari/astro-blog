@@ -3,6 +3,13 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import PageHead from '@/components/PageHead.astro'
 import { SITE } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
+
+const contacts = [
+  { href: 'mailto:contact@dzakiazhari.com', label: 'Email' },
+  { href: 'https://dzakiazhari.com', label: 'Website' },
+  { href: 'https://github.com/dzakiazhari', label: 'GitHub' },
+  { href: 'https://www.linkedin.com/in/dzakiazhari/', label: 'LinkedIn' },
+]
 ---
 
 <Layout class="max-w-3xl">
@@ -10,8 +17,21 @@ import Layout from '@/layouts/Layout.astro'
   <Breadcrumbs items={[{ label: 'About', icon: 'lucide:info' }]} />
 
   <section class="prose">
-    <h1>About {SITE.title}</h1>
-    <p>About page introduction placeholder text.</p>
-    <p>Additional details about the site will live here.</p>
+    <h1>{SITE.title}</h1>
+    <p>
+      Hi, I'm {SITE.author}. I work as an IT infrastructure for a company in Japan.
+    </p>
+    <p>
+      This space gathers personal blog posts and opinions; everything here
+      reflects my own views and not those of any employer or organization.
+    </p>
+    <h2>Let's connect</h2>
+    <ul>
+      {contacts.map((contact) => (
+        <li>
+          <a href={contact.href}>{contact.label}</a>
+        </li>
+      ))}
+    </ul>
   </section>
 </Layout>
