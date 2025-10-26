@@ -1,228 +1,55 @@
 ---
-import IconArchive from "@/assets/icons/IconArchive.svg";
-import IconGarden from "@/assets/icons/IconGarden.svg";
-import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
-import IconMoon from "@/assets/icons/IconMoon.svg";
-import IconSearch from "@/assets/icons/IconSearch.svg";
-import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
-import IconX from "@/assets/icons/IconX.svg";
-import LogoUnfold from "@/assets/icons/logo-unfold.svg";
-import { SITE } from "@/config";
+import Link from '@/components/Link.astro'
+import ThemeToggle from '@/components/ThemeToggle.astro'
+import { NAV_LINKS, SITE } from '@/consts'
+import { cn } from '@/lib/utils'
+import { Image } from 'astro:assets'
+import logo from '../../public/static/logo.svg'
 
-const { pathname } = Astro.url;
-
-const currentPath =
-  pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
-
-const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter(Boolean);
-  const pathArray = path.split("/").filter(Boolean);
-
-  return currentPath === path || currentPathArray[0] === pathArray[0];
-};
-
-type PrefetchSetting = false | "auto" | "hover" | "tap" | "viewport" | "load";
-
-interface NavItem {
-  href: string;
-  label: string;
-  prefetch?: PrefetchSetting;
-  external?: boolean;
-}
-
-const navItems: NavItem[] = [
-  { href: "/posts", label: "Posts", prefetch: "viewport" },
-  { href: "/tags", label: "Tags", prefetch: "viewport" },
-  { href: "/about", label: "About", prefetch: "viewport" },
-];
-
-const resolvePrefetchAttr = (value: PrefetchSetting | undefined) => {
-  if (value === undefined) {
-    return "auto" as const;
-  }
-
-  if (value === false) {
-    return "false" as const;
-  }
-
-  return value;
-};
-
-if (SITE.notesUrl) {
-  navItems.push({
-    href: SITE.notesUrl,
-    label: "Notes",
-    prefetch: false,
-    external: true,
-  });
-}
-
-if (SITE.showArchives) {
-  navItems.push({
-    href: "/archives",
-    label: "Archives",
-    prefetch: "viewport" as const,
-  });
-}
+const { pathname } = Astro.url
+const normalizedPath =
+  pathname === '/' ? pathname : pathname.replace(/\/+$/, '')
 ---
 
-<header
-  class="border-b border-[var(--header-divider)] bg-[var(--header-surface)]"
->
-  <div class="site-shell">
-    <div class="flex flex-col gap-3 py-3.5">
-      <div class="flex flex-wrap items-center justify-between gap-1.5">
-        <div class="max-w-[42ch] space-y-1">
-          <a
-            href="/"
-            class="group type-heading-sm inline-flex items-center gap-2 font-semibold tracking-[var(--type-overline-letter)] text-[color:var(--heading-accent)] uppercase transition-colors duration-200 hover:text-[color:var(--link-hover)] focus-visible:text-[color:var(--link-hover)]"
-            data-astro-prefetch="viewport"
-          >
-            <span class="leading-none">{SITE.title}</span>
-            <LogoUnfold
-              class="h-[0.95em] w-auto text-[color:var(--heading-accent)] transition-transform duration-300 group-hover:-translate-y-0.5"
-            />
-          </a>
-        </div>
+<div>
+  <div
+    class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3"
+  >
+    <Link href="/" class="flex shrink-0 items-center justify-center gap-3">
+      <Image src={logo} alt="Logo" class="size-5 sm:size-6" />
+      <span
+        class="hidden h-full text-lg leading-none font-medium min-[400px]:block"
+        >{SITE.title}</span
+      >
+    </Link>
+    <div class="flex items-center gap-4">
+      <nav class="flex items-center gap-4 text-sm sm:gap-6">
+        {
+          NAV_LINKS.map((item) => {
+            const isExternal = item.href.startsWith('http')
+            const isActive =
+              !isExternal &&
+              (normalizedPath === item.href ||
+                (item.href !== '/' &&
+                  normalizedPath.startsWith(`${item.href}/`)))
 
-        <button
-          id="menu-btn"
-          class="type-overline-compact inline-flex items-center gap-1.5 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2 py-0.75 font-semibold text-[color:var(--muted-text)] uppercase transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none md:hidden"
-          aria-label="Open Menu"
-          aria-expanded="false"
-          aria-controls="menu-items"
-        >
-          Menu
-          <IconMenuDeep id="menu-icon" class="size-4" />
-          <IconX id="close-icon" class="hidden size-4" />
-        </button>
-      </div>
-
-      <nav aria-label="Primary">
-        <div
-          id="menu-items"
-          class:list={[
-            "type-overline-tight grid gap-2 border-t border-[var(--divider-soft)] pt-1.5 font-semibold uppercase",
-            "md:flex md:items-center md:justify-between md:border-0 md:pt-0",
-            "hidden md:flex",
-          ]}
-        >
-          <ul
-            class="grid gap-1.5 md:flex md:flex-wrap md:items-center md:gap-1.5"
-          >
-            {
-              navItems.map(item => (
-                <li>
-                  <a
-                    href={item.href}
-                    class:list={[
-                      "inline-flex items-center gap-1 rounded-[var(--radius-xs)] border border-transparent px-2 py-0.75 text-[color:var(--nav-text)] transition-colors duration-150 hover:border-[color:var(--nav-border)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
-                      {
-                        "border-[color:var(--nav-text-strong)] text-[color:var(--nav-text-strong)]":
-                          isActive(item.href),
-                      },
-                    ]}
-                    target={item.external ? "_blank" : undefined}
-                    rel={item.external ? "noopener noreferrer" : undefined}
-                    data-astro-prefetch={resolvePrefetchAttr(item.prefetch)}
-                  >
-                    <span>{item.label}</span>
-                    {item.label === "Archives" ? (
-                      <IconArchive class="size-3" />
-                    ) : item.label === "Notes" && item.external ? (
-                      <IconGarden class="size-[0.95rem]" aria-hidden="true" />
-                    ) : item.external ? (
-                      <span aria-hidden="true">↗</span>
-                    ) : null}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-
-          <div
-            class="grid gap-1.5 border-t border-[var(--divider-soft)] pt-1.75 md:ml-auto md:flex md:items-center md:gap-1.5 md:border-none md:pt-0 md:pl-4"
-          >
-            <a
-              href="/search"
-              class:list={[
-                "inline-flex h-7 items-center gap-1 rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent px-2 text-[color:var(--nav-text)] transition-colors duration-150 hover:border-[color:var(--nav-border)] hover:text-[color:var(--nav-text-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none",
-                {
-                  "border-[color:var(--nav-text-strong)] text-[color:var(--nav-text-strong)]":
-                    isActive("/search"),
-                },
-              ]}
-              data-astro-prefetch="viewport"
-            >
-              <span class="type-overline-compact font-semibold uppercase"
-                >Search</span
+            return (
+              <Link
+                href={item.href}
+                external={isExternal}
+                class={cn(
+                  'text-foreground/60 hover:text-foreground capitalize transition-colors',
+                  isActive && 'text-foreground',
+                )}
               >
-              <IconSearch class="size-[1rem]" />
-            </a>
-
-            {
-              SITE.lightAndDarkMode && (
-                <button
-                  id="theme-btn"
-                  class="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-xs)] border border-[var(--border-soft)] bg-transparent leading-none text-[color:var(--muted-text)] transition-colors duration-150 hover:border-[color:var(--border-strong)] hover:text-[color:var(--body-text)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
-                  title="Toggles light & dark"
-                  aria-label="Switch to dark theme"
-                  aria-live="polite"
-                >
-                  <span class="sr-only">Toggle theme</span>
-                  <span class="relative grid size-[1.15rem] place-items-center">
-                    <IconMoon class="col-start-1 row-start-1 size-[1.05rem] scale-100 rotate-0 transition-all duration-300 dark:scale-0 dark:-rotate-90" />
-                    <IconSunHigh class="col-start-1 row-start-1 size-[1.05rem] scale-0 rotate-90 transition-all duration-300 dark:scale-100 dark:rotate-0" />
-                  </span>
-                </button>
-              )
-            }
-          </div>
-        </div>
+                {item.label}
+                {isExternal && <span aria-hidden="true"> ↗</span>}
+              </Link>
+            )
+          })
+        }
       </nav>
+      <ThemeToggle transition:persist />
     </div>
   </div>
-</header>
-
-<script is:inline>
-  (function () {
-    const attachToggle = () => {
-      const menuBtn = document.querySelector("#menu-btn");
-      const menuItems = document.querySelector("#menu-items");
-      const menuIcon = document.querySelector("#menu-icon");
-      const closeIcon = document.querySelector("#close-icon");
-
-      if (
-        !(menuBtn instanceof HTMLElement) ||
-        !(menuItems instanceof HTMLElement) ||
-        !(menuIcon instanceof SVGElement) ||
-        !(closeIcon instanceof SVGElement)
-      ) {
-        return;
-      }
-
-      if (menuBtn.dataset.navBound === "true") {
-        return;
-      }
-
-      const toggle = () => {
-        const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
-
-        menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
-        menuBtn.setAttribute(
-          "aria-label",
-          openMenu ? "Open Menu" : "Close Menu"
-        );
-
-        menuItems.classList.toggle("hidden");
-        menuIcon.classList.toggle("hidden");
-        closeIcon.classList.toggle("hidden");
-      };
-
-      menuBtn.addEventListener("click", toggle);
-      menuBtn.dataset.navBound = "true";
-    };
-
-    attachToggle();
-  })();
-</script>
+</div>

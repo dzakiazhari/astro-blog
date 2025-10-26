@@ -1,177 +1,49 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "@/layouts/Layout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
-import LinkButton from "@/components/LinkButton.astro";
-import Card from "@/components/Card.astro";
-import getSortedPosts from "@/utils/getSortedPosts";
-import IconGarden from "@/assets/icons/IconGarden.svg";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { SOCIALS } from "@/constants";
-import { SITE } from "@/config";
+import BlogCard from '@/components/BlogCard.astro'
+import Link from '@/components/Link.astro'
+import PageHead from '@/components/PageHead.astro'
+import { buttonVariants } from '@/components/ui/button'
+import { SITE } from '@/consts'
+import Layout from '@/layouts/Layout.astro'
+import { getRecentPosts } from '@/lib/data-utils'
 
-const posts = await getCollection("blog");
-
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const blog = await getRecentPosts(SITE.featuredPostCount)
 ---
 
-<Layout>
-  <Header />
-  <main
-    id="main-content"
-    data-layout="index"
-    class="site-shell space-y-6 pt-6 pb-10"
-  >
-    <section
-      class="rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--surface-raised)] px-4 py-6 sm:px-6"
-    >
-      <div
-        class="grid grid-cols-1 gap-4 md:grid-cols-12 md:items-start md:gap-6"
-      >
-        <div
-          class="space-y-4 md:col-span-5 md:pe-4 lg:col-span-4 lg:pe-6 xl:col-span-4"
-        >
-          <h1
-            class="text-[length:var(--type-heading-xl)] leading-[1.1] font-semibold text-[color:var(--nav-text-strong)]"
-          >
-            Hello.
-          </h1>
-          <p
-            class="max-w-[26rem] text-[length:var(--type-body-size)] leading-[var(--type-body-leading)] text-[color:var(--muted-text)]"
-          >
-            Explore stories, research notes, and the studio's experiments.
-          </p>
-          <div class="flex flex-wrap gap-1.5 md:gap-2">
-            <LinkButton href="/posts/" prefetch="viewport">
-              Latest posts
-            </LinkButton>
-            <LinkButton href="/about" prefetch="viewport">
-              About the studio
-            </LinkButton>
-          </div>
-        </div>
-
-        <div
-          class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:col-span-7 md:col-start-6 md:gap-3.5 lg:col-span-7"
-        >
-          <a
-            href={SITE.notesUrl ?? "https://notes.dzakiazhari.com"}
-            class="group relative flex min-h-[128px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-subtle)] p-4 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
-            rel="noopener noreferrer"
-            target="_blank"
-            data-astro-prefetch="false"
-          >
-            <span
-              class="type-overline-tight inline-flex items-center gap-[0.75rem] font-semibold text-[color:var(--muted-text)] uppercase"
-            >
-              <IconGarden class="size-[1rem]" aria-hidden="true" />
-              Notes garden
-            </span>
-            <span
-              class="text-[length:var(--type-heading-md)] leading-[1.2] font-semibold text-[color:var(--nav-text-strong)]"
-            >
-              Visit the evergreen notes
-            </span>
-            <span
-              class="type-overline-compact mt-auto inline-flex items-center gap-[0.75rem] font-semibold text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
-            >
-              Explore notes
-              <IconGarden class="size-[0.95rem]" aria-hidden="true" />
-            </span>
-          </a>
-
-          <a
-            href="/rss.xml"
-            class="group flex min-h-[128px] flex-col justify-between rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--surface-raised)] p-4 text-left transition-colors duration-200 hover:border-[color:var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[color:var(--ring-accent)] focus-visible:outline-none"
-            aria-label="rss feed"
-            rel="noopener noreferrer"
-            title="RSS Feed"
-          >
-            <span
-              class="type-overline-tight font-semibold text-[color:var(--muted-text)] uppercase"
-            >
-              Stay updated
-            </span>
-            <span
-              class="text-[length:var(--type-heading-md)] leading-[1.2] font-semibold text-[color:var(--nav-text-strong)]"
-            >
-              Subscribe via RSS
-            </span>
-            <span
-              class="type-overline-compact mt-auto inline-flex items-center gap-[0.75rem] font-semibold text-[color:var(--nav-text)] uppercase transition-colors duration-150 group-hover:text-[color:var(--nav-text-strong)]"
-            >
-              Feed
-              <IconRss width={16} height={16} class="rtl:-rotate-90" />
-            </span>
-          </a>
-        </div>
+<Layout class="max-w-3xl">
+  <PageHead slot="head" title="Home" description={SITE.description} />
+  <section class="bg-muted/30 rounded-lg border">
+    <div class="flex flex-col gap-y-4 p-6">
+      <div class="flex flex-col gap-y-1.5">
+        <h1 class="text-3xl leading-tight font-medium text-balance">Unfold.</h1>
+        <p class="text-muted-foreground text-sm">Subtitle text goes here.</p>
       </div>
-
-      {
-        SOCIALS.length > 0 && (
-          <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-[var(--divider-soft)] pt-2.5">
-            <span class="type-overline-compact font-semibold text-[color:var(--muted-text)] uppercase">
-              Connect
-            </span>
-            <Socials />
-          </div>
-        )
-      }
-    </section>
-
-    <section class="grid grid-cols-1 gap-5 md:grid-cols-12">
-      {
-        featuredPosts.length > 0 && (
-          <div class="space-y-3 md:col-span-6 md:pe-3">
-            <h2 class="type-overline font-semibold text-[color:var(--muted-text)] uppercase">
-              Featured
-            </h2>
-            <ul class="flex flex-col gap-2.5">
-              {featuredPosts.slice(0, 3).map(data => (
-                <Card variant="bar" showDescription={false} {...data} />
-              ))}
-            </ul>
-          </div>
-        )
-      }
-
-      {
-        recentPosts.length > 0 && (
-          <div class="space-y-3 md:col-span-6 md:ps-3">
-            <h2 class="type-overline font-semibold text-[color:var(--muted-text)] uppercase">
-              Recent Posts
-            </h2>
-            <ul class="flex flex-col gap-2.5">
-              {recentPosts.slice(0, 3).map(data => (
-                <Card variant="bar" showDescription={false} {...data} />
-              ))}
-            </ul>
-          </div>
-        )
-      }
-    </section>
-
-    <div class="flex justify-center pt-2">
-      <LinkButton href="/posts/" prefetch="viewport">
-        View archive
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
+      <p class="text-muted-foreground text-sm">
+        Additional introduction copy placeholder.
+      </p>
     </div>
-  </main>
-  <Footer />
+  </section>
+  <section class="flex flex-col gap-y-4">
+    <h2 class="text-2xl font-medium">Latest posts</h2>
+    <ul class="flex flex-col gap-y-4">
+      {
+        blog.map((post) => (
+          <li>
+            <BlogCard entry={post} />
+          </li>
+        ))
+      }
+    </ul>
+    <div class="flex justify-center">
+      <Link
+        href="/blog"
+        class={buttonVariants({ variant: 'ghost' }) + ' group'}
+      >
+        See all posts <span
+          class="ml-1.5 transition-transform group-hover:translate-x-1"
+          >&rarr;</span
+        >
+      </Link>
+    </div>
+  </section>
 </Layout>
-
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
-      ?.dataset?.layout;
-    if (indexLayout) {
-      sessionStorage.setItem("backUrl", "/");
-    }
-  });
-</script>

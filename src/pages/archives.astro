@@ -1,0 +1,41 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import Link from '@/components/Link.astro'
+import PageHead from '@/components/PageHead.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getAllPosts, groupPostsByYear } from '@/lib/data-utils'
+
+const posts = await getAllPosts()
+const postsByYear = groupPostsByYear(posts)
+const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a))
+---
+
+<Layout class="max-w-3xl">
+  <PageHead slot="head" title="Archives" />
+  <Breadcrumbs items={[{ label: 'Archives', icon: 'lucide:archive' }]} />
+
+  <section class="flex flex-col gap-y-8">
+    {
+      years.map((year) => (
+        <div>
+          <h2 class="mb-4 text-2xl font-medium">{year}</h2>
+          <ul class="flex flex-col gap-3">
+            {postsByYear[year].map((post) => (
+              <li class="flex flex-col gap-1 text-left">
+                <Link
+                  href={`/${post.collection}/${post.id}`}
+                  class="text-foreground hover:text-foreground"
+                >
+                  {post.data.title}
+                </Link>
+                <span class="text-muted-foreground text-sm">
+                  {post.data.description}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </section>
+</Layout>

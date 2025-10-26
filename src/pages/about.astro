@@ -1,0 +1,17 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import PageHead from '@/components/PageHead.astro'
+import { SITE } from '@/consts'
+import Layout from '@/layouts/Layout.astro'
+---
+
+<Layout class="max-w-3xl">
+  <PageHead slot="head" title="About" description={`About ${SITE.title}`} />
+  <Breadcrumbs items={[{ label: 'About', icon: 'lucide:info' }]} />
+
+  <section class="prose">
+    <h1>About {SITE.title}</h1>
+    <p>About page introduction placeholder text.</p>
+    <p>Additional details about the site will live here.</p>
+  </section>
+</Layout>

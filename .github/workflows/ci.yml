@@ -23,10 +23,10 @@ jobs:
         node-version: [20]
 
     steps:
-      - name: "☁️ Checkout repository"
+      - name: '☁️ Checkout repository'
         uses: actions/checkout@v4
 
-      - name: "📦 Install pnpm"
+      - name: '📦 Install pnpm'
         uses: pnpm/action-setup@v4
         with:
           version: 10.11.1
@@ -35,16 +35,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+          cache: 'pnpm'
 
-      - name: "📦 Install dependencies"
+      - name: '📦 Install dependencies'
         run: pnpm install
 
-      - name: "🔎 Lint code"
+      - name: '🔎 Lint code'
         run: pnpm run lint
 
-      - name: "📝 Checking code format"
+      - name: '📝 Checking code format'
         run: pnpm run format:check
 
-      - name: "🚀 Build the project"
+      - name: '🚀 Build the project'
         run: pnpm run build

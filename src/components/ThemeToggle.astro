@@ -1,0 +1,86 @@
+---
+import { Button } from '@/components/ui/button'
+import { Icon } from 'astro-icon/components'
+---
+
+<Button
+  id="theme-toggle"
+  variant="ghost"
+  size="icon"
+  title="Toggle theme"
+  className="-my-2 -me-2 size-8"
+>
+  <Icon name="lucide:sun" class="size-4 dark:hidden" />
+  <Icon name="lucide:moon" class="absolute hidden size-4 dark:block" />
+  <span class="sr-only">Toggle theme</span>
+</Button>
+
+<script is:inline data-astro-rerun>
+  ;(() => {
+    const getPreferredTheme = () => {
+      const stored = window.localStorage.getItem('theme') ?? ''
+      if (['dark', 'light'].includes(stored)) return stored
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+    }
+
+    const updateMetaTheme = () => {
+      const root = document.documentElement
+      const meta = document.querySelector("meta[name='theme-color']")
+      if (!root || !meta) return
+
+      const computed = window.getComputedStyle(root)
+      const background =
+        computed.getPropertyValue('--background') ||
+        computed.getPropertyValue('--color-background') ||
+        computed.backgroundColor
+
+      if (background) {
+        meta.setAttribute('content', background.trim())
+      }
+    }
+
+    const applyTheme = (theme) => {
+      const element = document.documentElement
+      element.classList.add('[&_*]:transition-none')
+      element.setAttribute('data-theme', theme)
+      window.getComputedStyle(element).getPropertyValue('opacity')
+      requestAnimationFrame(() => {
+        element.classList.remove('[&_*]:transition-none')
+      })
+      window.localStorage.setItem('theme', theme)
+      updateMetaTheme()
+    }
+
+    const handleToggleClick = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme')
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark'
+      applyTheme(nextTheme)
+    }
+
+    const init = () => {
+      applyTheme(getPreferredTheme())
+      const button = document.getElementById('theme-toggle')
+      if (!button || button.dataset.bound === 'true') return
+      button.addEventListener('click', handleToggleClick)
+      button.dataset.bound = 'true'
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true })
+    } else {
+      init()
+    }
+
+    document.addEventListener('astro:page-load', () => {
+      const stored = getPreferredTheme()
+      applyTheme(stored)
+      const button = document.getElementById('theme-toggle')
+      if (button) {
+        button.dataset.bound = 'false'
+      }
+      init()
+    })
+  })()
+</script>

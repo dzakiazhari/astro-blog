@@ -1,9 +1,9 @@
 ---
 name: "\U0001F41E Bug report"
 about: Report a bug or unexpected behavior in AstroPaper
-title: "[BUG]: "
+title: '[BUG]: '
 labels: bug
-assignees: ""
+assignees: ''
 ---
 
 **Describe the bug**

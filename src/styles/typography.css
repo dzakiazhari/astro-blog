@@ -1,404 +1,141 @@
-@plugin '@tailwindcss/typography';
+@reference './global.css';
 
 @layer base {
-  .app-prose {
-    @apply prose max-w-none;
-    font-family: var(--font-sans);
-    color: var(--body-text);
-    font-size: var(--type-body-size);
-    line-height: var(--type-body-leading);
-    letter-spacing: var(--type-body-letter);
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply wrap-break-word;
+  }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    th {
-      @apply font-semibold;
-      color: color-mix(in srgb, var(--body-text) 90%, var(--secondary) 10%);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-balance;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+}
+
+@layer components {
+  .prose {
+    @apply text-foreground text-base leading-7;
+
+    :where(p):not(:where(.not-prose, .not-prose *)) {
+      @apply text-foreground/80 my-5;
     }
 
-    h1 {
-      font-size: var(--type-heading-xl);
-      letter-spacing: -0.02em;
-      text-wrap: balance;
-      position: relative;
-      margin-block: clamp(2.9rem, 2.3rem + 1.2vw, 3.5rem)
-        clamp(1.8rem, 1.4rem + 0.7vw, 2.3rem);
-      padding-block-end: 0.7rem;
-
-      &::after {
-        content: "";
-        position: absolute;
-        inset-inline-start: 0;
-        inset-inline-end: auto;
-        inset-block-end: 0;
-        height: 0.18rem;
-        width: clamp(4.5rem, 16vw, 7.5rem);
-        border-radius: var(--radius-sm);
-        background: var(--accent-underline);
-      }
+    :where(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+      @apply text-foreground scroll-mt-32 font-medium xl:scroll-mt-20;
     }
 
-    h2,
-    h3 {
-      position: relative;
-      margin-block: clamp(2.4rem, 2rem + 0.9vw, 3.2rem)
-        clamp(1.35rem, 1.05rem + 0.6vw, 1.95rem);
-      padding-block: clamp(0.25rem, 0.18rem + 0.3vw, 0.6rem)
-        clamp(0.05rem, 0.02rem + 0.1vw, 0.15rem);
-      padding-inline-start: clamp(1.1rem, 0.95rem + 0.6vw, 1.75rem);
+    :first-child:not(:where(.not-prose, .not-prose *)) {
+      @apply mt-0;
     }
 
-    h2 {
-      font-size: var(--type-heading-lg);
-      letter-spacing: -0.014em;
+    /* Don't use an <h1> in your posts, one is already generated in blog/[...id].astro */
+    :where(h1):not(:where(.not-prose, .not-prose *)) {
+      @apply mt-8 mb-6 text-4xl;
     }
 
-    h3 {
-      font-size: var(--type-heading-md);
-      letter-spacing: -0.01em;
+    :where(h2):not(:where(.not-prose, .not-prose *)) {
+      @apply mt-8 mb-4 text-2xl;
     }
 
-    h2::before,
-    h3::before {
-      content: "";
-      position: absolute;
-      inset-inline-start: 0;
-      inset-block-start: 0.35rem;
-      width: clamp(0.22rem, 0.16rem + 0.2vw, 0.32rem);
-      height: calc(100% - 0.7rem);
-      border-radius: 999px;
-      background: color-mix(
-        in srgb,
-        var(--prose-heading-accent) 78%,
-        transparent
-      );
-      box-shadow: inset 0 0 0 1px
-        color-mix(in srgb, rgba(0, 0, 0, 0.06), transparent);
+    :where(h3):not(:where(.not-prose, .not-prose *)) {
+      @apply mt-8 mb-4 text-xl;
     }
 
-    h3::before {
-      background: color-mix(
-        in srgb,
-        var(--prose-subheading-accent) 85%,
-        transparent
-      );
+    :where(h4):not(:where(.not-prose, .not-prose *)) {
+      @apply mt-7 mb-3 text-lg;
     }
 
-    [data-heading-role="table-of-contents"] {
-      margin-block: clamp(1.65rem, 1.45rem + 0.4vw, 2.05rem) 0.55rem;
-      padding: 0;
-      border: 0;
-      background: none;
-      box-shadow: none;
-      font-size: var(--type-heading-md);
-      letter-spacing: var(--type-overline-tight-letter);
-      text-transform: uppercase;
-      color: color-mix(in srgb, var(--muted-text) 74%, var(--secondary) 26%);
+    :where(h5, h6):not(:where(.not-prose, .not-prose *)) {
+      @apply mt-5 mb-3;
     }
 
-    [data-heading-role="table-of-contents"]::before {
-      display: none;
+    :where(a):not(:where(.not-prose, .not-prose *)) {
+      @apply text-foreground decoration-muted-foreground hover:decoration-foreground font-medium break-words underline underline-offset-[3px] transition-colors;
     }
 
-    h4 {
-      @apply mt-8 uppercase;
-      color: color-mix(in srgb, var(--muted-text) 78%, var(--secondary) 22%);
-      font-size: var(--type-overline-wide-size);
-      letter-spacing: var(--type-overline-wide-letter);
-      line-height: var(--type-overline-leading);
+    :where(strong):not(:where(.not-prose, .not-prose *)) {
+      @apply text-foreground font-medium;
     }
 
-    p,
-    strong,
-    ol,
-    ul,
-    figcaption,
-    table,
-    code {
-      color: var(--body-text);
+    :where(ul):not(:where(.not-prose, .not-prose *)) {
+      @apply marker:text-foreground/30 my-5 ml-6 list-disc [&>li]:mt-2;
     }
 
-    p {
-      line-height: var(--type-body-leading);
-      text-wrap: pretty;
-      hyphens: auto;
-      margin-block: clamp(1.45rem, 1.25rem + 0.4vw, 1.85rem);
+    :where(ol):not(:where(.not-prose, .not-prose *)) {
+      @apply marker:text-foreground/30 my-5 ml-6 list-decimal [&>li]:mt-2;
+      @apply [&[type='A']]:list-[upper-alpha] [&[type='I']]:list-[upper-roman] [&[type='a']]:list-[lower-alpha] [&[type='i']]:list-[lower-roman];
     }
 
-    a {
-      color: color-mix(in srgb, var(--secondary) 80%, var(--body-text) 20%);
-      text-decoration-color: color-mix(
-        in srgb,
-        var(--secondary) 60%,
-        transparent
-      );
-      text-decoration-thickness: 2px;
-      text-underline-offset: 0.25em;
-
-      &:where(:hover, :focus-visible) {
-        color: color-mix(in srgb, var(--tertiary) 60%, var(--secondary) 40%);
-        text-decoration-color: currentColor;
-      }
+    :where(li):not(:where(.not-prose, .not-prose *)) {
+      @apply text-foreground/80 pl-2 [&>p]:my-0;
     }
 
-    ul,
-    ol {
-      @apply overflow-x-clip;
-      padding-inline-start: clamp(1.15rem, 1.2vw, 1.45rem);
-      margin-block: clamp(1.5rem, 1.3rem + 0.4vw, 1.85rem);
-      line-height: 1.6;
+    :where(ul ul, ol ol, ul ol, ol ul):not(:where(.not-prose, .not-prose *)) {
+      @apply marker:text-foreground/30 my-2 ml-6;
     }
 
-    li {
-      @apply marker:text-current;
-      padding-inline-start: 0.3rem;
+    :where(code):not(:where(.not-prose, .not-prose *)) {
+      @apply bg-muted/50 text-foreground relative rounded-sm px-[0.3rem] py-[0.2rem] text-sm font-medium break-words;
+      @apply [&>span[data-line='']>*]:text-(--shiki-light) dark:[&>span[data-line='']>*]:text-(--shiki-dark);
     }
 
-    li::marker {
-      color: color-mix(in srgb, var(--secondary) 66%, var(--body-text) 34%);
-      font-size: 0.88em;
+    :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+      @apply [&_*]:text-muted-foreground small my-6 border-l-2 pl-6;
     }
 
-    li + li {
-      margin-block-start: 0.45rem;
+    :where(hr):not(:where(.not-prose, .not-prose *)) {
+      @apply my-8 border-t;
     }
 
-    hr {
-      border-color: var(--prose-rule);
+    :where(table):not(:where(.not-prose, .not-prose *)) {
+      @apply mx-auto my-6 block max-w-fit overflow-x-auto text-sm;
     }
 
-    img {
-      @apply mx-auto;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 18px 44px -30px rgba(0, 0, 0, 0.25);
+    :where(thead):not(:where(.not-prose, .not-prose *)) {
+      @apply border-muted-foreground/30 border-b;
     }
 
-    figcaption,
-    caption {
-      color: var(--prose-caption);
-      font-size: 0.82rem;
-      margin-top: 0.75rem;
-      text-align: center;
+    :where(th):not(:where(.not-prose, .not-prose *)) {
+      @apply px-4 py-2 font-medium;
+      @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
     }
 
-    table {
-      width: 100%;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--prose-table-grid);
-      background: color-mix(in srgb, var(--surface-raised) 92%, transparent);
-      overflow: hidden;
-      box-shadow: 0 20px 48px -30px rgba(32, 26, 18, 0.24);
-      font-size: 0.96rem;
-
-      thead {
-        background: var(--prose-table-header);
-      }
-
-      th,
-      td {
-        border-color: var(--prose-table-grid);
-        padding: 0.8rem 1rem;
-      }
-
-      th {
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        font-size: 0.72rem;
-        color: color-mix(in srgb, var(--body-text) 78%, var(--secondary) 22%);
-      }
-
-      tbody tr:nth-child(2n) {
-        background: var(--prose-table-row-alt);
-      }
-
-      code {
-        @apply break-words;
-      }
+    :where(tr):not(:where(.not-prose, .not-prose *)) {
+      @apply border-muted-foreground/30 border-y first:border-t-0 last:border-b-0;
     }
 
-    code {
-      font-family: var(--font-mono);
-      font-size: 0.94em;
-      background: color-mix(in srgb, var(--badge-surface) 90%, transparent);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--prose-code-border);
-      padding: 0.05rem 0.4rem;
-      box-shadow: inset 0 0 0 1px
-        color-mix(in srgb, rgba(0, 0, 0, 0.04), transparent);
+    :where(td):not(:where(.not-prose, .not-prose *)) {
+      @apply text-foreground/80 small px-4 py-2 align-top break-words [&>*]:first:mt-0! [&>*]:last:mb-0!;
+      @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
     }
 
-    kbd {
-      font-family: var(--font-mono);
-      background: var(--prose-kbd-surface);
-      border: 1px solid var(--prose-kbd-border);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--prose-kbd-shadow);
-      padding: 0.2rem 0.5rem;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: color-mix(in srgb, var(--muted-text) 72%, var(--body-text) 28%);
+    :where(img, video, figure, .expressive-code):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+      @apply mx-auto my-6;
     }
 
-    mark {
-      background: var(--prose-mark-bg);
-      color: var(--prose-mark-text);
-      border-radius: var(--radius-sm);
-      padding: 0.1rem 0.3rem;
-      box-shadow: inset 0 0 0 1px
-        color-mix(in srgb, rgba(0, 0, 0, 0.08), transparent);
+    :where(pre):not(:where(.not-prose, .not-prose *)) {
+      @apply max-h-[min(68vh,1000px)]! overflow-y-auto [&::-webkit-scrollbar-corner]:hidden;
+      outline: 2px dotted
+        color-mix(in srgb, var(--ring-accent) 70%, transparent);
+      outline-offset: 2px;
     }
 
-    blockquote:not(.callout) {
-      border-inline-start: 3px solid var(--prose-blockquote-border);
-      padding: 1.25rem clamp(1.25rem, 4vw, 1.85rem);
-      margin: 1.8rem 0;
-      background: var(--prose-blockquote-surface);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 22px 48px -32px rgba(33, 27, 20, 0.3);
-      color: var(--prose-blockquote-text);
-
-      & > :first-child {
-        margin-top: 0;
-      }
-
-      & > :last-child {
-        margin-bottom: 0;
-      }
-
-      cite {
-        display: block;
-        margin-top: 1rem;
-        font-size: 0.82rem;
-        font-style: normal;
-        color: color-mix(in srgb, var(--muted-text) 80%, var(--secondary) 20%);
-      }
-    }
-
-    details {
-      @apply inline-block select-none;
-      border: 1px solid color-mix(in srgb, var(--border-soft) 86%, transparent);
-      border-radius: var(--radius-md);
-      background: color-mix(in srgb, var(--surface-raised) 92%, transparent 8%);
-      padding: clamp(0.75rem, 0.7rem + 0.4vw, 1rem)
-        clamp(0.85rem, 0.8rem + 0.6vw, 1.35rem);
-
-      &[open] {
-        border-color: color-mix(in srgb, var(--border-soft) 65%, transparent);
-      }
-    }
-
-    summary {
-      @apply cursor-pointer font-medium;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: color-mix(in srgb, var(--muted-text) 78%, var(--secondary) 22%);
-    }
-
-    details.remark-collapse {
-      display: block;
-      width: min(24rem, 100%);
-      margin-block: clamp(1.1rem, 0.95rem + 0.45vw, 1.7rem)
-        clamp(1.65rem, 1.4rem + 0.6vw, 2.2rem);
-      border-radius: var(--radius-lg);
-      background: color-mix(in srgb, var(--surface-raised) 97%, transparent 3%);
-      box-shadow: 0 16px 40px -36px rgba(28, 24, 19, 0.26);
-    }
-
-    details.remark-collapse > summary {
-      @apply font-semibold;
-      font-size: 0.72rem;
-      letter-spacing: 0.26em;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    details.remark-collapse > summary::-webkit-details-marker {
-      display: none;
-    }
-
-    details.remark-collapse[open] > summary {
-      color: color-mix(
-        in srgb,
-        var(--nav-text-strong) 74%,
-        var(--secondary) 26%
-      );
-    }
-
-    details.remark-collapse > summary::after {
-      content: "";
-      flex-shrink: 0;
-      width: 0.55rem;
-      height: 0.55rem;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--secondary) 74%, white 26%);
-      box-shadow: inset 0 0 0 1px
-        color-mix(in srgb, rgba(0, 0, 0, 0.08), transparent);
-    }
-
-    details.remark-collapse > :not(summary) {
-      margin-block-start: clamp(0.65rem, 0.6rem + 0.28vw, 0.95rem);
-    }
-
-    details.remark-collapse ol {
-      margin: 0;
-      padding-inline-start: clamp(0.75rem, 0.65rem + 0.55vw, 1.2rem);
-      font-size: clamp(0.98rem, 0.94rem + 0.12vw, 1.06rem);
-      line-height: 1.55;
-      max-height: 19rem;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      list-style: none;
-    }
-
-    details.remark-collapse li {
-      margin-block: 0.32rem;
-      padding-inline-start: 0;
-    }
-
-    details.remark-collapse li ol {
-      margin-block: 0.3rem 0.2rem;
-      padding-inline-start: clamp(0.6rem, 0.5rem + 0.45vw, 0.95rem);
-      border-inline-start: 1px dotted
-        color-mix(in srgb, var(--border-soft) 62%, transparent);
-    }
-
-    details.remark-collapse ol::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    details.remark-collapse ol::-webkit-scrollbar-thumb {
-      background: color-mix(in srgb, var(--secondary) 52%, transparent);
-      border-radius: 999px;
-    }
-
-    details.remark-collapse a {
-      color: color-mix(in srgb, var(--nav-text) 84%, var(--secondary) 16%);
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 140ms ease;
-    }
-
-    details.remark-collapse a:where(:hover, :focus-visible) {
-      color: color-mix(
-        in srgb,
-        var(--nav-text-strong) 72%,
-        var(--secondary) 28%
-      );
-    }
-
-    pre {
-      @apply focus-visible:outline-2 focus-visible:outline-dotted;
-      outline-color: color-mix(in srgb, var(--ring-accent) 70%, transparent);
-    }
-
-    .code-block {
+    :where(.code-block):not(:where(.not-prose, .not-prose *)) {
       position: relative;
       margin-block: 1.8rem;
       padding: 0;
@@ -410,7 +147,7 @@
       overflow: hidden;
     }
 
-    .code-block pre {
+    :where(.code-block pre):not(:where(.not-prose, .not-prose *)) {
       margin: 0;
       padding-block: clamp(1.4rem, 4vw, 1.85rem) clamp(1.4rem, 4vw, 1.75rem);
       padding-inline: clamp(1.4rem, 4vw, 1.75rem);
@@ -422,14 +159,14 @@
       overflow: auto;
     }
 
-    .code-block pre code {
+    :where(.code-block pre code):not(:where(.not-prose, .not-prose *)) {
       background: transparent;
       border: 0;
       box-shadow: none;
       padding: 0;
     }
 
-    .code-block .copy-code {
+    :where(.code-block .copy-code):not(:where(.not-prose, .not-prose *)) {
       position: absolute;
       inset-inline-end: clamp(0.85rem, 2.5vw, 1.4rem);
       inset-block-start: var(--copy-button-top, var(--code-copy-offset));
@@ -459,7 +196,7 @@
         transform 160ms ease;
     }
 
-    .code-block .copy-code:hover {
+    :where(.code-block .copy-code):not(:where(.not-prose, .not-prose *)):hover {
       transform: translate3d(0, -50%, 0) translateY(-0.15rem);
       background: var(--code-copy-hover-bg);
       color: var(--code-copy-success);
@@ -472,7 +209,9 @@
       opacity: 1;
     }
 
-    .code-block .copy-code:focus-visible {
+    :where(.code-block .copy-code):not(
+        :where(.not-prose, .not-prose *)
+      ):focus-visible {
       outline: 2px dotted var(--code-copy-ring);
       outline-offset: 2px;
       transform: translate3d(0, -50%, 0) translateY(-0.12rem);
@@ -487,7 +226,9 @@
       pointer-events: auto;
     }
 
-    .code-block .copy-code[data-state="copied"] {
+    :where(.code-block .copy-code[data-state='copied']):not(
+      :where(.not-prose, .not-prose *)
+    ) {
       background: var(--code-copy-active-bg);
       color: var(--code-copy-success);
       border-color: color-mix(
@@ -499,153 +240,48 @@
       pointer-events: auto;
     }
 
-    .code-block:where(:hover, :focus-within) .copy-code {
+    :where(.code-block):where(:hover, :focus-within):not(
+        :where(.not-prose, .not-prose *)
+      )
+      .copy-code {
       opacity: 1;
       pointer-events: auto;
     }
 
     @media (hover: none) {
-      .code-block .copy-code {
+      :where(.code-block .copy-code):not(:where(.not-prose, .not-prose *)) {
         opacity: 1;
         pointer-events: auto;
       }
     }
-  }
 
-  @media (max-width: 768px) {
-    .app-prose .code-block {
-      margin-block: 1.4rem;
+    @media (max-width: 768px) {
+      :where(.code-block):not(:where(.not-prose, .not-prose *)) {
+        margin-block: 1.4rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :where(.code-block .copy-code):not(:where(.not-prose, .not-prose *)) {
+        inset-inline-end: 0.75rem;
+        letter-spacing: 0.18em;
+      }
+    }
+
+    :where(summary):not(:where(.not-prose, .not-prose *)) {
+      @apply [&~*]:small [&~*>*]:first:mt-0! [&~*>*]:last:mb-0!;
+    }
+
+    :where(kbd):not(:where(.not-prose, .not-prose *)) {
+      @apply text-foreground bg-muted rounded-md border px-2 py-1 text-xs font-medium;
+    }
+
+    :where(.katex-display):not(:where(.not-prose, .not-prose *)) {
+      @apply text-foreground/80 my-6 overflow-x-auto overflow-y-hidden py-2 tracking-normal;
     }
   }
+}
 
-  @media (max-width: 640px) {
-    .app-prose .code-block .copy-code {
-      inset-inline-end: 0.75rem;
-      letter-spacing: 0.18em;
-    }
-  }
-
-  .expressive-code {
-    --ec-frm-inlBtnBg: color-mix(
-      in srgb,
-      var(--code-copy-bg) 88%,
-      transparent 12%
-    );
-    --ec-frm-inlBtnBgIdleOpa: 0.9;
-    --ec-frm-inlBtnBgHoverOrFocusOpa: 1;
-    --ec-frm-inlBtnBgActOpa: 1;
-    --ec-frm-inlBtnBrd: color-mix(
-      in srgb,
-      var(--code-copy-border) 92%,
-      transparent 8%
-    );
-    --ec-frm-inlBtnBrdOpa: 1;
-    --ec-frm-inlBtnFg: var(--code-copy-text);
-    --ec-frm-tooltipSuccessBg: color-mix(
-      in srgb,
-      var(--code-copy-active-bg) 82%,
-      transparent 18%
-    );
-    --ec-frm-tooltipSuccessFg: var(--code-copy-text);
-  }
-
-  .expressive-code .copy button {
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: var(--radius-sm);
-    opacity: 0;
-    transition:
-      opacity 160ms ease,
-      transform 160ms ease;
-  }
-
-  .expressive-code .copy button div {
-    background: var(--code-copy-bg);
-    opacity: 0.9;
-    transition:
-      background-color 160ms ease,
-      opacity 160ms ease;
-  }
-
-  .expressive-code .copy button::before {
-    border-color: var(--code-copy-border);
-    opacity: 1;
-  }
-
-  .expressive-code .copy button::after {
-    background-color: var(--code-copy-text);
-  }
-
-  .expressive-code:where(:hover, :focus-within) .copy button,
-  .expressive-code .copy .feedback.show ~ button {
-    opacity: 1;
-  }
-
-  .expressive-code .copy button:hover,
-  .expressive-code .copy button:focus-visible {
-    transform: translate3d(0, -0.18rem, 0);
-  }
-
-  .expressive-code .copy button:hover div,
-  .expressive-code .copy button:focus-visible div {
-    background: var(--code-copy-hover-bg);
-    opacity: 1;
-  }
-
-  .expressive-code .copy button:active div {
-    background: var(--code-copy-active-bg);
-  }
-
-  @media (hover: none) {
-    .expressive-code .copy button {
-      opacity: 1;
-    }
-  }
-
-  .expressive-code {
-    @apply my-6;
-    scroll-margin-top: 6.5rem;
-  }
-
-  .expressive-code .frame {
-    border-radius: var(--radius-lg);
-    overflow: clip;
-    transition:
-      box-shadow 180ms ease,
-      transform 180ms ease;
-    box-shadow: 0 18px 44px -26px rgba(0, 0, 0, 0.28);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .expressive-code .frame {
-      transition-duration: 1ms;
-      transition-property: box-shadow;
-      transform: none !important;
-    }
-  }
-
-  .expressive-code:where(:hover, :focus-within) .frame {
-    box-shadow: 0 28px 60px -28px rgba(0, 0, 0, 0.36);
-    transform: translate3d(0, -2px, 0);
-  }
-
-  .expressive-code pre {
-    font-family: var(--font-mono);
-    font-variant-ligatures: contextual;
-    scrollbar-width: thin;
-    overscroll-behavior: contain;
-  }
-
-  .expressive-code pre::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .expressive-code pre::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--secondary) 65%, transparent);
-    border-radius: var(--radius-sm);
-  }
-
-  .expressive-code pre::-webkit-scrollbar-track {
-    background: color-mix(in srgb, var(--surface-subtle) 80%, transparent);
-  }
+@utility small {
+  @apply text-sm leading-6 [&_code]:text-xs [&_img,video,figure,details,blockquote,.katex-display,.expressive-code]:my-4! [&_li,ol]:mt-0 [&_p]:my-2! [&_ul]:my-0;
 }
