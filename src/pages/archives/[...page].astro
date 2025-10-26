@@ -1,0 +1,150 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import Link from '@/components/Link.astro'
+import PageHead from '@/components/PageHead.astro'
+import PaginationComponent from '@/components/ui/pagination'
+import { SITE } from '@/consts'
+import Layout from '@/layouts/Layout.astro'
+import { getAllPosts, getPublishDate, groupPostsByYear } from '@/lib/data-utils'
+import { formatDate } from '@/lib/utils'
+import type { PaginateFunction } from 'astro'
+import { Icon } from 'astro-icon/components'
+
+export async function getStaticPaths({
+  paginate,
+}: {
+  paginate: PaginateFunction
+}) {
+  const allPosts = await getAllPosts()
+  return paginate(allPosts, { pageSize: SITE.postsPerPage })
+}
+
+const { page } = Astro.props
+
+const postsByYear = groupPostsByYear(page.data)
+const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a))
+const yearGroups = years.map((year) => ({
+  year,
+  posts: postsByYear[year],
+}))
+
+const breadcrumbs =
+  page.currentPage > 1
+    ? [
+        { label: 'Archives', href: '/archives', icon: 'lucide:train-front' },
+        {
+          label: `Page ${page.currentPage}`,
+          icon: 'lucide:hash',
+        },
+      ]
+    : [{ label: 'Archives', icon: 'lucide:train-front' }]
+---
+
+<Layout class="max-w-3xl">
+  <PageHead slot="head" title="Archives" />
+  <Breadcrumbs items={breadcrumbs} />
+
+  <section class="relative flex flex-col gap-y-12">
+    {
+      yearGroups.map(({ year, posts }, groupIndex) => {
+        const postsForYear = posts
+
+        return (
+          <article
+            class="grid gap-x-6 sm:grid-cols-[6rem,1fr]"
+            aria-labelledby={`archives-${year}`}
+          >
+            <header class="relative flex flex-col gap-2 sm:items-end">
+              <span class="text-muted-foreground/80 text-xs font-semibold tracking-[0.4em] uppercase">
+                Year
+              </span>
+              <h2
+                id={`archives-${year}`}
+                class="text-foreground text-3xl font-semibold sm:text-5xl"
+              >
+                {year}
+              </h2>
+            </header>
+
+            <div class="relative ps-7 sm:ps-12">
+              <span
+                aria-hidden="true"
+                class="bg-primary/40 pointer-events-none absolute top-0 left-0 h-full w-[3px] -translate-x-1/2 rounded-full"
+              />
+
+              {groupIndex > 0 && (
+                <span
+                  aria-hidden="true"
+                  class="bg-primary/40 pointer-events-none absolute top-0 left-0 h-12 w-[3px] -translate-x-1/2 -translate-y-full"
+                />
+              )}
+
+              {groupIndex < yearGroups.length - 1 && (
+                <span
+                  aria-hidden="true"
+                  class="bg-primary/40 pointer-events-none absolute bottom-0 left-0 h-12 w-[3px] -translate-x-1/2 translate-y-full"
+                />
+              )}
+
+              <ul class="flex flex-col gap-10">
+                {postsForYear.map((post) => {
+                  const publishedAt = getPublishDate(post)
+                  const href = `/${post.collection}/${post.id}`
+
+                  return (
+                    <li class="group relative ps-7 sm:ps-12">
+                      <span
+                        aria-hidden="true"
+                        class="border-primary/40 bg-primary shadow-primary/10 absolute top-3 left-0 z-10 block size-3.5 -translate-x-1/2 rounded-[0.2rem] border shadow-[0_0_0_0.2rem] transition-transform duration-200 group-hover:-translate-x-[45%] group-hover:scale-110 sm:top-4 sm:size-4"
+                      />
+
+                      <Link
+                        href={href}
+                        class="text-foreground group-hover:text-primary text-base font-semibold transition-colors duration-200"
+                      >
+                        {post.data.title}
+                      </Link>
+
+                      <div class="text-muted-foreground mt-1 flex flex-wrap items-center gap-2 text-sm">
+                        <time datetime={publishedAt.toISOString()}>
+                          {formatDate(publishedAt)}
+                        </time>
+                        {post.data.description && (
+                          <>
+                            <span aria-hidden="true">•</span>
+                            <span class="max-w-prose">
+                              {post.data.description}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+              {groupIndex < yearGroups.length - 1 && (
+                <span
+                  aria-hidden="true"
+                  class="border-primary/30 bg-background text-primary shadow-background pointer-events-none absolute bottom-0 left-0 flex size-9 -translate-x-1/2 translate-y-[58%] items-center justify-center rounded-full border text-base shadow-[0_0_0_0.35rem]"
+                >
+                  <Icon name="lucide:circle-dot" class="size-4" />
+                </span>
+              )}
+            </div>
+          </article>
+        )
+      })
+    }
+  </section>
+
+  {
+    page.lastPage > 1 && (
+      <PaginationComponent
+        currentPage={page.currentPage}
+        totalPages={page.lastPage}
+        baseUrl="/archives/"
+        client:load
+      />
+    )
+  }
+</Layout>

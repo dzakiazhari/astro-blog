@@ -10,7 +10,6 @@ tags:
   - blog
 ---
 
-
 Working in a Japanese company as part of the IT team, I’ve come across a phenomenon that seems to be ingrained in the culture of engineers, especially in Japan. It’s a phrase that’s uttered in meetings, written in teams messages, and casually dropped into conversations:
 
 “Sorry, I lied.” (ごめん、嘘ついた)”

@@ -10,7 +10,6 @@ tags:
   - dev
 ---
 
-
 ## A quick heads up
 
 **Hello**.

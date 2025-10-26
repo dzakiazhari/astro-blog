@@ -28,7 +28,11 @@ if (SITE.showArchives) {
 }
 
 if (SITE.notesUrl) {
-  baseNavLinks.push({ href: SITE.notesUrl, label: 'notes' })
+  baseNavLinks.push({
+    href: SITE.notesUrl,
+    label: 'notes',
+    icon: 'lucide:sticky-note',
+  })
 }
 
 export const NAV_LINKS: SocialLink[] = baseNavLinks

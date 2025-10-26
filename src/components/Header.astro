@@ -3,6 +3,7 @@ import Link from '@/components/Link.astro'
 import ThemeToggle from '@/components/ThemeToggle.astro'
 import { NAV_LINKS, SITE } from '@/consts'
 import { cn } from '@/lib/utils'
+import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import logo from '../../public/static/logo.svg'
 
@@ -38,12 +39,23 @@ const normalizedPath =
                 href={item.href}
                 external={isExternal}
                 class={cn(
-                  'text-foreground/60 hover:text-foreground capitalize transition-colors',
+                  'text-foreground/60 hover:text-foreground inline-flex items-center gap-1 capitalize transition-colors',
                   isActive && 'text-foreground',
                 )}
               >
-                {item.label}
-                {isExternal && <span aria-hidden="true"> ↗</span>}
+                <span class="flex items-center gap-2">
+                  {item.icon && (
+                    <Icon name={item.icon} class="text-primary size-4" />
+                  )}
+                  <span>{item.label}</span>
+                </span>
+                {isExternal && (
+                  <Icon
+                    name="lucide:arrow-up-right"
+                    class="text-muted-foreground size-3.5"
+                    aria-hidden="true"
+                  />
+                )}
               </Link>
             )
           })

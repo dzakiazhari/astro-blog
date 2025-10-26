@@ -10,7 +10,6 @@ tags:
   - dev
 ---
 
-
 ## Syntax Highlighter
 
 Astro comes with [Shiki](https://shiki.style) preconfigured as the syntax highlighter, which provides great looking code blocks out of the box. However, if you want additional features like line highlighting, line numbers, editor-terminal frame, and more customization options, you may want to look at using expressive-code instead.

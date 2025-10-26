@@ -10,7 +10,6 @@ tags:
   - blog
 ---
 
-
 ## Starting a New
 
 Happy New Year! Wishing you all a wonderful and fulfilling year ahead.
