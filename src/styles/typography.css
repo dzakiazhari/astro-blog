@@ -27,14 +27,14 @@
 
 @layer components {
   .prose {
-    @apply text-foreground text-base leading-7;
+    @apply text-foreground text-[1rem] leading-[1.65];
 
     :where(p):not(:where(.not-prose, .not-prose *)) {
-      @apply text-foreground/80 my-5;
+      @apply text-foreground/85 my-6;
     }
 
     :where(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
-      @apply text-foreground scroll-mt-32 font-medium xl:scroll-mt-20;
+      @apply text-foreground scroll-mt-32 font-semibold tracking-tight xl:scroll-mt-20;
     }
 
     :first-child:not(:where(.not-prose, .not-prose *)) {
@@ -43,35 +43,60 @@
 
     /* Don't use an <h1> in your posts, one is already generated in blog/[...id].astro */
     :where(h1):not(:where(.not-prose, .not-prose *)) {
-      @apply mt-8 mb-6 text-4xl;
+      @apply mt-10 mb-6 text-[1.85rem] leading-[1.25];
     }
 
     :where(h2):not(:where(.not-prose, .not-prose *)) {
-      @apply mt-8 mb-4 text-2xl;
+      @apply mt-9 mb-5 text-[1.6rem] leading-[1.3];
     }
 
     :where(h3):not(:where(.not-prose, .not-prose *)) {
-      @apply mt-8 mb-4 text-xl;
+      @apply mt-8 mb-4 text-[1.35rem];
     }
 
     :where(h4):not(:where(.not-prose, .not-prose *)) {
-      @apply mt-7 mb-3 text-lg;
+      @apply mt-7 mb-3 text-[1.15rem];
     }
 
     :where(h5, h6):not(:where(.not-prose, .not-prose *)) {
-      @apply mt-5 mb-3;
+      @apply mt-6 mb-3 text-[1.03rem];
     }
 
     :where(a):not(:where(.not-prose, .not-prose *)) {
-      @apply text-foreground decoration-muted-foreground hover:decoration-foreground font-medium break-words underline underline-offset-[3px] transition-colors;
+      color: var(--link-plain);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid
+        color-mix(in srgb, var(--link-plain) 65%, transparent);
+      padding-bottom: 0.08em;
+      transition:
+        color 160ms ease,
+        border-color 160ms ease,
+        background-color 160ms ease;
+      word-break: break-word;
+    }
+
+    :where(a):not(:where(.not-prose, .not-prose *)):hover,
+    :where(a):not(:where(.not-prose, .not-prose *)):focus-visible {
+      color: var(--link-hover);
+      border-color: color-mix(in srgb, var(--link-hover) 78%, transparent);
+      background: linear-gradient(
+        120deg,
+        color-mix(in srgb, var(--link-hover) 18%, transparent),
+        transparent
+      );
     }
 
     :where(strong):not(:where(.not-prose, .not-prose *)) {
-      @apply text-foreground font-medium;
+      @apply text-foreground font-semibold;
     }
 
     :where(ul):not(:where(.not-prose, .not-prose *)) {
       @apply marker:text-foreground/30 my-5 ml-6 list-disc [&>li]:mt-2;
+    }
+
+    :where(ul > li):not(:where(.not-prose, .not-prose *))::marker {
+      color: color-mix(in srgb, var(--secondary) 60%, var(--muted-text) 40%);
     }
 
     :where(ol):not(:where(.not-prose, .not-prose *)) {
@@ -80,7 +105,7 @@
     }
 
     :where(li):not(:where(.not-prose, .not-prose *)) {
-      @apply text-foreground/80 pl-2 [&>p]:my-0;
+      @apply text-foreground/85 pl-2 [&>p]:my-0;
     }
 
     :where(ul ul, ol ol, ul ol, ol ul):not(:where(.not-prose, .not-prose *)) {
@@ -88,16 +113,90 @@
     }
 
     :where(code):not(:where(.not-prose, .not-prose *)) {
-      @apply bg-muted/50 text-foreground relative rounded-sm px-[0.3rem] py-[0.2rem] text-sm font-medium break-words;
+      background: var(--muted);
+      color: #2f8dc7;
+      font-family: var(--font-mono, 'iA Writer Mono S'), monospace;
+      font-weight: 500;
+      border-radius: var(--radius-xs);
+      padding: 0.18rem 0.38rem;
+      font-size: 0.95em;
+      word-break: break-word;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+      position: relative;
+      z-index: 0;
       @apply [&>span[data-line='']>*]:text-(--shiki-light) dark:[&>span[data-line='']>*]:text-(--shiki-dark);
     }
 
     :where(blockquote):not(:where(.not-prose, .not-prose *)) {
-      @apply [&_*]:text-muted-foreground small my-6 border-l-2 pl-6;
+      position: relative;
+      margin: 2.75rem auto;
+      padding: 1.6rem 2.2rem 1.6rem 3rem;
+      max-width: min(48ch, 100%);
+      color: color-mix(in srgb, var(--body-text) 90%, var(--muted-text) 10%);
+      font-size: 0.98rem;
+      line-height: 1.55;
+      border-left: 4px solid var(--secondary);
+      border-radius: var(--radius-sm);
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--nav-surface) 80%, white 20%),
+        color-mix(in srgb, var(--nav-surface) 62%, white 38%)
+      );
+      box-shadow: inset 0 0 0 1px
+        color-mix(in srgb, var(--border) 65%, transparent);
+      isolation: isolate;
+    }
+
+    :where(blockquote):not(:where(.not-prose, .not-prose *))::before,
+    :where(blockquote):not(:where(.not-prose, .not-prose *))::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        var(--secondary),
+        color-mix(in srgb, var(--nav-surface) 72%, white 28%)
+      );
+    }
+
+    :where(blockquote):not(:where(.not-prose, .not-prose *))::before {
+      top: 0;
+      border-top-left-radius: inherit;
+    }
+
+    :where(blockquote):not(:where(.not-prose, .not-prose *))::after {
+      bottom: 0;
+      border-bottom-left-radius: inherit;
+    }
+
+    :where(blockquote p):not(:where(.not-prose, .not-prose *)) {
+      position: relative;
+      margin-block: 0.35rem;
+      color: inherit;
+    }
+
+    :where(blockquote p:first-of-type):not(
+        :where(.not-prose, .not-prose *)
+      )::before {
+      content: '“';
+      font-family: 'Times New Roman', Times, serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 3.2rem;
+      line-height: 1;
+      color: var(--secondary);
+      position: absolute;
+      left: 1.1rem;
+      top: 0.4rem;
+      opacity: 0.75;
+      pointer-events: none;
     }
 
     :where(hr):not(:where(.not-prose, .not-prose *)) {
       @apply my-8 border-t;
+      border-color: color-mix(in srgb, var(--border) 85%, transparent);
     }
 
     :where(table):not(:where(.not-prose, .not-prose *)) {
@@ -106,19 +205,24 @@
 
     :where(thead):not(:where(.not-prose, .not-prose *)) {
       @apply border-muted-foreground/30 border-b;
+      border-color: color-mix(in srgb, var(--border) 85%, transparent);
     }
 
     :where(th):not(:where(.not-prose, .not-prose *)) {
       @apply px-4 py-2 font-medium;
       @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+      color: color-mix(in srgb, var(--body-text) 92%, var(--muted-text) 8%);
+      border-bottom: 1px solid
+        color-mix(in srgb, var(--border) 82%, transparent);
     }
 
     :where(tr):not(:where(.not-prose, .not-prose *)) {
       @apply border-muted-foreground/30 border-y first:border-t-0 last:border-b-0;
+      border-color: color-mix(in srgb, var(--border) 80%, transparent);
     }
 
     :where(td):not(:where(.not-prose, .not-prose *)) {
-      @apply text-foreground/80 small px-4 py-2 align-top break-words [&>*]:first:mt-0! [&>*]:last:mb-0!;
+      @apply text-foreground/85 small px-4 py-2 align-top break-words [&>*]:first:mt-0! [&>*]:last:mb-0!;
       @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
     }
 
@@ -130,9 +234,12 @@
 
     :where(pre):not(:where(.not-prose, .not-prose *)) {
       @apply max-h-[min(68vh,1000px)]! overflow-y-auto [&::-webkit-scrollbar-corner]:hidden;
-      outline: 2px dotted
-        color-mix(in srgb, var(--ring-accent) 70%, transparent);
-      outline-offset: 2px;
+      background: var(--code-card-surface);
+      border: 1px solid var(--code-card-border);
+      border-radius: var(--radius-md);
+      padding: clamp(1.2rem, 3vw, 1.6rem);
+      box-shadow: inset 0 0 0 1px
+        color-mix(in srgb, var(--code-card-border) 40%, transparent);
     }
 
     :where(.code-block):not(:where(.not-prose, .not-prose *)) {

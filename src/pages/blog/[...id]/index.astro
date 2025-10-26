@@ -25,7 +25,6 @@ import {
 } from '@/lib/data-utils'
 import { formatDate } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
-import { Image } from 'astro:assets'
 import { render } from 'astro:content'
 
 export async function getStaticPaths() {
@@ -139,16 +138,9 @@ const tocSections = await getTOCSections(currentPostId)
         >
           {
             authors.length > 0 && (
-              <div class="flex w-full items-center justify-center gap-x-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+              <div class="flex w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
                 {authors.map((author) => (
                   <div class="flex items-center gap-x-1.5">
-                    <Image
-                      src={author.avatar}
-                      alt={author.name}
-                      width={20}
-                      height={20}
-                      class="rounded-full"
-                    />
                     {author.isRegistered ? (
                       <Link
                         href={`/authors/${author.id}`}
