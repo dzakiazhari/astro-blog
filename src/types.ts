@@ -4,12 +4,11 @@ export type Site = {
   href: string
   author: string
   locale: string
-  featuredPostCount: number
+  homepagePostCount: number
   postsPerPage: number
   timezone: string
   scheduledPostMargin: number
   notesUrl?: string
-  showArchives?: boolean
   dynamicOgImage?: boolean
   ogImage?: string
 }

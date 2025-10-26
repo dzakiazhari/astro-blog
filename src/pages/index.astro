@@ -8,7 +8,7 @@ import Layout from '@/layouts/Layout.astro'
 import { getRecentPosts } from '@/lib/data-utils'
 import { Icon } from 'astro-icon/components'
 
-const blog = await getRecentPosts(SITE.featuredPostCount)
+const blog = await getRecentPosts(SITE.homepagePostCount)
 ---
 
 <Layout class="max-w-3xl">
@@ -57,7 +57,7 @@ const blog = await getRecentPosts(SITE.featuredPostCount)
     </ul>
     <div class="flex justify-center">
       <Link
-        href="/blog"
+        href="/posts"
         class={buttonVariants({ variant: 'ghost' }) + ' group'}
       >
         See all posts <span

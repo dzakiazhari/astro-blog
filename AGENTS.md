@@ -16,6 +16,7 @@ Scope: applies to the entire repository.
 - Path alias: `@/*` → `src/*` (`tsconfig.json`)
 
 Key config files:
+
 - `astro.config.ts` — integrations, markdown/rehype stack, Tailwind plugin
 - `src/consts.ts` — SITE metadata, navigation, social links
 - `src/content.config.ts` — blog & author schemas
@@ -23,6 +24,7 @@ Key config files:
 - `eslint.config.js`, `.prettierrc.mjs`, `tsconfig.json`
 
 Generated/ignored outputs:
+
 - `dist/`, `.astro/`
 
 ---
@@ -38,6 +40,7 @@ Generated/ignored outputs:
 > Docker scripts from Astro Paper were removed during the migration.
 
 Environment variables:
+
 - Optional `PUBLIC_GOOGLE_SITE_VERIFICATION` adds the verification meta tag.
 
 ---
@@ -46,9 +49,9 @@ Environment variables:
 
 - Posts live in `src/content/blog/<year>/<slug>.md`
 - Authors are defined under `src/content/authors`
-- The schema enforces: `title`, `description`, `pubDatetime`, optional `modDatetime`, `tags`, `featured`, `draft`, `timezone`, `canonicalURL`, etc.
+- The schema enforces: `title`, `description`, `pubDatetime`, optional `modDatetime`, `tags`, `draft`, `timezone`, `canonicalURL`, etc.
 - Drafts remain hidden until `pubDatetime` passes `SITE.scheduledPostMargin`
-- Year-prefixed directories are preserved in the URL (e.g. `/blog/2025/my-post`)
+- Year-prefixed directories are preserved in the URL (e.g. `/posts/2025/my-post`)
 
 When editing schema, run `pnpm run test` (Astro sync + validation) and update any affected content.
 
@@ -57,8 +60,8 @@ When editing schema, run `pnpm run test` (Astro sync + validation) and update an
 ## Components & Utilities
 
 - Layout shell: `src/layouts/Layout.astro`
-- Home/about/archives: `src/pages/index.astro`, `src/pages/about.astro`, `src/pages/archives.astro`
-- Post details: `src/pages/blog/[...id]/index.astro`
+- Home/posts/about: `src/pages/index.astro`, `src/pages/posts/[...page].astro`, `src/pages/about.astro`
+- Post details: `src/pages/posts/[...id]/index.astro`
 - Code-block UX: styled in `src/styles/typography.css`, behaviour attached via `public/scripts/post-enhancements.js`
 - OG helpers: `src/lib/normalizePostDate.ts`, `src/lib/data-utils.ts`, `src/lib/generateOgImages.ts`
 - Icons/SVG: sourced from Lucide through `astro-icon`

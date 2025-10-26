@@ -4,7 +4,6 @@ author: Dzaki Azhari
 description: How to install expressive code on Astro.
 pubDatetime: 2024-03-10T00:52:16Z
 modDatetime: 2024-03-10T01:02:09Z
-featured: false
 draft: false
 tags:
   - dev

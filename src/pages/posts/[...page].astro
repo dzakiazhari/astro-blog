@@ -1,0 +1,81 @@
+---
+import BlogCard from '@/components/BlogCard.astro'
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import PageHead from '@/components/PageHead.astro'
+import PaginationComponent from '@/components/ui/pagination'
+import { SITE } from '@/consts'
+import Layout from '@/layouts/Layout.astro'
+import { getAllPosts, groupPostsByYear } from '@/lib/data-utils'
+import type { PaginateFunction } from 'astro'
+
+export async function getStaticPaths({
+  paginate,
+}: {
+  paginate: PaginateFunction
+}) {
+  const allPosts = await getAllPosts()
+  return paginate(allPosts, { pageSize: SITE.postsPerPage })
+}
+
+const { page } = Astro.props
+
+const postsByYear = groupPostsByYear(page.data)
+const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a))
+
+const yearGroups = years.map((year) => ({
+  year,
+  posts: postsByYear[year],
+}))
+
+const breadcrumbs =
+  page.currentPage > 1
+    ? [
+        { label: 'Posts', href: '/posts', icon: 'lucide:library-big' },
+        { label: `Page ${page.currentPage}`, icon: 'lucide:hash' },
+      ]
+    : [{ label: 'Posts', href: '/posts', icon: 'lucide:library-big' }]
+---
+
+<Layout class="max-w-3xl">
+  <PageHead slot="head" title="Posts" />
+  <Breadcrumbs items={breadcrumbs} />
+
+  <section class="flex flex-col gap-y-12">
+    {
+      yearGroups.map(({ year, posts }) => (
+        <article class="flex flex-col gap-6" aria-labelledby={`posts-${year}`}>
+          <header class="flex flex-col gap-2">
+            <span class="text-muted-foreground/80 text-xs font-semibold tracking-[0.4em] uppercase">
+              Year
+            </span>
+            <h2
+              id={`posts-${year}`}
+              class="text-foreground text-3xl font-semibold sm:text-5xl"
+            >
+              {year}
+            </h2>
+          </header>
+
+          <ul class="flex flex-col gap-6">
+            {posts.map((post) => (
+              <li>
+                <BlogCard entry={post} />
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </section>
+
+  {
+    page.lastPage > 1 && (
+      <PaginationComponent
+        currentPage={page.currentPage}
+        totalPages={page.lastPage}
+        baseUrl="/posts/"
+        client:load
+      />
+    )
+  }
+</Layout>

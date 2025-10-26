@@ -5,7 +5,6 @@ description: Step-by-step Pages CMS configuration for syncing Astro blog posts
 author: Dzaki Azhari
 pubDatetime: 2025-10-13T17:25:00Z
 modDatetime: 2025-10-14T05:00:00Z
-featured: true
 draft: false
 tags:
   - dev
@@ -244,12 +243,6 @@ content:
         options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }
         required: false
         description: "Optional edit timestamp for changelog banners and structured data."
-
-      - name: featured
-        label: Featured
-        type: boolean
-        default: false
-        description: "Mark true to pin on the homepage hero strip."
 
       - name: draft
         label: Draft

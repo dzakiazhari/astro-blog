@@ -18,7 +18,7 @@ const author =
     : SITE.author
 
 const canonicalUrl =
-  post.data.canonicalURL ?? new URL(`/blog/${post.id}/`, siteUrl).href
+  post.data.canonicalURL ?? new URL(`/posts/${post.id}/`, siteUrl).href
 
 let ogImageUrl: string | undefined
 
@@ -29,7 +29,7 @@ if (typeof post.data.ogImage === 'string') {
 } else if (post.data.image?.src) {
   ogImageUrl = new URL(post.data.image.src, siteUrl).href
 } else if (SITE.dynamicOgImage) {
-  ogImageUrl = new URL(`/blog/${post.id}/index.png`, siteUrl).href
+  ogImageUrl = new URL(`/posts/${post.id}/index.png`, siteUrl).href
 } else if (SITE.ogImage) {
   ogImageUrl = new URL(SITE.ogImage, siteUrl).href
 } else {

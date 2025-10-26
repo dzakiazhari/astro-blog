@@ -4,7 +4,6 @@ author: Dzaki Azhari
 description: Migrating my notes to Quartz.
 pubDatetime: 2024-03-19T14:51:46Z
 modDatetime: 2024-03-19T08:57:10Z
-featured: false
 draft: false
 tags:
   - dev

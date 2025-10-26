@@ -4,7 +4,6 @@ author: Dzaki Azhari
 description: Publish a digital garden of notes based on Obsidian and Eleventy.
 pubDatetime: 2024-03-09T03:10:50Z
 modDatetime: 2024-03-09T03:11:44Z
-featured: true
 draft: false
 tags:
   - dev

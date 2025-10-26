@@ -7,25 +7,20 @@ export const SITE: Site = {
   href: 'https://dzakiazhari.com/',
   author: 'Dzaki Azhari',
   locale: 'en-US',
-  featuredPostCount: 4,
+  homepagePostCount: 3,
   postsPerPage: 4,
   timezone: 'Asia/Tokyo',
   scheduledPostMargin: 15 * 60 * 1000,
   notesUrl: 'https://notes.dzakiazhari.com',
-  showArchives: true,
   dynamicOgImage: true,
   ogImage: '/astropaper-og.jpg',
 }
 
 const baseNavLinks: SocialLink[] = [
-  { href: '/blog', label: 'posts' },
+  { href: '/posts', label: 'posts' },
   { href: '/tags', label: 'tags' },
   { href: '/about', label: 'about' },
 ]
-
-if (SITE.showArchives) {
-  baseNavLinks.push({ href: '/archives', label: 'archives' })
-}
 
 if (SITE.notesUrl) {
   baseNavLinks.push({

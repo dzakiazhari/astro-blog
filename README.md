@@ -32,7 +32,7 @@ pnpm run build        # production build with OG generation
 ## Notable Features
 
 - Code fences gain “Copy Markdown” + “View Markdown” controls via `public/scripts/post-enhancements.js`
-- Dynamic Open Graph images served from `src/pages/og.png.ts` and `src/pages/blog/[...id]/index.png.ts`
+- Dynamic Open Graph images served from `src/pages/og.png.ts` and `src/pages/posts/[...id]/index.png.ts`
 - IBM Plex Sans/Mono palette defined in `src/styles/global.css` with matching code-block skinning in `src/styles/typography.css`
 
 ## Repository Conventions

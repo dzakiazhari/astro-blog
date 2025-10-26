@@ -17,7 +17,6 @@ const blog = defineCollection({
         author: z.string().default(SITE.author),
         authors: z.array(z.string()).optional(),
         tags: z.array(z.string()).default(['others']),
-        featured: z.boolean().optional(),
         draft: z.boolean().optional(),
         ogImage: image().or(z.string()).optional(),
         canonicalURL: z.string().optional(),

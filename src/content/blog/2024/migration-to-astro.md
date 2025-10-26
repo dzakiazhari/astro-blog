@@ -4,7 +4,6 @@ author: Dzaki Azhari
 description: How I migrated from Ghost to Astro.
 pubDatetime: 2024-03-06T11:10:47Z
 modDatetime: 2024-03-06T12:04:51Z
-featured: true
 draft: false
 tags:
   - dev
@@ -105,7 +104,6 @@ title: <% tp.file.title %>
 pubDatetime: <% tp.file.creation_date("YYYY-MM-DDTHH:mm:ssZ") %>
 modDatetime: <% tp.file.last_modified_date("YYYY-MM-DDTHH:mm:ssZ") %>
 slug: <% tp.file.title.split(" ").join("-").toLowerCase() %>
-featured: <% tp.system.prompt("Is this featured? (true/false)", "") %>
 draft: <% tp.system.prompt("Is this draft? (true/false)", "") %>
 tags:
 <%*
