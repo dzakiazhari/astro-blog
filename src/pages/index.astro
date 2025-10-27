@@ -13,7 +13,7 @@ const blog = await getRecentPosts(SITE.homepagePostCount)
 
 <Layout class="max-w-3xl">
   <PageHead slot="head" title="Home" description={SITE.description} />
-  <section class="bg-muted/30 rounded-lg border">
+  <section class="section-block bg-muted/30 rounded-lg border">
     <div class="flex flex-col gap-y-4 p-6">
       <div class="flex flex-col gap-y-1.5">
         <h1 class="text-3xl leading-tight font-medium text-balance">Hello.</h1>
@@ -44,7 +44,7 @@ const blog = await getRecentPosts(SITE.homepagePostCount)
       </div>
     </div>
   </section>
-  <section class="flex flex-col gap-y-4">
+  <section class="section-block flex flex-col gap-y-4">
     <h2 class="text-2xl font-medium">Latest posts</h2>
     <ul class="flex flex-col gap-y-4">
       {

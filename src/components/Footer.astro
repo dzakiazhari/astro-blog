@@ -1,26 +1,109 @@
 ---
-import { Separator } from '@/components/ui/separator'
-import { SOCIAL_LINKS } from '@/consts'
-import Link from './Link.astro'
-import SocialIcons from './SocialIcons.astro'
+import Link from '@/components/Link.astro'
+import { ICON_MAP, NAV_LINKS, SITE, SOCIAL_LINKS } from '@/consts'
+import { cn } from '@/lib/utils'
+import { Icon } from 'astro-icon/components'
+
+const navLinks = NAV_LINKS
+const socials = SOCIAL_LINKS
+const currentYear = new Date().getFullYear()
+const { pathname } = Astro.url
+const normalizedPath =
+  pathname === '/' ? pathname : pathname.replace(/\/+$/, '')
+const isAboutPage = normalizedPath === '/about'
+const filteredNavLinks = navLinks.filter(
+  (link) => link.href !== '/about',
+)
+const showConnect = !isAboutPage && socials.length > 0
+const gridTemplate = showConnect
+  ? 'md:grid-cols-[1.25fr_1fr_1fr]'
+  : 'md:grid-cols-[1.5fr_1fr]'
 ---
 
-<footer
-  class="mx-auto mb-8 flex w-full max-w-3xl flex-col items-center justify-center gap-y-2 px-4 sm:mb-4 sm:flex-row sm:justify-between"
->
-  <div class="flex flex-wrap items-center justify-center gap-x-2 text-center">
-    <span class="text-muted-foreground text-sm">
-      &copy; {new Date().getFullYear()} All rights reserved.
-    </span>
-    <Separator orientation="vertical" className="hidden h-4! sm:block" />
-    <p class="text-muted-foreground text-sm">
-      Made with 🤍 by <Link
-        href="https://dzakiazhari.com"
-        class="text-foreground"
-        external
-        underline>Dzaki Azhari</Link
-      >.
-    </p>
+<footer class="border-t border-accent/40 bg-muted/40 text-sm text-foreground/80">
+  <div class="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-10">
+    <div class={cn('grid gap-8', gridTemplate)}>
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <span class="text-xs font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+            {SITE.title}
+          </span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <span class="text-xs font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+          Explore
+        </span>
+        <ul class="flex flex-col gap-2" role="list">
+          {filteredNavLinks.map((link) => {
+            const isExternal = link.href.startsWith('http')
+            return (
+              <li>
+                <Link
+                  href={link.href}
+                  class="inline-flex items-center gap-2 text-foreground/70 transition-colors hover:text-foreground"
+                  external={isExternal}
+                >
+                  <span class="h-1.5 w-1.5 rounded-full bg-secondary/60" aria-hidden="true"></span>
+                  <span class="capitalize">{link.label}</span>
+                  {isExternal && (
+                    <Icon name="lucide:arrow-up-right" class="size-3 text-muted-foreground" />
+                  )}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+
+      {
+        showConnect && (
+          <div class="flex flex-col gap-3">
+            <span class="text-xs font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+              Connect
+            </span>
+            <ul class="flex flex-col gap-2" role="list">
+              {socials.map((item) => {
+                const isExternal = /^https?:/i.test(item.href)
+                return (
+                  <li>
+                    <Link
+                      href={item.href}
+                      external={isExternal}
+                      class="inline-flex items-center gap-2 text-foreground/70 transition-colors hover:text-foreground"
+                    >
+                      <Icon
+                        name={
+                          ICON_MAP[item.label as keyof typeof ICON_MAP] ||
+                          'lucide:message-circle-question'
+                        }
+                        class="size-4 text-muted-foreground"
+                      />
+                      <span>{item.label}</span>
+                      {isExternal && (
+                        <Icon name="lucide:arrow-up-right" class="size-3 text-muted-foreground" />
+                      )}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="flex flex-col gap-2 border-t border-border/60 pt-6 text-xs uppercase tracking-[0.22em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <span>&copy; {currentYear} {SITE.title}. All rights reserved.</span>
+      <span>
+        Crafted with care by <Link
+          href="https://dzakiazhari.com"
+          class="text-secondary hover:text-foreground"
+          external
+          underline>Dzaki&nbsp;Azhari</Link>
+        .
+      </span>
+    </div>
   </div>
-  <SocialIcons links={SOCIAL_LINKS} />
 </footer>

@@ -457,6 +457,54 @@ html[data-theme='light'] {
   }
 }
 
+@layer components {
+  .section-block {
+    position: relative;
+  }
+
+  .section-block + .section-block {
+    margin-top: clamp(2.75rem, 4vw, 3.75rem);
+  }
+
+  .section-block + .section-block::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * clamp(1.75rem, 3vw, 2.5rem));
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(22rem, 70%);
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--border) 60%, var(--secondary) 40%),
+      transparent
+    );
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .section-block + .section-block::after {
+    content: '';
+    position: absolute;
+    top: calc(-1 * clamp(1.75rem, 3vw, 2.5rem) + 0.75rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(18rem, 60%);
+    height: 1px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--border) 40%, var(--secondary) 60%),
+      transparent
+    );
+    opacity: 0.35;
+    pointer-events: none;
+  }
+}
+
 @layer base {
   /* Typewriter theme overrides */
   :root,
