@@ -1,10 +1,8 @@
 ---
 title: New Year 2025  A Look Back
-author: Dzaki Azhari
 description: New Year 2025  A Look Back.
 pubDatetime: 2025-01-01T20:53:09Z
 modDatetime: 2025-01-01T22:00:21Z
-draft: false
 tags:
   - blog
 ---

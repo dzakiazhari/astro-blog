@@ -1,10 +1,8 @@
 ---
 title: Sorry I lied.
-author: Dzaki Azhari
 description: Sorry I lied.
 pubDatetime: 2025-01-12T20:53:09Z
 modDatetime: 2025-01-12T22:00:21Z
-draft: false
 tags:
   - blog
 ---

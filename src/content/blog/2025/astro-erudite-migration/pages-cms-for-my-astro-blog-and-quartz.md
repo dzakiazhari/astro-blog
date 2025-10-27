@@ -2,15 +2,16 @@
 title: Pages CMS for My Astro Blog and Quartz Notes
 description: Step-by-step Pages CMS configuration for syncing Astro blog posts
   and Quartz notes.
-author: Dzaki Azhari
 pubDatetime: 2025-10-13T17:25:00Z
 modDatetime: 2025-10-14T05:00:00Z
-draft: false
+order: 4
 tags:
   - dev
-canonicalURL: https://dzakiazhari.com/posts/2025/pages-cms-for-my-astro-blog-and-quartz-notes/
+canonicalURL: https://dzakiazhari.com/posts/2025/astro-erudite-migration/pages-cms-for-my-astro-blog-and-quartz/
 timezone: Asia/Tokyo
 ---
+
+> **Update (2025):** This walkthrough anchors the Astro Erudite series. The `.pages.yml` shown below is the active configuration, including the new `parentSlug` field for nesting subposts under this parent article.
 
 ## 1. Get the repos ready
 
@@ -38,7 +39,7 @@ The `input` value tells Pages CMS which folder in the repo should hold the raw f
 
 ## 3. Map the Astro collection with field templating
 
-My blog posts live inside `src/data/blog`, grouped by year folders. The CMS collection reflects that layout and now uses the `{{fields.*}}` templating so Pages CMS builds paths straight from whatever I type into the form. I also expanded the `exclude` list to hide `_drafts` folders whether they’re files or directories.
+My blog posts live inside `src/content/blog`, grouped by year folders. The CMS collection reflects that layout and now uses the `{{fields.*}}` templating so Pages CMS builds paths straight from whatever I type into the form. I also expanded the `exclude` list to hide `_drafts` folders whether they’re files or directories.
 
 ```yaml
 content:
@@ -46,8 +47,8 @@ content:
     label: Blog Posts
     description: 'Long-form stories that surface on dzakiazhari.com. Paths and metadata map directly to src/content.config.ts.'
     type: collection
-    path: src/data/blog
-    filename: '{{fields.year}}/{{fields.slug}}.md'
+    path: src/content/blog
+    filename: '{{fields.year}}/{{#fields.parentSlug}}{{fields.parentSlug}}/{{/fields.parentSlug}}{{fields.slug}}.md'
     exclude:
       - '**/_*/**'
       - '**/_*'
@@ -64,15 +65,15 @@ content:
         order: desc
 ```
 
-The tree view highlights the draft state so I can spot unpublished work instantly. Using `{{fields.year}}` and `{{fields.slug}}` keeps the saved path aligned with `src/utils/getPath.ts` without relying on implicit collection values.
+The tree view highlights the draft state so I can spot unpublished work instantly. Using `{{fields.year}}`, the optional `parentSlug` block, and `{{fields.slug}}` keeps the saved path aligned with `src/lib/data-utils.ts` without relying on implicit collection values.
 
 ## 4. Mirror the Astro front matter schema
 
 Every field in the CMS corresponds to a field in `src/content.config.ts`. After re-reading the Pages CMS guides I grouped inputs by intent, added helper descriptions, and tightened validation so the editor blocks malformed front matter before it hits git.
 
-1. **Path controls** for the year and slug (select + regex pattern).
+1. **Path controls** for the year, optional parent slug, and final slug (select + regex pattern).
 2. **Required metadata** with labels, length hints, and `required: true` flags.
-3. **Optional toggles** that map to booleans, URLs, or uploads.
+3. **Optional overrides** for drafts, canonical links, OG uploads, timezone, and subpost ordering.
 
 Here’s a representative slice of the field block:
 
@@ -81,7 +82,7 @@ fields:
   - name: year
     label: Year folder
     type: select
-    description: "Creates the folder segment under src/data/blog/{year}."
+    description: "Creates the folder segment under src/content/blog/{year}."
     default: "2025"
     options:
       placeholder: "Choose a year"
@@ -98,6 +99,18 @@ fields:
     pattern:
       regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
       message: "Use lowercase words separated by hyphens without the .md extension."
+  - name: parentSlug
+    label: Parent slug (optional)
+    type: string
+    description: "Only fill when nesting subposts. Match the parent folder slug (e.g. parent-post)."
+    pattern:
+      regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      message: "Leave blank for top-level posts; otherwise mirror the parent slug."
+  - name: title
+    label: Title
+    type: string
+    description: "Displayed as the page <h1> and the document title tag."
+    required: true
   - name: description
     label: Description
     type: text
@@ -105,6 +118,21 @@ fields:
     required: true
     options:
       maxlength: 180
+  - name: pubDatetime
+    label: Publish date & time
+    type: date
+    options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }
+    description: "Posts stay hidden until this timestamp (with a 15-minute grace window)."
+    required: true
+  - name: modDatetime
+    label: Last modified
+    type: date
+    options: { time: true, format: "yyyy-MM-dd'T'HH:mm:ss'Z'" }
+    description: "Optional edit timestamp for changelog banners and structured data."
+  - name: draft
+    label: Draft
+    type: boolean
+    description: "Enable to keep the entry out of listings, RSS, and builds."
   - name: tags
     label: Tags
     type: select
@@ -113,6 +141,10 @@ fields:
       multiple: true
       creatable: true
       placeholder: "Add topics like dev, blog, garden"
+  - name: order
+    label: Subpost order
+    type: number
+    description: "Optional integer to keep multi-part posts in a deliberate sequence."
   - name: ogImage
     label: OG image
     type: image
@@ -123,6 +155,12 @@ fields:
     type: string
     pattern:
       regex: "^(https?:\\/\\/)([^\s]+)$"
+  - name: timezone
+    label: Timezone
+    type: string
+    default: "Asia/Tokyo"
+    description: "Needed only when writing outside the default site timezone."
+
 ```
 
 The updated schema keeps Pages CMS aligned with the Astro Zod rules while leaning on the nicer UI touches from the documentation. Placeholders, regex messages, and media bucket defaults all kick in at the right moments, and so far I haven’t hit a validation error after the refresh.
@@ -155,11 +193,11 @@ content:
     label: Blog Posts
     description: "Long-form stories that surface on dzakiazhari.com. Paths and metadata map directly to src/content.config.ts."
     type: collection
-    # Keep this path aligned with BLOG_PATH in src/utils/blogPath.ts and getPath() expectations
-    path: src/data/blog
-    # Nested directories are slugified by src/utils/getPath.ts, so the CMS only needs the final segment here
-    # Pages CMS uses moustache-style templating for field values.
-    filename: "{{fields.year}}/{{fields.slug}}.md"
+    # Keep this path aligned with the Astro content collection defined in src/content.config.ts
+    path: src/content/blog
+    # Blog posts live in year-based folders; the optional parentSlug nests subposts beneath the parent directory.
+    # Pages CMS uses moustache-style templating so the parent segment only renders when provided.
+    filename: "{{fields.year}}/{{#fields.parentSlug}}{{fields.parentSlug}}/{{/fields.parentSlug}}{{fields.slug}}.md"
     exclude:
       - "**/_*/**"
       - "**/_*"
@@ -181,7 +219,7 @@ content:
       - name: year
         label: Year folder
         type: select
-        description: "Creates the folder segment under src/data/blog/{year}."
+        description: "Creates the folder segment under src/content/blog/{year}."
         default: "2025"
         options:
           placeholder: "Choose a year"
@@ -205,6 +243,15 @@ content:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           message: "Use lowercase words separated by hyphens without the .md extension."
 
+      - name: parentSlug
+        label: Parent slug (optional)
+        type: string
+        required: false
+        description: "Fill only when this entry is a subpost. Match the parent folder slug (e.g. parent-post)."
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          message: "Leave blank for top-level posts; otherwise mirror the parent slug."
+
       # --- frontmatter (matches Astro schema) ---
       - name: title
         label: Title
@@ -219,16 +266,6 @@ content:
         required: true
         options:
           maxlength: 180
-
-      - name: author
-        label: Author
-        type: select
-        default: "Dzaki Azhari"
-        options:
-          creatable: true
-          placeholder: "Select or type an author"
-          values:
-            - { label: "Dzaki Azhari", value: "Dzaki Azhari" }
 
       - name: pubDatetime
         label: Publish date & time
@@ -247,8 +284,7 @@ content:
       - name: draft
         label: Draft
         type: boolean
-        default: false
-        description: "Drafts stay local and are excluded from builds and the RSS feed."
+        description: "Toggle on to keep the post hidden from listings, RSS, and builds."
 
       - name: tags
         label: Tags
@@ -268,6 +304,12 @@ content:
             - { label: "others", value: "others" }
         description: "Multi-select tags surface related content chips and search facets."
 
+      - name: order
+        label: Subpost order
+        type: number
+        required: false
+        description: "Optional integer to sort multi-part subposts after publish date."
+
       # optionals
       - name: ogImage
         label: OG image
@@ -286,12 +328,6 @@ content:
           regex: "^(https?:\\/\\/)([^\s]+)$"
           message: "Use an absolute URL starting with http:// or https://"
 
-      - name: hideEditPost
-        label: Hide "Suggest Changes"
-        type: boolean
-        default: false
-        description: "Toggle if a post should hide the GitHub edit link."
-
       - name: timezone
         label: Timezone
         type: string
@@ -303,6 +339,7 @@ content:
         label: Body
         type: markdown
         description: 'Write in Markdown. Supports callouts, code fences with file="" metadata, and remark-collapse toggles.'
+
 ```
 
 ### Quartz

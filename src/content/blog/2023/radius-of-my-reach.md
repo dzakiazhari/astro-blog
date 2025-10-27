@@ -1,10 +1,8 @@
 ---
 title: Radius of My Reach
 description: An overview of the blog's substance.
-author: Dzaki Azhari
 pubDatetime: 2023-08-31T22:53:09Z
 modDatetime: 2023-09-01T01:00:46Z
-draft: false
 tags:
   - blog
 ---

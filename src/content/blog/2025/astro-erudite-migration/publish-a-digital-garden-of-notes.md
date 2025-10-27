@@ -1,13 +1,14 @@
 ---
 title: Publish a Digital Garden of Notes
-author: Dzaki Azhari
 description: Publish a digital garden of notes based on Obsidian and Eleventy.
 pubDatetime: 2024-03-09T03:10:50Z
 modDatetime: 2024-03-09T03:11:44Z
-draft: false
+order: 3
 tags:
   - dev
 ---
+
+> **Update (2025):** This guide is now part of the Astro Erudite series. The Quartz publishing flow still works, but the main blog no longer relies on the Astro Paper settings described elsewhere—use the Pages CMS configuration in the parent article for the current site.
 
 ## Introduction
 
@@ -471,3 +472,7 @@ table {
 ```
 
 By combining theme presets and custom SCSS, you can create a digital garden that reflects your unique style and preferences!
+
+## 2025 refresh
+
+The Astro side of the site now runs on Erudite, so ignore any old references to `featured` frontmatter or `PostDetails.astro` patches when you adapt this workflow. Pair the Quartz deployment described above with the Pages CMS configuration from the parent article—the new `parentSlug` and `order` fields keep the blog organised while the garden continues to publish from its own repository.

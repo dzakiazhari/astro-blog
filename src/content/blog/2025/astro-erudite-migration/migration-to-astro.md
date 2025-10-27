@@ -1,13 +1,14 @@
 ---
 title: Migration to Astro
-author: Dzaki Azhari
 description: How I migrated from Ghost to Astro.
 pubDatetime: 2024-03-06T11:10:47Z
 modDatetime: 2024-03-06T12:04:51Z
-draft: false
+order: 1
 tags:
   - dev
 ---
+
+> **Update (2025):** This post now sits inside the Astro Erudite series. References to Astro Paper-era components such as `PostDetails.astro` no longer apply—the current site uses Erudite layouts and Pages CMS handles drafts, scheduling, and author defaults.
 
 ## A quick heads up
 
@@ -141,3 +142,7 @@ Remember, this is just the first step! With this foundation, you can now craft a
 Lastly, it also has multiple integrations with other CMS and multiple frameworks.
 
 Well then, see you soon! Have a good day.
+
+## 2025 refresh
+
+This post was originally written during the Astro Paper era. The site now runs on Astro Erudite with a leaner frontmatter model and subpost support. When you recreate the setup today, skip the `featured` flag, rely on the global author defaults, and let Pages CMS manage the `parentSlug` field if you want to group related posts under this migration series.

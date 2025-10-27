@@ -53,6 +53,14 @@ Environment variables:
 - Drafts remain hidden until `pubDatetime` passes `SITE.scheduledPostMargin`
 - Year-prefixed directories are preserved in the URL (e.g. `/posts/2025/my-post`)
 
+### Blog frontmatter
+
+- **Required**: `title`, `description`, `pubDatetime`, `tags`
+- **Optional**: `modDatetime`, `draft` (defaults to published when omitted), `canonicalURL`, `timezone`, `ogImage`, `image`, `order`
+- **Authoring**: Posts default to `SITE.author`; add `author` only when overriding the display name. The loader normalises `authors` from the `author` value so Lucide cards and author pages stay in sync.
+- **Scheduling**: Pages CMS should emit timestamps in ISO-8601 (`YYYY-MM-DDTHH:mm:ssZ`). Use the optional `timezone` field when writing outside the site default (`SITE.timezone`).
+- **Subposts**: Nest Markdown files under `src/content/blog/<year>/<parent-slug>/`. When using Pages CMS, leave `parentSlug` blank for top-level posts and set it to the parent folder name to create subposts.
+
 When editing schema, run `pnpm run test` (Astro sync + validation) and update any affected content.
 
 ---
