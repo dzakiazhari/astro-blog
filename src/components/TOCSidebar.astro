@@ -27,7 +27,43 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         data-toc-scroll-area
       >
         <div class="flex flex-col gap-2 px-4">
-          <span class="text-lg font-medium">Table of Contents</span>
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-lg font-medium">Table of Contents</span>
+            <div class="flex items-center gap-2">
+              <svg
+                class="size-6 text-primary"
+                viewBox="0 0 24 24"
+                role="img"
+                aria-labelledby="desktop-toc-progress-label"
+              >
+                <circle
+                  class="text-primary/20"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <circle
+                  id="desktop-toc-progress-circle"
+                  class="text-primary"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-dasharray="62.83"
+                  stroke-dashoffset="62.83"
+                  transform="rotate(-90 12 12)"
+                />
+              </svg>
+              <span id="desktop-toc-progress-label" class="sr-only">
+                Reading progress 0 percent
+              </span>
+            </div>
+          </div>
           {sections.map((section, index) => {
             const isFirstSubpost =
               section.type === 'subpost' &&
@@ -144,6 +180,9 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
 
 <script>
   const HEADER_OFFSET = 150
+  const PROGRESS_CIRCLE_RADIUS = 10
+  const PROGRESS_CIRCLE_CIRCUMFERENCE =
+    2 * Math.PI * PROGRESS_CIRCLE_RADIUS
 
   class TOCState {
     links: NodeListOf<Element> = document.querySelectorAll(
@@ -154,6 +193,9 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     regions: { id: string; start: number; end: number }[] = []
     scrollArea: HTMLElement | null = null
     tocScrollArea: HTMLElement | null = null
+    progressCircle: SVGCircleElement | null = null
+    progressLabel: HTMLElement | null = null
+    lastProgress: number | null = null
 
     reset() {
       this.links = document.querySelectorAll(
@@ -167,6 +209,24 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         tocContainer?.querySelector('[data-radix-scroll-area-viewport]') || null
       this.tocScrollArea =
         tocContainer?.querySelector('[data-toc-scroll-area]') || null
+      this.progressCircle = document.getElementById(
+        'desktop-toc-progress-circle',
+      ) as SVGCircleElement | null
+      this.progressLabel = document.getElementById(
+        'desktop-toc-progress-label',
+      )
+      this.lastProgress = null
+
+      if (this.progressCircle) {
+        this.progressCircle.style.strokeDasharray =
+          PROGRESS_CIRCLE_CIRCUMFERENCE.toString()
+        this.progressCircle.style.strokeDashoffset =
+          PROGRESS_CIRCLE_CIRCUMFERENCE.toString()
+      }
+
+      if (this.progressLabel) {
+        this.progressLabel.textContent = 'Reading progress 0 percent'
+      }
     }
   }
 
@@ -247,6 +307,38 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     }
   }
 
+  class ProgressCircle {
+    static update() {
+      if (!state.progressCircle) return
+
+      const scrollableDistance =
+        document.documentElement.scrollHeight - window.innerHeight
+      const scrollProgress =
+        scrollableDistance > 0
+          ? Math.min(Math.max(window.scrollY / scrollableDistance, 0), 1)
+          : 0
+      const progressValue = Number(scrollProgress.toFixed(3))
+
+      if (state.lastProgress === progressValue) {
+        return
+      }
+
+      const dashOffset =
+        PROGRESS_CIRCLE_CIRCUMFERENCE * (1 - scrollProgress)
+      state.progressCircle.style.strokeDashoffset = dashOffset.toString()
+
+      if (state.progressLabel) {
+        const progressPercent = Math.round(scrollProgress * 100)
+        const message = `Reading progress ${progressPercent} percent`
+        if (state.progressLabel.textContent !== message) {
+          state.progressLabel.textContent = message
+        }
+      }
+
+      state.lastProgress = progressValue
+    }
+  }
+
   class TOCLinks {
     static update(headingIds: string[]) {
       state.links.forEach((link) => {
@@ -303,6 +395,8 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         state.activeIds = newActiveIds
         TOCLinks.update(state.activeIds)
       }
+
+      ProgressCircle.update()
     }
 
     static handleTOCScroll = () => TOCScrollMask.update()
@@ -317,6 +411,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
       }
 
       TOCScrollMask.update()
+      ProgressCircle.update()
     }
 
     static init() {
@@ -325,6 +420,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
 
       if (state.headings.length === 0) {
         TOCLinks.update([])
+        ProgressCircle.update()
         return
       }
 
@@ -352,6 +448,9 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         regions: [],
         scrollArea: null,
         tocScrollArea: null,
+        progressCircle: null,
+        progressLabel: null,
+        lastProgress: null,
       })
     }
   }
