@@ -129,19 +129,15 @@
 
     :where(blockquote):not(:where(.not-prose, .not-prose *)) {
       position: relative;
-      margin: 2.75rem auto;
-      padding: 1.6rem 2.2rem 1.6rem 3rem;
-      max-width: min(48ch, 100%);
+      margin: 2.5rem 0;
+      padding: 1.6rem 2.2rem 1.6rem 2.8rem;
+      width: 100%;
       color: color-mix(in srgb, var(--body-text) 90%, var(--muted-text) 10%);
       font-size: 0.98rem;
       line-height: 1.55;
       border-left: 4px solid var(--secondary);
       border-radius: var(--radius-sm);
-      background: linear-gradient(
-        135deg,
-        color-mix(in srgb, var(--nav-surface) 80%, white 20%),
-        color-mix(in srgb, var(--nav-surface) 62%, white 38%)
-      );
+      background: color-mix(in srgb, var(--nav-surface) 88%, white 12%);
       box-shadow: inset 0 0 0 1px
         color-mix(in srgb, var(--border) 65%, transparent);
       isolation: isolate;
@@ -180,18 +176,7 @@
     :where(blockquote p:first-of-type):not(
         :where(.not-prose, .not-prose *)
       )::before {
-      content: '“';
-      font-family: 'Times New Roman', Times, serif;
-      font-style: italic;
-      font-weight: 700;
-      font-size: 3.2rem;
-      line-height: 1;
-      color: var(--secondary);
-      position: absolute;
-      left: 1.1rem;
-      top: 0.4rem;
-      opacity: 0.75;
-      pointer-events: none;
+      content: none;
     }
 
     :where(hr):not(:where(.not-prose, .not-prose *)) {
