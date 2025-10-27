@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config'
+import type { AstroUserConfig } from 'astro'
 
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
@@ -19,6 +20,10 @@ import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
 
 import { SITE } from './src/consts'
+
+type VitePlugin = NonNullable<
+  NonNullable<AstroUserConfig['vite']>['plugins']
+>[number]
 
 export default defineConfig({
   site: SITE.href,
@@ -71,7 +76,7 @@ export default defineConfig({
     icon(),
   ],
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss() as VitePlugin],
   },
   server: {
     port: 1234,
