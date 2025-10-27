@@ -14,6 +14,7 @@ export const SITE: Site = {
   notesUrl: 'https://notes.dzakiazhari.com',
   dynamicOgImage: true,
   ogImage: '/astropaper-og.jpg',
+  showDesktopTocProgress: false,
 }
 
 const baseNavLinks: SocialLink[] = [

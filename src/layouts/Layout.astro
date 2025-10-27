@@ -13,6 +13,7 @@ interface Props {
 }
 
 const { class: className } = Astro.props
+const hasReadingStatus = Astro.slots.has('reading-status')
 ---
 
 <!doctype html>
@@ -27,7 +28,13 @@ const { class: className } = Astro.props
     <header
       class="bg-background/50 sticky top-0 z-50 divide-y backdrop-blur-sm xl:divide-none"
     >
-      <Header />
+      <Header>
+        {hasReadingStatus && (
+          <div slot="reading-status">
+            <slot name="reading-status" />
+          </div>
+        )}
+      </Header>
       <slot name="subposts-navigation" />
       <slot name="table-of-contents" />
     </header>

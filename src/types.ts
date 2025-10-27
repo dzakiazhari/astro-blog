@@ -11,6 +11,7 @@ export type Site = {
   notesUrl?: string
   dynamicOgImage?: boolean
   ogImage?: string
+  showDesktopTocProgress?: boolean
 }
 
 export type SocialLink = {

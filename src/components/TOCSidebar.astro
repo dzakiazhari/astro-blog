@@ -3,6 +3,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import type { TOCSection } from '@/lib/data-utils'
 import { getParentId, isSubpost } from '@/lib/data-utils'
 import { cn, getHeadingMargin } from '@/lib/utils'
+import { SITE } from '@/consts'
 
 type Props = {
   sections: TOCSection[]
@@ -12,6 +13,7 @@ type Props = {
 const { sections, currentPostId } = Astro.props
 const isCurrentSubpost = isSubpost(currentPostId)
 const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
+const showDesktopProgress = SITE.showDesktopTocProgress ?? false
 ---
 
 {
@@ -19,6 +21,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     <div
       id="toc-sidebar-container"
       class="sticky top-20 col-start-1 row-span-1 mr-8 ml-auto hidden h-[calc(100vh-5rem)] max-w-md xl:block"
+      data-progress-enabled={showDesktopProgress}
     >
       <ScrollArea
         client:load
@@ -27,42 +30,51 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         data-toc-scroll-area
       >
         <div class="flex flex-col gap-2 px-4">
-          <div class="flex items-center justify-between gap-3">
+          <div
+            class={cn(
+              'flex items-center gap-3',
+              showDesktopProgress ? 'justify-between' : 'justify-start',
+            )}
+          >
             <span class="text-lg font-medium">Table of Contents</span>
-            <div class="flex items-center gap-2">
-              <svg
-                class="size-6 text-primary"
-                viewBox="0 0 24 24"
-                role="img"
-                aria-labelledby="desktop-toc-progress-label"
-              >
-                <circle
-                  class="text-primary/20"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                />
-                <circle
-                  id="desktop-toc-progress-circle"
-                  class="text-primary"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-dasharray="62.83"
-                  stroke-dashoffset="62.83"
-                  transform="rotate(-90 12 12)"
-                />
-              </svg>
-              <span id="desktop-toc-progress-label" class="sr-only">
-                Reading progress 0 percent
-              </span>
-            </div>
+            {
+              showDesktopProgress && (
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="size-6 text-primary"
+                    viewBox="0 0 24 24"
+                    role="img"
+                    aria-labelledby="desktop-toc-progress-label"
+                  >
+                    <circle
+                      class="text-primary/20"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                    <circle
+                      id="desktop-toc-progress-circle"
+                      class="text-primary"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-dasharray="62.83"
+                      stroke-dashoffset="62.83"
+                      transform="rotate(-90 12 12)"
+                    />
+                  </svg>
+                  <span id="desktop-toc-progress-label" class="sr-only">
+                    Reading progress 0 percent
+                  </span>
+                </div>
+              )
+            }
           </div>
           {sections.map((section, index) => {
             const isFirstSubpost =
@@ -196,6 +208,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     progressCircle: SVGCircleElement | null = null
     progressLabel: HTMLElement | null = null
     lastProgress: number | null = null
+    progressEnabled = false
 
     reset() {
       this.links = document.querySelectorAll(
@@ -209,23 +222,32 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         tocContainer?.querySelector('[data-radix-scroll-area-viewport]') || null
       this.tocScrollArea =
         tocContainer?.querySelector('[data-toc-scroll-area]') || null
-      this.progressCircle = document.getElementById(
-        'desktop-toc-progress-circle',
-      ) as SVGCircleElement | null
-      this.progressLabel = document.getElementById(
-        'desktop-toc-progress-label',
-      )
-      this.lastProgress = null
+      this.progressEnabled =
+        tocContainer?.dataset.progressEnabled === 'true'
 
-      if (this.progressCircle) {
-        this.progressCircle.style.strokeDasharray =
-          PROGRESS_CIRCLE_CIRCUMFERENCE.toString()
-        this.progressCircle.style.strokeDashoffset =
-          PROGRESS_CIRCLE_CIRCUMFERENCE.toString()
-      }
+      if (this.progressEnabled) {
+        this.progressCircle = document.getElementById(
+          'desktop-toc-progress-circle',
+        ) as SVGCircleElement | null
+        this.progressLabel = document.getElementById(
+          'desktop-toc-progress-label',
+        )
+        this.lastProgress = null
 
-      if (this.progressLabel) {
-        this.progressLabel.textContent = 'Reading progress 0 percent'
+        if (this.progressCircle) {
+          this.progressCircle.style.strokeDasharray =
+            PROGRESS_CIRCLE_CIRCUMFERENCE.toString()
+          this.progressCircle.style.strokeDashoffset =
+            PROGRESS_CIRCLE_CIRCUMFERENCE.toString()
+        }
+
+        if (this.progressLabel) {
+          this.progressLabel.textContent = 'Reading progress 0 percent'
+        }
+      } else {
+        this.progressCircle = null
+        this.progressLabel = null
+        this.lastProgress = null
       }
     }
   }
@@ -309,7 +331,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
 
   class ProgressCircle {
     static update() {
-      if (!state.progressCircle) return
+      if (!state.progressEnabled || !state.progressCircle) return
 
       const scrollableDistance =
         document.documentElement.scrollHeight - window.innerHeight
@@ -451,6 +473,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         progressCircle: null,
         progressLabel: null,
         lastProgress: null,
+        progressEnabled: false,
       })
     }
   }

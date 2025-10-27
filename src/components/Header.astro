@@ -10,6 +10,8 @@ import logo from '../../public/static/logo.svg'
 const { pathname } = Astro.url
 const normalizedPath =
   pathname === '/' ? pathname : pathname.replace(/\/+$/, '')
+
+const hasReadingStatus = Astro.slots.has('reading-status')
 ---
 
 <div>
@@ -61,6 +63,11 @@ const normalizedPath =
           })
         }
       </nav>
+      {hasReadingStatus && (
+        <div class="hidden items-center md:flex">
+          <slot name="reading-status" />
+        </div>
+      )}
       <ThemeToggle transition:persist />
     </div>
   </div>
