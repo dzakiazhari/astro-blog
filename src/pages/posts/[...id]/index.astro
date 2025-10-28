@@ -44,6 +44,13 @@ const rawMarkdown = (post.body ?? '').trim()
 const showMarkdownActions = rawMarkdown.length > 0
 const markdownUrl = `/posts/${currentPostId}/markdown`
 
+const serializeForInlineScript = (value: string) =>
+  JSON.stringify(value)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
+
 const isCurrentSubpost = isSubpost(currentPostId)
 const navigation = await getAdjacentPosts(currentPostId)
 const parentPost = isCurrentSubpost ? await getParentPost(currentPostId) : null
@@ -519,7 +526,7 @@ const tocSections = await getTOCSections(currentPostId)
       type="application/json"
       id="post-markdown-source"
       is:inline
-      set:html={JSON.stringify(rawMarkdown)}
+      set:html={serializeForInlineScript(rawMarkdown)}
     />
   )
 }
@@ -613,9 +620,44 @@ const tocSections = await getTOCSections(currentPostId)
         }, 1400)
       }
 
+      const writeToClipboard = async (text) => {
+        if (
+          navigator.clipboard &&
+          typeof navigator.clipboard.writeText === 'function'
+        ) {
+          await navigator.clipboard.writeText(text)
+          return
+        }
+
+        const textarea = document.createElement('textarea')
+        textarea.value = text
+        textarea.setAttribute('readonly', '')
+        textarea.style.position = 'fixed'
+        textarea.style.top = '-9999px'
+        const body = document.body
+        if (!body) {
+          throw new Error('Document body is unavailable')
+        }
+        body.appendChild(textarea)
+        textarea.select()
+
+        try {
+          if (typeof document.execCommand !== 'function') {
+            throw new Error('Clipboard fallback unavailable')
+          }
+
+          const success = document.execCommand('copy')
+          if (!success) {
+            throw new Error('Clipboard fallback failed')
+          }
+        } finally {
+          body.removeChild(textarea)
+        }
+      }
+
       const onCopyClick = async () => {
         try {
-          await navigator.clipboard.writeText(raw)
+          await writeToClipboard(raw)
           setCopyState(LABEL_SUCCESS, 'copied')
           reset()
         } catch {
