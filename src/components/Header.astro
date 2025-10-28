@@ -63,11 +63,13 @@ const hasReadingStatus = Astro.slots.has('reading-status')
           })
         }
       </nav>
-      {hasReadingStatus && (
-        <div class="hidden items-center md:flex">
-          <slot name="reading-status" />
-        </div>
-      )}
+      {
+        hasReadingStatus && (
+          <div class="hidden items-center md:flex">
+            <slot name="reading-status" />
+          </div>
+        )
+      }
       <ThemeToggle transition:persist />
     </div>
   </div>

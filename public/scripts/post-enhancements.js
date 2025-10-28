@@ -100,14 +100,43 @@
     }
   }
 
+  const copyText = async (text) => {
+    if (!text) return false
+
+    if (
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === 'function'
+    ) {
+      try {
+        await navigator.clipboard.writeText(text)
+        return true
+      } catch {
+        // Fall back to manual prompt below.
+      }
+    }
+
+    if (typeof window.prompt === 'function') {
+      window.prompt('Copy code snippet and press Enter to close.', text)
+      return true
+    }
+
+    return false
+  }
+
   const copyCode = async (block, button, idleLabel) => {
     const code = block.querySelector('code')
     const text = code?.innerText ?? ''
-    await navigator.clipboard.writeText(text)
+    const success = await copyText(text)
 
-    button.dataset.state = 'copied'
-    button.textContent = 'Copied'
-    button.setAttribute('aria-label', 'Code copied to clipboard')
+    if (success) {
+      button.dataset.state = 'copied'
+      button.textContent = 'Copied'
+      button.setAttribute('aria-label', 'Code copied to clipboard')
+    } else {
+      button.dataset.state = 'error'
+      button.textContent = 'Copy failed'
+      button.setAttribute('aria-label', 'Unable to copy code')
+    }
 
     window.setTimeout(() => {
       button.dataset.state = 'idle'

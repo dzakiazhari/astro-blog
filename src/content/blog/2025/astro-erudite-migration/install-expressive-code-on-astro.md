@@ -76,7 +76,6 @@ Expressive Code exposes plenty of styling hooks. The Erudite setup above keeps t
 
 With expressive-code integrated into your Astro project, you'll have more control over the styling and functionality of your code blocks.
 
-
 ## 2025 refresh
 
 Erudite now loads the copy-button behaviour and tab-index cleanup through `public/scripts/post-enhancements.js`. Extend that file if you need extra interactivity instead of editing layouts directly, and keep the visual adjustments in `src/styles/typography.css` so the blog and notes remain in sync.

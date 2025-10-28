@@ -29,11 +29,13 @@ const hasReadingStatus = Astro.slots.has('reading-status')
       class="bg-background/50 sticky top-0 z-50 divide-y backdrop-blur-sm xl:divide-none"
     >
       <Header>
-        {hasReadingStatus && (
-          <div slot="reading-status">
-            <slot name="reading-status" />
-          </div>
-        )}
+        {
+          hasReadingStatus && (
+            <div slot="reading-status">
+              <slot name="reading-status" />
+            </div>
+          )
+        }
       </Header>
       <slot name="subposts-navigation" />
       <slot name="table-of-contents" />

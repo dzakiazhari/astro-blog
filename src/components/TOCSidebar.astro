@@ -1,9 +1,9 @@
 ---
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { SITE } from '@/consts'
 import type { TOCSection } from '@/lib/data-utils'
 import { getParentId, isSubpost } from '@/lib/data-utils'
 import { cn, getHeadingMargin } from '@/lib/utils'
-import { SITE } from '@/consts'
 
 type Props = {
   sections: TOCSection[]
@@ -37,44 +37,42 @@ const showDesktopProgress = SITE.showDesktopTocProgress ?? false
             )}
           >
             <span class="text-lg font-medium">Table of Contents</span>
-            {
-              showDesktopProgress && (
-                <div class="flex items-center gap-2">
-                  <svg
-                    class="size-6 text-primary"
-                    viewBox="0 0 24 24"
-                    role="img"
-                    aria-labelledby="desktop-toc-progress-label"
-                  >
-                    <circle
-                      class="text-primary/20"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    />
-                    <circle
-                      id="desktop-toc-progress-circle"
-                      class="text-primary"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-dasharray="62.83"
-                      stroke-dashoffset="62.83"
-                      transform="rotate(-90 12 12)"
-                    />
-                  </svg>
-                  <span id="desktop-toc-progress-label" class="sr-only">
-                    Reading progress 0 percent
-                  </span>
-                </div>
-              )
-            }
+            {showDesktopProgress && (
+              <div class="flex items-center gap-2">
+                <svg
+                  class="text-primary size-6"
+                  viewBox="0 0 24 24"
+                  role="img"
+                  aria-labelledby="desktop-toc-progress-label"
+                >
+                  <circle
+                    class="text-primary/20"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <circle
+                    id="desktop-toc-progress-circle"
+                    class="text-primary"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-dasharray="62.83"
+                    stroke-dashoffset="62.83"
+                    transform="rotate(-90 12 12)"
+                  />
+                </svg>
+                <span id="desktop-toc-progress-label" class="sr-only">
+                  Reading progress 0 percent
+                </span>
+              </div>
+            )}
           </div>
           {sections.map((section, index) => {
             const isFirstSubpost =
@@ -193,8 +191,7 @@ const showDesktopProgress = SITE.showDesktopTocProgress ?? false
 <script>
   const HEADER_OFFSET = 150
   const PROGRESS_CIRCLE_RADIUS = 10
-  const PROGRESS_CIRCLE_CIRCUMFERENCE =
-    2 * Math.PI * PROGRESS_CIRCLE_RADIUS
+  const PROGRESS_CIRCLE_CIRCUMFERENCE = 2 * Math.PI * PROGRESS_CIRCLE_RADIUS
 
   class TOCState {
     links: NodeListOf<Element> = document.querySelectorAll(
@@ -222,8 +219,7 @@ const showDesktopProgress = SITE.showDesktopTocProgress ?? false
         tocContainer?.querySelector('[data-radix-scroll-area-viewport]') || null
       this.tocScrollArea =
         tocContainer?.querySelector('[data-toc-scroll-area]') || null
-      this.progressEnabled =
-        tocContainer?.dataset.progressEnabled === 'true'
+      this.progressEnabled = tocContainer?.dataset.progressEnabled === 'true'
 
       if (this.progressEnabled) {
         this.progressCircle = document.getElementById(
@@ -345,8 +341,7 @@ const showDesktopProgress = SITE.showDesktopTocProgress ?? false
         return
       }
 
-      const dashOffset =
-        PROGRESS_CIRCLE_CIRCUMFERENCE * (1 - scrollProgress)
+      const dashOffset = PROGRESS_CIRCLE_CIRCUMFERENCE * (1 - scrollProgress)
       state.progressCircle.style.strokeDashoffset = dashOffset.toString()
 
       if (state.progressLabel) {

@@ -129,7 +129,7 @@ const PaginationComponent: React.FC<PaginationProps> = ({
   totalPages,
   baseUrl,
 }) => {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
+  const paginationRange = createPaginationRange(currentPage, totalPages)
 
   const getPageUrl = (page: number) => {
     if (page === 1) return baseUrl
@@ -146,22 +146,26 @@ const PaginationComponent: React.FC<PaginationProps> = ({
           />
         </PaginationItem>
 
-        {pages.map((page) => (
-          <PaginationItem key={page}>
-            <PaginationLink
-              href={getPageUrl(page)}
-              isActive={page === currentPage}
-            >
-              {page}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
+        {paginationRange.map((page, index) => {
+          if (page === 'ellipsis') {
+            return (
+              <PaginationItem key={`ellipsis-${index}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            )
+          }
 
-        {totalPages > 5 && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
+          return (
+            <PaginationItem key={page}>
+              <PaginationLink
+                href={getPageUrl(page)}
+                isActive={page === currentPage}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          )
+        })}
 
         <PaginationItem>
           <PaginationNext
@@ -174,6 +178,40 @@ const PaginationComponent: React.FC<PaginationProps> = ({
       </PaginationContent>
     </Pagination>
   )
+}
+
+const createPaginationRange = (
+  currentPage: number,
+  totalPages: number,
+  siblingCount = 1,
+): Array<number | 'ellipsis'> => {
+  const totalPageNumbers = siblingCount * 2 + 5
+
+  if (totalPages <= totalPageNumbers) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1)
+  }
+
+  const siblingsStart = Math.max(currentPage - siblingCount, 2)
+  const siblingsEnd = Math.min(currentPage + siblingCount, totalPages - 1)
+  const showLeftEllipsis = siblingsStart > 2
+  const showRightEllipsis = siblingsEnd < totalPages - 1
+
+  const range: Array<number | 'ellipsis'> = [1]
+
+  if (showLeftEllipsis) {
+    range.push('ellipsis')
+  }
+
+  for (let page = siblingsStart; page <= siblingsEnd; page += 1) {
+    range.push(page)
+  }
+
+  if (showRightEllipsis) {
+    range.push('ellipsis')
+  }
+
+  range.push(totalPages)
+  return range
 }
 
 interface PaginationProps {

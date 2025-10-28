@@ -91,12 +91,12 @@ const tocSections = await getTOCSections(currentPostId)
   <span
     slot="reading-status"
     id="reading-status-chip"
-    class="reading-status-chip hidden items-center gap-2 rounded-full border border-border/60 bg-background/70 px-3 py-[0.35rem] text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-foreground/70 shadow-sm backdrop-blur md:inline-flex"
+    class="reading-status-chip border-border/60 bg-background/70 text-foreground/70 hidden items-center gap-2 rounded-full border px-3 py-[0.35rem] text-[0.7rem] font-semibold tracking-[0.2em] uppercase shadow-sm backdrop-blur md:inline-flex"
     role="status"
     aria-live="polite"
   >
     <svg
-      class="size-4 text-primary"
+      class="text-primary size-4"
       viewBox="0 0 24 24"
       role="presentation"
       aria-hidden="true"
@@ -108,8 +108,7 @@ const tocSections = await getTOCSections(currentPostId)
         r="10"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
-      />
+        stroke-width="2"></circle>
       <circle
         id="reading-status-circle"
         class="text-primary"
@@ -121,8 +120,7 @@ const tocSections = await getTOCSections(currentPostId)
         stroke-width="2"
         stroke-dasharray="62.83"
         stroke-dashoffset="62.83"
-        transform="rotate(-90 12 12)"
-      />
+        transform="rotate(-90 12 12)"></circle>
     </svg>
     <span id="reading-status-label">Reading progress 0%</span>
   </span>
@@ -253,26 +251,29 @@ const tocSections = await getTOCSections(currentPostId)
           showMarkdownActions && (
             <div class="mt-4 flex justify-center">
               <div
-                class="relative inline-flex items-stretch rounded-md border border-border bg-background/70 text-sm font-medium text-foreground/80"
+                class="border-border bg-background/70 text-foreground/80 relative inline-flex items-stretch rounded-md border text-sm font-medium"
                 data-markdown-actions
               >
                 <a
                   href={markdownUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center gap-2 rounded-l-md px-3 py-2 transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                  class="hover:bg-muted focus-visible:ring-ring/40 flex items-center gap-2 rounded-l-md px-3 py-2 transition-colors focus-visible:ring-2 focus-visible:outline-none"
                   data-markdown-view
                 >
-                  <Icon name="lucide:file-text" class="size-4 text-muted-foreground" />
+                  <Icon
+                    name="lucide:file-text"
+                    class="text-muted-foreground size-4"
+                  />
                   <span>View Markdown</span>
                   <Icon
                     name="lucide:arrow-up-right"
-                    class="size-3 text-muted-foreground"
+                    class="text-muted-foreground size-3"
                   />
                 </a>
                 <button
                   type="button"
-                  class="flex items-center justify-center rounded-r-md border-l border-border px-2 py-2 text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                  class="border-border text-muted-foreground hover:bg-muted focus-visible:ring-ring/40 flex items-center justify-center rounded-r-md border-l px-2 py-2 transition-colors focus-visible:ring-2 focus-visible:outline-none"
                   data-markdown-menu-toggle
                   aria-haspopup="menu"
                   aria-expanded="false"
@@ -281,19 +282,22 @@ const tocSections = await getTOCSections(currentPostId)
                   <Icon name="lucide:chevron-down" class="size-3" />
                 </button>
                 <div
-                  class="absolute right-0 top-full z-30 mt-2 hidden min-w-[12rem] rounded-md border border-border bg-background/90 p-1"
+                  class="border-border bg-background/90 absolute top-full right-0 z-30 mt-2 hidden min-w-[12rem] rounded-md border p-1"
                   data-markdown-menu
                   role="menu"
                   aria-label="Markdown actions"
                 >
                   <button
                     type="button"
-                    class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                    class="text-foreground/80 hover:bg-muted focus-visible:ring-ring/40 flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
                     data-markdown-copy
                     data-state="idle"
                     role="menuitem"
                   >
-                    <Icon name="lucide:copy" class="size-4 text-muted-foreground" />
+                    <Icon
+                      name="lucide:copy"
+                      class="text-muted-foreground size-4"
+                    />
                     <span data-copy-label>Copy Markdown</span>
                   </button>
                 </div>
@@ -340,8 +344,8 @@ const tocSections = await getTOCSections(currentPostId)
 
   <script is:inline>
     ;(() => {
-      const state =
-        (window.__readingStatusChip = window.__readingStatusChip || {
+      const state = (window.__readingStatusChip =
+        window.__readingStatusChip || {
           cleanup: null,
         })
 
@@ -369,10 +373,7 @@ const tocSections = await getTOCSections(currentPostId)
         const root = document.documentElement
         if (!root) return 0
 
-        const scrollHeight = Math.max(
-          root.scrollHeight - window.innerHeight,
-          0,
-        )
+        const scrollHeight = Math.max(root.scrollHeight - window.innerHeight, 0)
         const scrollTop = Math.max(window.scrollY || root.scrollTop || 0, 0)
         if (scrollHeight <= 0) {
           return 0
@@ -536,10 +537,9 @@ const tocSections = await getTOCSections(currentPostId)
     const LABEL_SUCCESS = 'Copied!'
     const LABEL_ERROR = 'Copy failed'
 
-    const state =
-      (window.__markdownActions = window.__markdownActions || {
-        cleanup: null,
-      })
+    const state = (window.__markdownActions = window.__markdownActions || {
+      cleanup: null,
+    })
 
     const bind = () => {
       const sourceEl = document.getElementById('post-markdown-source')
@@ -594,11 +594,7 @@ const tocSections = await getTOCSections(currentPostId)
 
       const onDocumentClick = (event) => {
         const target = event.target
-        if (
-          target instanceof Node &&
-          !actions.contains(target) &&
-          isOpen
-        ) {
+        if (target instanceof Node && !actions.contains(target) && isOpen) {
           closeMenu()
         }
       }
@@ -629,30 +625,12 @@ const tocSections = await getTOCSections(currentPostId)
           return
         }
 
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.setAttribute('readonly', '')
-        textarea.style.position = 'fixed'
-        textarea.style.top = '-9999px'
-        const body = document.body
-        if (!body) {
-          throw new Error('Document body is unavailable')
+        if (typeof window.prompt === 'function') {
+          window.prompt('Copy this markdown and press Enter to continue.', text)
+          return
         }
-        body.appendChild(textarea)
-        textarea.select()
 
-        try {
-          if (typeof document.execCommand !== 'function') {
-            throw new Error('Clipboard fallback unavailable')
-          }
-
-          const success = document.execCommand('copy')
-          if (!success) {
-            throw new Error('Clipboard fallback failed')
-          }
-        } finally {
-          body.removeChild(textarea)
-        }
+        throw new Error('Clipboard access is unavailable')
       }
 
       const onCopyClick = async () => {

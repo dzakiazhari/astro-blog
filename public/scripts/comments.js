@@ -104,7 +104,9 @@
       })
     }
 
-    const themeButton = document.querySelector('#theme-btn')
+    const themeButton =
+      document.querySelector('#theme-toggle') ??
+      document.querySelector('[data-theme-toggle]')
     if (themeButton) {
       const handler = () => update()
       themeButton.addEventListener('click', handler)

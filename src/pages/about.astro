@@ -25,7 +25,6 @@ const contacts = [
     external: true,
   },
 ]
-
 ---
 
 <Layout class="max-w-3xl">
@@ -37,7 +36,7 @@ const contacts = [
       <h1 class="text-4xl font-semibold tracking-tight text-balance">
         {SITE.title}
       </h1>
-      <div class="space-y-4 text-muted-foreground leading-relaxed">
+      <div class="text-muted-foreground space-y-4 leading-relaxed">
         <p>
           Hi, I’m {SITE.author}, an IT infrastructure specialist based in Japan.
         </p>
@@ -49,7 +48,9 @@ const contacts = [
     </article>
 
     <section class="space-y-4">
-      <h2 class="text-muted-foreground text-sm font-semibold tracking-[0.3em] uppercase">
+      <h2
+        class="text-muted-foreground text-sm font-semibold tracking-[0.3em] uppercase"
+      >
         Feel free to connect
       </h2>
       <ul class="space-y-2">
@@ -59,9 +60,9 @@ const contacts = [
               <Link
                 href={contact.href}
                 external={contact.external}
-                class="group inline-flex items-center gap-3 text-sm font-medium text-primary transition-colors duration-200 hover:text-primary/80"
+                class="group text-primary hover:text-primary/80 inline-flex items-center gap-3 text-sm font-medium transition-colors duration-200"
               >
-                <span class="inline-flex items-center gap-2 text-foreground">
+                <span class="text-foreground inline-flex items-center gap-2">
                   <Icon name={contact.icon} class="text-primary size-4" />
                   {contact.label}
                 </span>

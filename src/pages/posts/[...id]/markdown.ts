@@ -1,4 +1,6 @@
 import type { APIRoute } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+
 import { getAllPostsAndSubposts } from '@/lib/data-utils'
 
 type MarkdownProps = {
@@ -6,6 +8,13 @@ type MarkdownProps = {
   title?: string
   id?: string
   slug?: string
+}
+
+const extractSlug = (post: CollectionEntry<'blog'>): string => {
+  const candidate = (post as { slug?: unknown }).slug
+  return typeof candidate === 'string' && candidate.length > 0
+    ? candidate
+    : post.id
 }
 
 const toSafeFileName = (props: MarkdownProps): string => {
@@ -38,7 +47,7 @@ export async function getStaticPaths() {
       body: post.body ?? '',
       title: post.data.title ?? '',
       id: post.id,
-      slug: post.slug ?? '',
+      slug: extractSlug(post),
     },
   }))
 }
